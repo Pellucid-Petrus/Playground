@@ -1,0 +1,7 @@
+<resources>
+
+    <declare-styleable name="GifMovieView">
+        <attr name="GifFile" format="string" />
+    </declare-styleable>
+
+</resources>

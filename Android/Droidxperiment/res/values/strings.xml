@@ -4,5 +4,6 @@
     <string name="app_name">Droidxperiment</string>
     <string name="action_settings">Settings</string>
     <string name="hello_splash">Droid Experiment</string>
+    <string name="splashgif_logo">splash.gif</string>
 
 </resources>
