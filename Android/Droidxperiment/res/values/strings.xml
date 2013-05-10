@@ -7,5 +7,6 @@
     <string name="splashgif_logo">splash.gif</string>
     <string name="title_activity_main">Main</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_details_fragment">DetailsFragment</string>
 
 </resources>
