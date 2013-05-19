@@ -54,4 +54,15 @@ public class MyListFragment extends Fragment {
         String newTime = String.valueOf(System.currentTimeMillis());
         listener.onItemSelected(newTime);
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "DESTROY");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "DETACH");
+    }
 }

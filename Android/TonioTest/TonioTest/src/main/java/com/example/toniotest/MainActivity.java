@@ -19,6 +19,12 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
         setContentView(R.layout.activity_main);
         this.populateList();
         Log.i(TAG, "CREATEEEEEEEE");
+
+        // Retain Fragment state (it's not destroyed) across configuration changes
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.listFragment);
+        if (f != null) {
+            f.setRetainInstance(true);
+        }
     }
 
 
