@@ -1,6 +1,9 @@
 package com.example.toniotest;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -8,13 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import com.example.toniotest.utils.DownloadWebTask;
 
 /**
  * Created by gnuton on 5/18/13.
  */
-public class MyListFragment extends Fragment {
+public class MyListFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener {
     private static final String TAG = "MY_LIST_FRAGMENT";
 
+    @Override
+    public void onRequestCompleted(String buffer) {
+        Log.d(TAG, "Got Buffer");
+        listener.onItemSelected(buffer);
+    }
 
     // Sends data to another fragment trough the activity
     // using an internal interface.
@@ -51,8 +60,20 @@ public class MyListFragment extends Fragment {
 
     private void updateDetails() {
         Log.d(TAG, "UPDATE");
-        String newTime = String.valueOf(System.currentTimeMillis());
-        listener.onItemSelected(newTime);
+        String url ="http://www.google.com";
+
+        Context c = getActivity().getApplicationContext();
+        ConnectivityManager connMgr = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // fetch data
+            new DownloadWebTask(this).execute(url);
+        } else {
+            // display error
+            listener.onItemSelected(getResources().getString(R.string.networkConnectionError));
+        }
+
+        //String newTime = String.valueOf(System.currentTimeMillis());
     }
     @Override
     public void onDestroy() {

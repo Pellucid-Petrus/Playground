@@ -8,5 +8,6 @@
     <string name="hello_world" >Hello world!
     </string>
     <string name="item_str">MITE</string>
+    <string name="networkConnectionError">No network connection available.</string>
 
 </resources>
