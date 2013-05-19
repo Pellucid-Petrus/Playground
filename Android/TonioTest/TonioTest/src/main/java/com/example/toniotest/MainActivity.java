@@ -1,5 +1,6 @@
 package com.example.toniotest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
@@ -37,9 +38,15 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
     }
 
     @Override
-    public void onItemSelected(String str) {
+    public void onItemSelected(String s) {
         DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
-        if (df != null && df.isInLayout())
-          df.setText(str);
+        if (df != null && df.isInLayout()) {
+          df.setText(s);
+        } else {
+            // Fragment not present in layout. Launch Detail activity
+            Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+            intent.putExtra(DetailActivity.EXTRA_STR, s);
+            startActivity(intent);
+        }
     }
 }
