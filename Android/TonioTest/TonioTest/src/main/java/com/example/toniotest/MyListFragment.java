@@ -12,17 +12,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.example.toniotest.utils.DownloadWebTask;
+import com.example.toniotest.utils.RSSParseTask;
+
+import java.util.List;
 
 /**
  * Created by gnuton on 5/18/13.
  */
-public class MyListFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener {
+public class MyListFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener, RSSParseTask.OnParsingCompletedListener {
     private static final String TAG = "MY_LIST_FRAGMENT";
 
     @Override
     public void onRequestCompleted(String buffer) {
         Log.d(TAG, "Got Buffer");
-        listener.onItemSelected(buffer);
+        new RSSParseTask(this).execute(buffer);
+    }
+
+    @Override
+    public void onParsingCompleted(List list) {
+        Log.d(TAG, "Parsing completed");
+        //listener.onItemSelected(buffer);
     }
 
     // Sends data to another fragment trough the activity
@@ -60,7 +69,7 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
 
     private void updateDetails() {
         Log.d(TAG, "UPDATE");
-        String url ="http://www.google.com";
+        String url ="http://stackoverflow.com/feeds/tag?tagnames=android&sort=newest";
 
         Context c = getActivity().getApplicationContext();
         ConnectivityManager connMgr = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -26,7 +26,6 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
         } else {
             throw new ClassCastException(o.toString() + " must implement DownloadWebTask.OnRequestCompletedListener");
         }
-        this.listener = listener;
     }
 
     @Override
