@@ -10,6 +10,9 @@ apply plugin: 'android'
 
 dependencies {
     compile files('libs/android-support-v4.jar')
+    compile files('libs/boilerpipe-1.2.0-android.jar')
+    compile files('libs/nekohtml-1.9.13.jar')
+    compile files('libs/xerces-2.9.1.jar')
 }
 
 android {

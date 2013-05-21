@@ -69,6 +69,7 @@
     <orderEntry type="jdk" jdkName="Android 4.2.2" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="android-support-v4" level="project" />
+    <orderEntry type="library" name="boilerpipe-1.2.0-android (3)" level="project" />
   </component>
 </module>
 

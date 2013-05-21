@@ -10,13 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.example.toniotest.utils.BoilerPipeTask;
 import com.example.toniotest.utils.DownloadWebTask;
 import com.example.toniotest.utils.RSSParseTask;
 
 /**
  * Created by gnuton on 5/18/13.
  */
-public class DetailFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener{
+public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "DETAIL_FRAGMENT";
 
     @Override
@@ -63,7 +64,7 @@ public class DetailFragment extends Fragment implements DownloadWebTask.OnReques
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             // fetch data
-            new DownloadWebTask(this).execute(entry.link);
+            new BoilerPipeTask(this).execute(entry.link);
         } else {
             Log.w(TAG, "Device not connected");
             //TODO display error (use notification API?)
@@ -71,7 +72,7 @@ public class DetailFragment extends Fragment implements DownloadWebTask.OnReques
     }
 
     @Override
-    public void onRequestCompleted(String buffer) {
+    public void onBoilerplateRemoved(String buffer) {
         Log.d(TAG, "Page Downloaded");
         TextView view = (TextView) getView().findViewById(R.id.ContentTextView);
         view.setText(buffer);
