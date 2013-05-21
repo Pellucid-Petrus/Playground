@@ -14,14 +14,11 @@ import java.util.List;
  * Created by gnuton on 5/21/13.
  */
 public class MyListAdapter extends ArrayAdapter<RSSParseTask.Entry> {
-
-
     private final List<RSSParseTask.Entry> entries;
 
     public MyListAdapter(Context context, int textViewResourceId, List<RSSParseTask.Entry> entries) {
         super(context, textViewResourceId, entries);
         this.entries = entries;
-        //this.a = context;
     }
 
     public static class ViewHolder{
@@ -54,4 +51,5 @@ public class MyListAdapter extends ArrayAdapter<RSSParseTask.Entry> {
         // returns the updated delegate
         return v;
     }
+
 }

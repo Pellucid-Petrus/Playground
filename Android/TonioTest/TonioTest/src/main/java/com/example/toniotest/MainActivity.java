@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ListView;
+import com.example.toniotest.utils.RSSParseTask;
 
 
 public class MainActivity extends FragmentActivity implements MyListFragment.OnItemSelectedListener {
@@ -44,14 +45,14 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
     }
 
     @Override
-    public void onItemSelected(String s) {
+    public void onItemSelected(RSSParseTask.Entry s) {
         DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
         if (df != null && df.isInLayout()) {
-          df.setText(s);
+          //df.setText(s);
         } else {
             // Fragment not present in layout. Launch Detail activity
             Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-            intent.putExtra(DetailActivity.EXTRA_STR, s);
+            intent.putExtra(DetailActivity.ENTRY, s);
             startActivity(intent);
         }
     }

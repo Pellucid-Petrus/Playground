@@ -7,6 +7,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
 
     private static OnParsingCompletedListener listener;
 
-    public static class Entry {
+    public static class Entry implements Serializable {
         public final String title;
         public final String link;
         public final String summary;
@@ -171,6 +172,6 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
     }
 
     public interface OnParsingCompletedListener {
-        public void onParsingCompleted(List list);
+        public void onParsingCompleted(final List list);
     }
 }

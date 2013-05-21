@@ -5,13 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.TextView;
+import com.example.toniotest.utils.RSSParseTask;
 
 /**
  * Created by gnuton on 5/19/13.
  */
 public class DetailActivity extends FragmentActivity{
-    public static final String EXTRA_STR = "STR";
     private static final String TAG = "DETAIL_ACTIVITY";
+    public static final String ENTRY = "ENTRY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +27,9 @@ public class DetailActivity extends FragmentActivity{
         setContentView(R.layout.activity_detail);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String s = extras.getString(EXTRA_STR);
+            RSSParseTask.Entry e = (RSSParseTask.Entry) extras.getSerializable(ENTRY);
             TextView t = (TextView) findViewById(R.id.textView);
-            t.setText(s);
+            t.setText(e.title);
         }
     }
 }

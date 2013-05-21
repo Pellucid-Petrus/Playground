@@ -69,6 +69,6 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
     }
 
     public interface OnRequestCompletedListener {
-        public void onRequestCompleted(String buffer);
+        public void onRequestCompleted(final String buffer);
     }
 }
