@@ -63,6 +63,7 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
     // onAttach checks that activity implements itemSelectedListener
     @Override
     public void onAttach(Activity activity) {
+        Log.d(TAG, "CREATEVIEW");
         super.onAttach(activity);
         if (activity instanceof OnItemSelectedListener) {
             itemSelectedListener = (OnItemSelectedListener) activity;
@@ -73,6 +74,7 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "CREATEVIEW");
         View view = inflater.inflate(R.layout.list_fragment, container, false);
         Button updateButton = (Button) view.findViewById(R.id.button);
         View.OnClickListener l = new View.OnClickListener() {

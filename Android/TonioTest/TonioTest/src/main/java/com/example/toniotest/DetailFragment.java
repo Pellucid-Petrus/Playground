@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.example.toniotest.utils.RSSParseTask;
 
 /**
  * Created by gnuton on 5/18/13.
@@ -21,12 +22,6 @@ public class DetailFragment extends Fragment{
         View view = inflater.inflate(R.layout.detail_fragment, container, false);
         return view;
     }
-
-    public void setText(String item) {
-        TextView view = (TextView) getView().findViewById(R.id.textView);
-        view.setText(item);
-    }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -51,5 +46,11 @@ public class DetailFragment extends Fragment{
     public void onDetach() {
         super.onDetach();
         Log.d(TAG, "DETACH");
+    }
+
+    public void setEntry(RSSParseTask.Entry entry) {
+        //Set Title
+        TextView view = (TextView) getView().findViewById(R.id.TitleTextView);
+        view.setText(entry.title);
     }
 }

@@ -45,14 +45,14 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
     }
 
     @Override
-    public void onItemSelected(RSSParseTask.Entry s) {
+    public void onItemSelected(RSSParseTask.Entry e) {
         DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
         if (df != null && df.isInLayout()) {
-          //df.setText(s);
+          df.setEntry(e);
         } else {
             // Fragment not present in layout. Launch Detail activity
             Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-            intent.putExtra(DetailActivity.ENTRY, s);
+            intent.putExtra(DetailActivity.ENTRY, e);
             startActivity(intent);
         }
     }

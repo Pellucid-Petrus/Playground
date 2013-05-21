@@ -2,6 +2,7 @@ package com.example.toniotest;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.TextView;
@@ -28,8 +29,8 @@ public class DetailActivity extends FragmentActivity{
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             RSSParseTask.Entry e = (RSSParseTask.Entry) extras.getSerializable(ENTRY);
-            TextView t = (TextView) findViewById(R.id.textView);
-            t.setText(e.title);
+            DetailFragment f = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
+            f.setEntry(e);
         }
     }
 }

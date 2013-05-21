@@ -7,7 +7,12 @@
 
     <TextView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="New Text"
-            android:id="@+id/textView" android:layout_gravity="center" android:layout_margin="10dp"/>
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:id="@+id/TitleTextView" android:layout_gravity="center" android:textAlignment="center"/>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem Ipsum"
+            android:id="@+id/ContentTextView" android:layout_gravity="center" android:layout_weight="20"/>
 </LinearLayout>
