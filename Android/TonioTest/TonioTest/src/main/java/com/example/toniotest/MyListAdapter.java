@@ -1,13 +1,11 @@
 package com.example.toniotest;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.example.toniotest.R;
 import com.example.toniotest.utils.RSSParseTask;
 
 import java.util.List;
@@ -32,9 +30,10 @@ public class MyListAdapter extends ArrayAdapter<RSSParseTask.Entry> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View v = convertView;
         ViewHolder holder;
+
+        // Create delegate (View + view holder) when needed, or get the holder for the current view to convert.
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.list_item, null);
@@ -46,10 +45,13 @@ public class MyListAdapter extends ArrayAdapter<RSSParseTask.Entry> {
         else
             holder=(ViewHolder)v.getTag();
 
+        // Update the delegate setting data stored in the holder
         final RSSParseTask.Entry e = entries.get(position);
         if (e != null) {
             holder.title.setText(e.title);
         }
+
+        // returns the updated delegate
         return v;
     }
 }
