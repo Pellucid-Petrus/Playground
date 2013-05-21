@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import com.example.toniotest.utils.DownloadWebTask;
+import com.example.toniotest.utils.MyListAdapter;
 import com.example.toniotest.utils.RSSParseTask;
 
 import java.util.List;
@@ -29,8 +31,11 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
     }
 
     @Override
-    public void onParsingCompleted(List list) {
+    public void onParsingCompleted(List entries) {
         Log.d(TAG, "Parsing completed");
+        MyListAdapter adapter = new MyListAdapter(getActivity().getApplicationContext(), R.id.listView, entries);
+        ListView listView = (ListView) getView().findViewById(R.id.listView);
+        listView.setAdapter(adapter);
         //listener.onItemSelected(buffer);
     }
 
