@@ -1,4 +1,4 @@
-package com.example.toniotest.utils;
+package com.example.toniotest;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.example.toniotest.R;
+import com.example.toniotest.utils.RSSParseTask;
 
 import java.util.List;
 

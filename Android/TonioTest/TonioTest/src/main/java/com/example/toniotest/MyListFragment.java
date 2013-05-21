@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import com.example.toniotest.utils.DownloadWebTask;
-import com.example.toniotest.utils.MyListAdapter;
 import com.example.toniotest.utils.RSSParseTask;
 
 import java.util.List;
