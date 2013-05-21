@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.ListView;
 import com.example.toniotest.utils.RSSParseTask;
 
 
@@ -18,7 +17,6 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.populateList();
         Log.i(TAG, "CREATEEEEEEEE");
 
         // Retain Fragment state (it's not destroyed) across configuration changes
@@ -35,13 +33,6 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
         getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
-    }
-
-    private void populateList() {
-        ListView v = (ListView) this.findViewById(R.id.listView);
-        String mite;
-        mite = this.getResources().getString(R.string.item_str);
-        items = new String[] { mite, mite };
     }
 
     @Override
