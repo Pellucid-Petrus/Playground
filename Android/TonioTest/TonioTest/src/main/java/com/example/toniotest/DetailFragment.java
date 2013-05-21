@@ -1,5 +1,8 @@
 package com.example.toniotest;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -7,12 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.example.toniotest.utils.DownloadWebTask;
 import com.example.toniotest.utils.RSSParseTask;
 
 /**
  * Created by gnuton on 5/18/13.
  */
-public class DetailFragment extends Fragment{
+public class DetailFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener{
     private static final String TAG = "DETAIL_FRAGMENT";
 
     @Override
@@ -52,5 +56,24 @@ public class DetailFragment extends Fragment{
         //Set Title
         TextView view = (TextView) getView().findViewById(R.id.TitleTextView);
         view.setText(entry.title);
+
+        //Load page
+        Context c = getActivity().getApplicationContext();
+        ConnectivityManager connMgr = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // fetch data
+            new DownloadWebTask(this).execute(entry.link);
+        } else {
+            Log.w(TAG, "Device not connected");
+            //TODO display error (use notification API?)
+        }
+    }
+
+    @Override
+    public void onRequestCompleted(String buffer) {
+        Log.d(TAG, "Page Downloaded");
+        TextView view = (TextView) getView().findViewById(R.id.ContentTextView);
+        view.setText(buffer);
     }
 }
