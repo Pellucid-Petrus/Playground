@@ -24,7 +24,7 @@ import java.util.List;
 public class MyListFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener, RSSParseTask.OnParsingCompletedListener {
     private static final String TAG = "MY_LIST_FRAGMENT";
     private OnItemSelectedListener itemSelectedListener;
-    //protected List rssEntries = null;
+    private List rssEntries = null;
 
     // Sends data to another fragment trough the activity using an internal interface.
     public interface OnItemSelectedListener {
@@ -42,7 +42,7 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
     public void onParsingCompleted(final List entries) {
         Log.d(TAG, "Parsing completed");
 
-        //this.rssEntries = entries;
+        this.rssEntries = entries;
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
         MyListAdapter adapter = new MyListAdapter(getActivity().getApplicationContext(), R.id.listView, entries);
@@ -85,6 +85,16 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
         };
         updateButton.setOnClickListener(l);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "START");
+        // called when fragment is visible
+        if (this.rssEntries != null) {
+            onParsingCompleted(this.rssEntries);
+        }
     }
 
     private void updateDetails() {
