@@ -63,7 +63,7 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
     // onAttach checks that activity implements itemSelectedListener
     @Override
     public void onAttach(Activity activity) {
-        Log.d(TAG, "CREATEVIEW");
+        Log.d(TAG, "ATTACHED");
         super.onAttach(activity);
         if (activity instanceof OnItemSelectedListener) {
             itemSelectedListener = (OnItemSelectedListener) activity;

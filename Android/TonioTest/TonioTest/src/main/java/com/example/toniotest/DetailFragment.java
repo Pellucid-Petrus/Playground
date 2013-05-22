@@ -19,26 +19,26 @@ import com.example.toniotest.utils.RSSParseTask;
  */
 public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "DETAIL_FRAGMENT";
+    private RSSParseTask.Entry entry = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "Create view");
         //return super.onCreateView(inflater, container, savedInstanceState);
         // Created when Fragment needs to crerate its UI
         View view = inflater.inflate(R.layout.detail_fragment, container, false);
-        return view;
-    }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // code which require context. getActivity().getApplicationContext()
-        // method called after onCreateView
+        return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "START");
         // called when fragment is visible
+        if (entry != null) {
+            setEntry(entry);
+        }
     }
 
     @Override
@@ -54,8 +54,15 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
     }
 
     public void setEntry(RSSParseTask.Entry entry) {
+        Log.d(TAG,"Set entry");
+        if (getView() == null) {
+            this.entry = entry;
+            return;
+        }
+
         //Set Title
         TextView view = (TextView) getView().findViewById(R.id.TitleTextView);
+
         view.setText(entry.title);
 
         //Load page
