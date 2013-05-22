@@ -3,6 +3,7 @@ package com.example.toniotest;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,12 +21,13 @@ import com.example.toniotest.utils.RSSParseTask;
 public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "DETAIL_FRAGMENT";
     private RSSParseTask.Entry entry = null;
+    private AsyncTask task = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "Create view");
         //return super.onCreateView(inflater, container, savedInstanceState);
-        // Created when Fragment needs to crerate its UI
+        // Created when FAsyncTask<String,Void,String>ragment needs to crerate its UI
         View view = inflater.inflate(R.layout.detail_fragment, container, false);
 
         return view;
@@ -44,6 +46,8 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (this.task != null)
+            this.task.cancel(true);
         Log.d(TAG, "DESTROY");
     }
 
@@ -71,7 +75,7 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             // fetch data
-            new BoilerPipeTask(this).execute(entry.link);
+            this.task = new BoilerPipeTask(this).execute(entry.link);
         } else {
             Log.w(TAG, "Device not connected");
             //TODO display error (use notification API?)
@@ -81,8 +85,14 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
     @Override
     public void onBoilerplateRemoved(String buffer) {
         Log.d(TAG, "Page Downloaded");
-        TextView view = (TextView) getView().findViewById(R.id.ContentTextView);
+        View v = getView();
+        if (v == null)
+            return;
+
+        TextView view = (TextView) v.findViewById(R.id.ContentTextView);
         if (view != null)
             view.setText(buffer);
+
+        this.task = null;
     }
 }
