@@ -75,6 +75,7 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
     public void onBoilerplateRemoved(String buffer) {
         Log.d(TAG, "Page Downloaded");
         TextView view = (TextView) getView().findViewById(R.id.ContentTextView);
-        view.setText(buffer);
+        if (view != null)
+            view.setText(buffer);
     }
 }
