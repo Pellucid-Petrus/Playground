@@ -12,9 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.toniotest.types.RSSEntry;
-import com.example.toniotest.utils.BoilerPipeTask;
-import com.example.toniotest.utils.DownloadWebTask;
-import com.example.toniotest.utils.RSSParseTask;
+import com.example.toniotest.tasks.BoilerPipeTask;
 
 /**
  * Created by gnuton on 5/18/13.

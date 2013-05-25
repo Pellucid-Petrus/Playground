@@ -14,8 +14,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import com.example.toniotest.types.RSSEntry;
-import com.example.toniotest.utils.DownloadWebTask;
-import com.example.toniotest.utils.RSSParseTask;
+import com.example.toniotest.tasks.DownloadWebTask;
+import com.example.toniotest.tasks.RSSParseTask;
 
 import java.util.List;
 

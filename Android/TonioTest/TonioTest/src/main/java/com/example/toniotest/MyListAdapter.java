@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.example.toniotest.types.RSSEntry;
-import com.example.toniotest.utils.RSSParseTask;
 
 import java.util.List;
 
