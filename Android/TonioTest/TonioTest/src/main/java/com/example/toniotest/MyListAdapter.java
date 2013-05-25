@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.example.toniotest.types.RSSEntry;
 import com.example.toniotest.utils.RSSParseTask;
 
 import java.util.List;
@@ -13,10 +14,10 @@ import java.util.List;
 /**
  * Created by gnuton on 5/21/13.
  */
-public class MyListAdapter extends ArrayAdapter<RSSParseTask.Entry> {
-    private final List<RSSParseTask.Entry> entries;
+public class MyListAdapter extends ArrayAdapter<RSSEntry> {
+    private final List<RSSEntry> entries;
 
-    public MyListAdapter(Context context, int textViewResourceId, List<RSSParseTask.Entry> entries) {
+    public MyListAdapter(Context context, int textViewResourceId, List<RSSEntry> entries) {
         super(context, textViewResourceId, entries);
         this.entries = entries;
     }
@@ -43,7 +44,7 @@ public class MyListAdapter extends ArrayAdapter<RSSParseTask.Entry> {
             holder=(ViewHolder)v.getTag();
 
         // Update the delegate setting data stored in the holder
-        final RSSParseTask.Entry e = entries.get(position);
+        final RSSEntry e = entries.get(position);
         if (e != null) {
             holder.title.setText(e.title);
         }

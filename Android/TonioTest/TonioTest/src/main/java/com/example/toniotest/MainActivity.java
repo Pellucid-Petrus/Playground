@@ -14,6 +14,7 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import com.example.toniotest.types.RSSEntry;
 import com.example.toniotest.utils.RSSParseTask;
 
 
@@ -146,7 +147,7 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onItemSelected(RSSParseTask.Entry e) {
+    public void onItemSelected(RSSEntry e) {
         DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
         if (df != null && df.isInLayout()) {
             df.setEntry(e);

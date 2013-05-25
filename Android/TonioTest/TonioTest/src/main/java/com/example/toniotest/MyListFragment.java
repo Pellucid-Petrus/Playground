@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import com.example.toniotest.types.RSSEntry;
 import com.example.toniotest.utils.DownloadWebTask;
 import com.example.toniotest.utils.RSSParseTask;
 
@@ -28,7 +29,7 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
 
     // Sends data to another fragment trough the activity using an internal interface.
     public interface OnItemSelectedListener {
-        public void onItemSelected(RSSParseTask.Entry entry);
+        public void onItemSelected(RSSEntry entry);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
             private final List rssEntries = entries;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
-                RSSParseTask.Entry entry = (RSSParseTask.Entry) entries.get(i);
+                RSSEntry entry = (RSSEntry) entries.get(i);
                 itemSelectedListener.onItemSelected(entry);
             }
         });

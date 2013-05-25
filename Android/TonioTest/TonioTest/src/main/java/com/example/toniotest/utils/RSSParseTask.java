@@ -3,11 +3,11 @@ package com.example.toniotest.utils;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
+import com.example.toniotest.types.RSSEntry;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +20,6 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
     private static final String TAG = "RSS_PARSE_TASK" ;
 
     private static OnParsingCompletedListener listener;
-
-    public static class Entry implements Serializable {
-        public final String title;
-        public final String link;
-        public final String summary;
-
-        private Entry(String title, String summary, String link) {
-            this.title = title;
-            this.summary = summary;
-            this.link = link;
-        }
-    }
-
 
     public RSSParseTask(Object o) {
         if (o instanceof OnParsingCompletedListener) {
@@ -104,7 +91,7 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
         return entries;
     }
 
-    private Entry readEntry(XmlPullParser xpp) throws IOException, XmlPullParserException {
+    private RSSEntry readEntry(XmlPullParser xpp) throws IOException, XmlPullParserException {
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "entry");
         String title = null;
         String summary = null;
@@ -124,7 +111,7 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
                 skip(xpp);
             }
         }
-        return new Entry(title, summary, link);
+        return new RSSEntry(title, summary, link);
 
     }
 

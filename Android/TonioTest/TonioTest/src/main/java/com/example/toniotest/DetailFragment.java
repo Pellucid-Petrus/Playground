@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.example.toniotest.types.RSSEntry;
 import com.example.toniotest.utils.BoilerPipeTask;
 import com.example.toniotest.utils.DownloadWebTask;
 import com.example.toniotest.utils.RSSParseTask;
@@ -20,7 +21,7 @@ import com.example.toniotest.utils.RSSParseTask;
  */
 public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "DETAIL_FRAGMENT";
-    private RSSParseTask.Entry entry = null;
+    private RSSEntry entry = null;
     private AsyncTask task = null;
 
     @Override
@@ -57,7 +58,7 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
         Log.d(TAG, "DETACH");
     }
 
-    public void setEntry(RSSParseTask.Entry entry) {
+    public void setEntry(RSSEntry entry) {
         Log.d(TAG,"Set entry");
         if (getView() == null) {
             this.entry = entry;
