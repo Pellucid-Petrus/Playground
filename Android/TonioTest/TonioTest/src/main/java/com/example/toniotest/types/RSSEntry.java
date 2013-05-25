@@ -10,6 +10,9 @@ public class RSSEntry implements Serializable{
     public final String title;
     public final String link;
     public final String summary;
+    //public final Calendar date;
+    //public String content;
+    //public Boolean isMarkedAsRead;
 
     public RSSEntry(String title, String summary, String link) {
         this.title = title;
