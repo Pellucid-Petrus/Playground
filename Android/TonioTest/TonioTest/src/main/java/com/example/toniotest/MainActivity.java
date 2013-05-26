@@ -14,7 +14,17 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import com.example.toniotest.db.RSSEntryDataSource;
+import com.example.toniotest.db.RSSFeedDataSource;
 import com.example.toniotest.types.RSSEntry;
+import com.example.toniotest.types.RSSFeed;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 
 public class MainActivity extends FragmentActivity implements MyListFragment.OnItemSelectedListener {
@@ -26,11 +36,15 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
     private ArrayAdapter<String> mDrawerListAdapter;
     private ListView mDrawerList;
 
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final RSSFeedDataSource feedDataSource=  new RSSFeedDataSource(getApplicationContext());
+        final RSSEntryDataSource entryDataSource=  new RSSEntryDataSource(getApplicationContext());
+
         Log.i(TAG, "CREATEEEEEEEE");
 
         /*Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
@@ -84,6 +98,30 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        // TESTING DB
+        RSSFeed f = (RSSFeed) feedDataSource.create(new String[]{"Titolo", "Url"});
+        List<RSSFeed> feeds = feedDataSource.getAll();
+        Log.d(TAG, "FEEDS in DB:" + feeds.toString());
+        for (RSSFeed feed : feeds) {
+            feedDataSource.delete(feed);
+        }
+
+        XMLGregorianCalendar publishedData = null;
+        String dateString = "2013-05-26T19:33:06Z";
+        try {
+            publishedData = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateString);
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        RSSEntry e = (RSSEntry) entryDataSource.create(new String[]{"ETitolo", "Esummary", "ELink", "content", publishedData.toString()});
+        List<RSSEntry> entries = entryDataSource.getAll();
+        Log.d(TAG, "ENTRIES in DB" + entries.toString());
+        for (RSSEntry entry : entries) {
+            entryDataSource.delete(entry);
+        }
+
     }
 
     @Override

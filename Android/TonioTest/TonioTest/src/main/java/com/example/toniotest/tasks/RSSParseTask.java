@@ -1,15 +1,21 @@
 package com.example.toniotest.tasks;
 
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.util.Xml;
 import com.example.toniotest.types.RSSEntry;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -91,28 +97,40 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
         return entries;
     }
 
+    @TargetApi(Build.VERSION_CODES.FROYO)
     private RSSEntry readEntry(XmlPullParser xpp) throws IOException, XmlPullParserException {
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "entry");
         String title = null;
         String summary = null;
         String link = null;
+        XMLGregorianCalendar publishedData = null;
+
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = xpp.getName();
+            Log.d(TAG, "NAME " + name);
+
             if (name.equals("title")) {
                 title = readTagText(xpp, "title");
             } else if (name.equals("summary")) {
                 summary = readTagText(xpp, "summary");
             } else if (name.equals("link")) {
                 link = readLink(xpp);
+            } else if (name.equals("published")) {
+                String dateString = readTagText(xpp, "published");
+                try {
+                    publishedData = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateString);
+                } catch (DatatypeConfigurationException e) {
+                    e.printStackTrace();
+                }
             } else {
                 skip(xpp);
             }
         }
-        return new RSSEntry(title, summary, link);
 
+        return new RSSEntry(0, title, summary, link, publishedData);
     }
 
     private void skip(XmlPullParser xpp) throws XmlPullParserException, IOException {

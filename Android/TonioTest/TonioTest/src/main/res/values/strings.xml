@@ -12,5 +12,6 @@
     <string name="drawer_open">Show RSS List</string>
     <string name="drawer_close">Hide RSS list</string>
     <string name="drawer_title">RSS list</string>
+    <string name="warning_no_entries_found">No entries found for the given feed</string>
 
 </resources>

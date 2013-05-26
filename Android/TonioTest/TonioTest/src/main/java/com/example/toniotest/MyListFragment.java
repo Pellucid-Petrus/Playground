@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.example.toniotest.types.RSSEntry;
 import com.example.toniotest.tasks.DownloadWebTask;
 import com.example.toniotest.tasks.RSSParseTask;
@@ -43,10 +44,18 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
     public void onParsingCompleted(final List entries) {
         Log.d(TAG, "Parsing completed");
 
+        Context context = getActivity().getApplicationContext();
+        if (entries == null) {
+            CharSequence text = context.getResources().getString(R.string.warning_no_entries_found);
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            return;
+        }
         this.rssEntries = entries;
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
-        MyListAdapter adapter = new MyListAdapter(getActivity().getApplicationContext(), R.id.listView, entries);
+        MyListAdapter adapter = new MyListAdapter(context, R.id.listView, entries);
         ListView listView = (ListView) getView().findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
