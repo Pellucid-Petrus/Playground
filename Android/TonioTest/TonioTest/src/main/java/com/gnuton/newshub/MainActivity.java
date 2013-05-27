@@ -1,6 +1,7 @@
 package com.gnuton.newshub;
 
 import android.annotation.TargetApi;
+import android.support.v4.app.DialogFragment;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
 
 
-public class MainActivity extends FragmentActivity implements MyListFragment.OnItemSelectedListener {
+public class MainActivity extends FragmentActivity implements MyListFragment.OnItemSelectedListener, SubscribeToNewFeedDialog.onDialogListener {
     private static final String TAG = "MAIN_ACTIVITY";
     private String[] mItems = {};
     private final String[] mLeftTitles = new String[] {"test1", "test2"};
@@ -215,6 +216,11 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
         }
     }
 
+    @Override
+    public void onFeedSelected(RSSFeed feed) {
+        Log.d(TAG, "Feed selected");
+    }
+
     private class DrawerItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -231,5 +237,7 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
 
     public void SubscribeToFeed(View v){
         Log.d(TAG, "SUBSCRIBE TO A NEW FEED");
+        DialogFragment newFragment = new SubscribeToNewFeedDialog();
+        newFragment.show(getSupportFragmentManager(), "missiles");
     }
 }
