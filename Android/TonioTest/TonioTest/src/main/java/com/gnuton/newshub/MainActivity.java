@@ -1,4 +1,4 @@
-package com.example.toniotest;
+package com.gnuton.newshub;
 
 import android.annotation.TargetApi;
 import android.content.res.Configuration;
@@ -14,16 +14,14 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.example.toniotest.db.RSSEntryDataSource;
-import com.example.toniotest.db.RSSFeedDataSource;
-import com.example.toniotest.types.RSSEntry;
-import com.example.toniotest.types.RSSFeed;
+import com.gnuton.newshub.db.RSSEntryDataSource;
+import com.gnuton.newshub.db.RSSFeedDataSource;
+import com.gnuton.newshub.types.RSSEntry;
+import com.gnuton.newshub.types.RSSFeed;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 

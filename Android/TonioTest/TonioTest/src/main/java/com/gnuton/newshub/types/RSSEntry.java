@@ -1,8 +1,7 @@
-package com.example.toniotest.types;
+package com.gnuton.newshub.types;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
-import java.util.Calendar;
 
 /**
  * Created by gnuton on 5/24/13.

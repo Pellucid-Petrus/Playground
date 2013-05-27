@@ -1,4 +1,4 @@
-package com.example.toniotest.db;
+package com.gnuton.newshub.db;
 
 import android.content.Context;
 import android.database.Cursor;

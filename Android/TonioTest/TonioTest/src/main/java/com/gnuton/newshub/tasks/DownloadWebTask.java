@@ -1,4 +1,4 @@
-package com.example.toniotest.tasks;
+package com.gnuton.newshub.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;

@@ -1,4 +1,4 @@
-package com.example.toniotest;
+package com.gnuton.newshub;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,9 +14,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.example.toniotest.types.RSSEntry;
-import com.example.toniotest.tasks.DownloadWebTask;
-import com.example.toniotest.tasks.RSSParseTask;
+import com.gnuton.newshub.types.RSSEntry;
+import com.gnuton.newshub.tasks.DownloadWebTask;
+import com.gnuton.newshub.tasks.RSSParseTask;
 
 import java.util.List;
 

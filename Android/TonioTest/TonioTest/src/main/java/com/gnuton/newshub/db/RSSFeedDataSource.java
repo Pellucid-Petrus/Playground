@@ -1,11 +1,10 @@
-package com.example.toniotest.db;
+package com.gnuton.newshub.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import com.example.toniotest.types.RSSFeed;
+import com.gnuton.newshub.types.RSSFeed;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,11 +1,11 @@
-package com.example.toniotest.tasks;
+package com.gnuton.newshub.tasks;
 
 import android.annotation.TargetApi;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.util.Xml;
-import com.example.toniotest.types.RSSEntry;
+import com.gnuton.newshub.types.RSSEntry;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -15,7 +15,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**

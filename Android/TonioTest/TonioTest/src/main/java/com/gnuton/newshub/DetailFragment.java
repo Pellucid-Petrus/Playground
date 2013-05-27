@@ -1,4 +1,4 @@
-package com.example.toniotest;
+package com.gnuton.newshub;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.example.toniotest.types.RSSEntry;
-import com.example.toniotest.tasks.BoilerPipeTask;
+import com.gnuton.newshub.types.RSSEntry;
+import com.gnuton.newshub.tasks.BoilerPipeTask;
 
 /**
  * Created by gnuton on 5/18/13.

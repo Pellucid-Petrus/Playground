@@ -1,4 +1,4 @@
-package com.example.toniotest.types;
+package com.gnuton.newshub.types;
 
 import java.io.Serializable;
 
