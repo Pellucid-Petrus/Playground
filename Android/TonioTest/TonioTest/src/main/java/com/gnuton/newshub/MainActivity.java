@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.db.RSSFeedDataSource;
@@ -29,11 +30,13 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
     private static final String TAG = "MAIN_ACTIVITY";
     private String[] mItems = {};
     private final String[] mLeftTitles = new String[] {"test1", "test2"};
-    private DrawerLayout mDrawerLayout;
+
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayAdapter<String> mDrawerListAdapter;
-    private ListView mDrawerList;
 
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private LinearLayout mDrawerPanelLayout;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -63,6 +66,7 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
         }
 
         //Set up Navigation drawer
+        mDrawerPanelLayout = (LinearLayout) findViewById(R.id.layout_panel_drawer);
         mDrawerList = (ListView) findViewById(R.id.list_drawer);
         mDrawerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mLeftTitles);
         mDrawerList.setAdapter(mDrawerListAdapter);
@@ -222,6 +226,10 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
         // update selected item and title, then close the drawer
         Log.d(TAG, "Item " + mLeftTitles[position] + "clicked!");
         mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerLayout.closeDrawer(mDrawerPanelLayout);
+    }
+
+    public void SubscribeToFeed(View v){
+        Log.d(TAG, "SUBSCRIBE TO A NEW FEED");
     }
 }
