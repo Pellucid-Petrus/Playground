@@ -1,6 +1,7 @@
 package com.gnuton.newshub;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.support.v4.app.DialogFragment;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -27,26 +28,28 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
 
 
-public class MainActivity extends FragmentActivity implements MyListFragment.OnItemSelectedListener, SubscribeToNewFeedDialog.onDialogListener {
+public class MainActivity extends FragmentActivity implements MyListFragment.OnItemSelectedListener, Subscribe.onDialogListener {
     private static final String TAG = "MAIN_ACTIVITY";
     private String[] mItems = {};
-    private final String[] mLeftTitles = new String[] {"test1", "test2"};
 
     private ActionBarDrawerToggle mDrawerToggle;
-    private ArrayAdapter<String> mDrawerListAdapter;
+    private ArrayAdapter<RSSFeed> mDrawerListAdapter;
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private LinearLayout mDrawerPanelLayout;
+
+    private RSSFeedDataSource mFeedDataSource;
+    private RSSEntryDataSource mEntryDataSource;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final RSSFeedDataSource feedDataSource=  new RSSFeedDataSource(getApplicationContext());
-        final RSSEntryDataSource entryDataSource=  new RSSEntryDataSource(getApplicationContext());
 
+        mFeedDataSource=  new RSSFeedDataSource(getApplicationContext());
+        mEntryDataSource=  new RSSEntryDataSource(getApplicationContext());
         Log.i(TAG, "CREATEEEEEEEE");
 
         /*Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
@@ -69,8 +72,6 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
         //Set up Navigation drawer
         mDrawerPanelLayout = (LinearLayout) findViewById(R.id.layout_panel_drawer);
         mDrawerList = (ListView) findViewById(R.id.list_drawer);
-        mDrawerListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mLeftTitles);
-        mDrawerList.setAdapter(mDrawerListAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // set a custom shadow that overlays the main content when the drawer opens
@@ -103,12 +104,12 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         // TESTING DB
-        RSSFeed f = (RSSFeed) feedDataSource.create(new String[]{"Titolo", "Url"});
-        List<RSSFeed> feeds = feedDataSource.getAll();
+        RSSFeed f = (RSSFeed) mFeedDataSource.create(new String[]{"Titolo", "Url"});
+        List<RSSFeed> feeds = mFeedDataSource.getAll();
         Log.d(TAG, "FEEDS in DB:" + feeds.toString());
-        for (RSSFeed feed : feeds) {
+        /*for (RSSFeed feed : feeds) {
             feedDataSource.delete(feed);
-        }
+        }*/
 
         XMLGregorianCalendar publishedData = null;
         String dateString = "2013-05-26T19:33:06Z";
@@ -118,13 +119,19 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
             e.printStackTrace();
         }
 
-        RSSEntry e = (RSSEntry) entryDataSource.create(new String[]{"ETitolo", "Esummary", "ELink", "content", publishedData.toString()});
-        List<RSSEntry> entries = entryDataSource.getAll();
+        RSSEntry e = (RSSEntry) mEntryDataSource.create(new String[]{"ETitolo", "Esummary", "ELink", "content", publishedData.toString()});
+        List<RSSEntry> entries = mEntryDataSource.getAll();
         Log.d(TAG, "ENTRIES in DB" + entries.toString());
         for (RSSEntry entry : entries) {
-            entryDataSource.delete(entry);
+            mEntryDataSource.delete(entry);
         }
+        refreshFeedList();
+    }
 
+    // Refresh feed list displayed on the left navigation drawer
+    private void refreshFeedList() {
+        mDrawerListAdapter = new ArrayAdapter<RSSFeed>(this, android.R.layout.simple_list_item_1, mFeedDataSource.getAll());
+        mDrawerList.setAdapter(mDrawerListAdapter);
     }
 
     @Override
@@ -230,14 +237,18 @@ public class MainActivity extends FragmentActivity implements MyListFragment.OnI
 
     private void selectItem(int position) {
         // update selected item and title, then close the drawer
-        Log.d(TAG, "Item " + mLeftTitles[position] + "clicked!");
+        String feedTitle = mDrawerListAdapter.getItem(position).title;
+        Log.d(TAG, "Item " + feedTitle + "clicked!");
+
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerPanelLayout);
     }
 
     public void SubscribeToFeed(View v){
         Log.d(TAG, "SUBSCRIBE TO A NEW FEED");
-        DialogFragment newFragment = new SubscribeToNewFeedDialog();
-        newFragment.show(getSupportFragmentManager(), "missiles");
+
+        // Shows subscribe to feed dialog
+        DialogFragment subscribe = new Subscribe();
+        subscribe.show(getSupportFragmentManager(), "Subscribe dialog");
     }
 }
