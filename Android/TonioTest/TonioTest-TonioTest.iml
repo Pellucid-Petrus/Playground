@@ -7,9 +7,9 @@
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/TonioTest/build/source/aidl/debug" />
-        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/TonioTest/src/main/AndroidManifest.xml" />
-        <option name="RES_FOLDER_RELATIVE_PATH" value="/TonioTest/src/main/res" />
-        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/TonioTest/src/main/assets" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
       </configuration>
     </facet>
     <facet type="android-gradle" name="Android-Gradle">
@@ -70,6 +70,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="android-support-v4" level="project" />
     <orderEntry type="library" name="boilerpipe-1.2.0-android (3)" level="project" />
+    <orderEntry type="library" name="boilerpipe-1.2.0-android" level="project" />
+    <orderEntry type="library" name="nekohtml-1.9.13" level="project" />
+    <orderEntry type="library" name="xerces-2.9.1" level="project" />
   </component>
 </module>
 

@@ -21,9 +21,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.db.RSSFeedDataSource;
+import com.gnuton.newshub.tasks.DownloadWebTask;
 import com.gnuton.newshub.types.RSSFeed;
 import android.os.Handler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,11 +40,16 @@ public class Subscribe extends DialogFragment {
     private CountDownTimer mSearchTiimer;
     private View mDlgLayout;
 
+    private RSSFeedDataSource mFeedDDataSource;
+    private List<RSSFeed> mFeeds;
+    private ArrayAdapter < RSSFeed > adapter;
+
     onDialogListener mListener;
 
     public interface onDialogListener {
         public void onFeedSelected(RSSFeed feed);
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -55,6 +66,8 @@ public class Subscribe extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final Subscribe t = this;
+
         String[] providers = new String[] {};
 
         //Create dialog
@@ -77,49 +90,73 @@ public class Subscribe extends DialogFragment {
 
         // Binds SQLite to list
         Context ctx = this.getActivity();
-        RSSFeedDataSource feedDDataSource = new RSSFeedDataSource(ctx);
-        List<RSSFeed> feeds = feedDDataSource.getAll();
-        ArrayAdapter < RSSFeed > adapter = new ArrayAdapter<RSSFeed>(ctx, android.R.layout.simple_list_item_1, feeds);
+        mFeedDDataSource = new RSSFeedDataSource(ctx);
+        mFeeds = new ArrayList<RSSFeed>();
+        adapter = new ArrayAdapter<RSSFeed>(ctx, android.R.layout.simple_list_item_1, mFeeds);
         ListView lv = (ListView) mDlgLayout.findViewById(R.id.subscribe_listView);
-        lv.setAdapter(adapter);
+        if (lv != null)
+            lv.setAdapter(adapter);
 
         // Add listeners to editText
         EditText et = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
         et.addTextChangedListener( new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            class mCountDownTimer extends  CountDownTimer implements DownloadWebTask.OnRequestCompletedListener {
+
+                public mCountDownTimer(long millisInFuture, long countDownInterval) {
+                    super(millisInFuture, countDownInterval);
+                }
+
+                @Override
+                public void onRequestCompleted(String buffer) {
+                    Log.d(TAG, "Got new providers");
+                    mFeeds.clear();
+
+                    try {
+                        JSONArray jArray = new JSONArray(buffer);
+                        for (int i=0; i< jArray.length(); ++i) {
+                            JSONObject j = jArray.getJSONObject(i);
+                            String title = j.getString(DbHelper.FEEDS_TITLE);
+                            String url = j.getString(DbHelper.FEEDS_URL);
+                            RSSFeed f = new RSSFeed(title, url);
+                            mFeeds.add(f);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onTick(long l) {}
+
+                @Override
+                public void onFinish() {
+                    Log.d(TAG," Start searching");
+                    EditText e = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
+
+                    // Fetch RSS list from gnuton.org
+                    String url = "http://www.gnuton.org/newshub/recomm.php?q=" + e.getText().toString();
+                    new DownloadWebTask(this).execute(url);
+                }
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
-                Log.d(TAG,"AFTER TEXT CHANGED");
+                int delayBeforeSearching = 3000;
+
                 if (mSearchTiimer != null)
                     mSearchTiimer.cancel();
 
-                mSearchTiimer = new CountDownTimer(3000, 3000) {
-                    @Override
-                    public void onTick(long l) {
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        Log.d(TAG," CHANGED");
-                        EditText e = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
-                        //e.setText("done!");
-                    }
-                }.start();
-
+                mSearchTiimer = new mCountDownTimer(delayBeforeSearching, delayBeforeSearching).start();
             }
         });
         return builder.create();
-    }
-
-    public void addItems(View v) {
-        //listItems.add("Clicked : "+clickCounter++);
-        //adapter.notifyDataSetChanged();
     }
 }

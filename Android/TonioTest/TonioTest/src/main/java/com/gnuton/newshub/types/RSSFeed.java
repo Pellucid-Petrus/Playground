@@ -16,6 +16,13 @@ public class RSSFeed implements Serializable {
         this.title = title;
     }
 
+    // RSS no in DB
+    public RSSFeed(String title, String url) {
+        this.id = -1;
+        this.url = url;
+        this.title = title;
+    }
+
     // Will be used by the ArrayAdapter in the ListView
     @Override
     public String toString() {
