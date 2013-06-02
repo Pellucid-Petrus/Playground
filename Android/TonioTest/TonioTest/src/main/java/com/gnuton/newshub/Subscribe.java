@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -35,16 +36,37 @@ import java.util.List;
 /**
  * Created by gnuton on 5/28/13.
  */
-public class Subscribe extends DialogFragment {
+public class Subscribe extends DialogFragment implements ListView.OnItemClickListener {
     private final String TAG = Subscribe.class.getName();
     private CountDownTimer mSearchTiimer;
     private View mDlgLayout;
 
-    private RSSFeedDataSource mFeedDDataSource;
+    private final RSSFeedDataSource mFeedDataSource;
     private List<RSSFeed> mFeeds;
-    private ArrayAdapter < RSSFeed > adapter;
+
+    private final ListView mDrawerList;
+    private ArrayAdapter<RSSFeed> adapter;
 
     onDialogListener mListener;
+
+    Subscribe(final ListView drawerList){
+        super();
+        this.mDrawerList = drawerList;
+        this.mFeedDataSource = new RSSFeedDataSource(drawerList.getContext());
+    }
+
+    // ListView.OnClickListener
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        //TextView v = (TextView) view;
+        RSSFeed f = (RSSFeed) adapterView.getItemAtPosition(i);
+        Log.d(TAG, "Added feed:" + f.title);
+
+        if (f == null)
+            return;
+        mFeedDataSource.create(f);
+        this.dismiss();
+    }
 
     public interface onDialogListener {
         public void onFeedSelected(RSSFeed feed);
@@ -90,12 +112,12 @@ public class Subscribe extends DialogFragment {
 
         // Binds SQLite to list
         Context ctx = this.getActivity();
-        mFeedDDataSource = new RSSFeedDataSource(ctx);
+
         mFeeds = new ArrayList<RSSFeed>();
         adapter = new ArrayAdapter<RSSFeed>(ctx, android.R.layout.simple_list_item_1, mFeeds);
         ListView lv = (ListView) mDlgLayout.findViewById(R.id.subscribe_listView);
-        if (lv != null)
-            lv.setAdapter(adapter);
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(this);
 
         // Add listeners to editText
         EditText et = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
@@ -157,6 +179,16 @@ public class Subscribe extends DialogFragment {
                 mSearchTiimer = new mCountDownTimer(delayBeforeSearching, delayBeforeSearching).start();
             }
         });
+
+
         return builder.create();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Log.d(TAG, "Closing dialog");
+        ArrayAdapter<RSSFeed> drawerListAdapter = new ArrayAdapter<RSSFeed>(getActivity(), android.R.layout.simple_list_item_1, mFeedDataSource.getAll());
+        mDrawerList.setAdapter(drawerListAdapter);
     }
 }

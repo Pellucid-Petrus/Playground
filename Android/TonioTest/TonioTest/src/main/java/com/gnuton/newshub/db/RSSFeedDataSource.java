@@ -27,6 +27,7 @@ public class RSSFeedDataSource extends GenericDataSource {
         return new String[] { DbHelper.ID, DbHelper.FEEDS_TITLE, DbHelper.FEEDS_URL};
     }
 
+
     @Override
     public Serializable create(String[] record) {
         ContentValues values = new ContentValues();
@@ -41,6 +42,13 @@ public class RSSFeedDataSource extends GenericDataSource {
         RSSFeed feed = (RSSFeed) cursorTo(cursor);
         cursor.close();
         return feed;
+    }
+
+    public Serializable create(final RSSFeed f) {
+        String title = f.title;
+        String url = f. url;
+        String[] record = {title, url};
+        return this.create(record);
     }
 
     @Override
