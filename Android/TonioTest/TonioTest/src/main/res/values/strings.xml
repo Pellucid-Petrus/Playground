@@ -13,5 +13,6 @@
     <string name="drawer_close">Hide subscription list</string>
     <string name="drawer_title">Subscriptions</string>
     <string name="warning_no_entries_found">No entries found for the given feed</string>
+    <string name="unsubscribeConfermation">Do you wanna stop to follow this provider?</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.gnuton.newshub;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -75,6 +76,7 @@ public class MainActivity extends FragmentActivity
         mDrawerPanelLayout = (LinearLayout) findViewById(R.id.layout_panel_drawer);
         mDrawerList = (ListView) findViewById(R.id.list_drawer);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setOnItemLongClickListener(new DrawerItemLongClickListener());
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -233,6 +235,27 @@ public class MainActivity extends FragmentActivity
         }
     }
 
+    private class DrawerItemLongClickListener implements AdapterView.OnItemLongClickListener {
+        @Override
+        public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, long id) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setMessage(R.string.unsubscribeConfermation).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Log.d(TAG, "Removing item");
+                    RSSFeed f = (RSSFeed) mDrawerList.getItemAtPosition(position);
+                    mFeedDataSource.delete(f);
+                    ArrayAdapter<RSSFeed> drawerListAdapter =
+                            new ArrayAdapter<RSSFeed>(view.getContext(), android.R.layout.simple_list_item_1, mFeedDataSource.getAll());
+                    mDrawerList.setAdapter(drawerListAdapter);
+                }
+            });
+            builder.setNegativeButton(android.R.string.no, null);
+            builder.setCancelable(true);
+            builder.show();
+            return true;
+        }
+    }
     private void selectItem(int position) {
         // update selected item and title, then close the drawer
         String feedTitle = ((RSSFeed)mDrawerList.getAdapter().getItem(position)).title;
