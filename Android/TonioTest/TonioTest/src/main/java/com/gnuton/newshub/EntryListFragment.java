@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by gnuton on 5/18/13.
  */
-public class MyListFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener, RSSParseTask.OnParsingCompletedListener {
+public class EntryListFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener, RSSParseTask.OnParsingCompletedListener {
     private static final String TAG = "MY_LIST_FRAGMENT";
     private OnItemSelectedListener itemSelectedListener;
     private List rssEntries = null;
@@ -55,7 +55,7 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
         this.rssEntries = entries;
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
-        MyListAdapter adapter = new MyListAdapter(context, R.id.listView, entries);
+        EntryListAdapter adapter = new EntryListAdapter(context, R.id.listView, entries);
         ListView listView = (ListView) getView().findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
@@ -78,7 +78,7 @@ public class MyListFragment extends Fragment implements DownloadWebTask.OnReques
         if (activity instanceof OnItemSelectedListener) {
             itemSelectedListener = (OnItemSelectedListener) activity;
         } else {
-            throw new ClassCastException(activity.toString() + " must implement MyListFragment.OnItemSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement EntryListFragment.OnItemSelectedListener");
         }
     }
 

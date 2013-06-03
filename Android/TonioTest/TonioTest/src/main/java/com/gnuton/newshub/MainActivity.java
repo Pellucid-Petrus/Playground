@@ -2,8 +2,6 @@ package com.gnuton.newshub;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.content.res.Configuration;
@@ -32,7 +30,7 @@ import java.util.List;
 
 
 public class MainActivity extends FragmentActivity
-        implements MyListFragment.OnItemSelectedListener, Subscribe.onDialogListener {
+        implements EntryListFragment.OnItemSelectedListener, Subscribe.onDialogListener {
     private static final String TAG = "MAIN_ACTIVITY";
     private String[] mItems = {};
 
@@ -62,7 +60,7 @@ public class MainActivity extends FragmentActivity
         if (rotation == Surface.ROTATION_180 || rotation == Surface.ROTATION_0 )*/
 
         if (savedInstanceState == null) {
-            Fragment listFragment =  new MyListFragment();
+            Fragment listFragment =  new EntryListFragment();
             listFragment.setRetainInstance(true);
 
             Log.d(TAG, "ID_:" + listFragment.getId());

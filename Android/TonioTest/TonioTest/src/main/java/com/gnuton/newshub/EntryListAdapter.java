@@ -13,10 +13,10 @@ import java.util.List;
 /**
  * Created by gnuton on 5/21/13.
  */
-public class MyListAdapter extends ArrayAdapter<RSSEntry> {
+public class EntryListAdapter extends ArrayAdapter<RSSEntry> {
     private final List<RSSEntry> entries;
 
-    public MyListAdapter(Context context, int textViewResourceId, List<RSSEntry> entries) {
+    public EntryListAdapter(Context context, int textViewResourceId, List<RSSEntry> entries) {
         super(context, textViewResourceId, entries);
         this.entries = entries;
     }
