@@ -55,8 +55,8 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
         this.rssEntries = entries;
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
-        EntryListAdapter adapter = new EntryListAdapter(context, R.id.listView, entries);
-        ListView listView = (ListView) getView().findViewById(R.id.listView);
+        EntryListAdapter adapter = new EntryListAdapter(context, R.id.entrylistView, entries);
+        ListView listView = (ListView) getView().findViewById(R.id.entrylistView);
         listView.setAdapter(adapter);
 
         // Define action (open activity) when a list item is selected
@@ -85,8 +85,8 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "CREATEVIEW");
-        View view = inflater.inflate(R.layout.list_fragment, container, false);
-        Button updateButton = (Button) view.findViewById(R.id.button);
+        View view = inflater.inflate(R.layout.entrylist_fragment, container, false);
+        Button updateButton = (Button) view.findViewById(R.id.entrylistupdatebutton);
         View.OnClickListener l = new View.OnClickListener() {
             @Override
             public void onClick(View view) {

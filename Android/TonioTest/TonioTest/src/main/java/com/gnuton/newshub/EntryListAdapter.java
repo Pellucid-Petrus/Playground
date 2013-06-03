@@ -33,7 +33,7 @@ public class EntryListAdapter extends ArrayAdapter<RSSEntry> {
         // Create delegate (View + view holder) when needed, or get the holder for the current view to convert.
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.list_item, null);
+            v = vi.inflate(R.layout.entrylist_item, null);
             holder = new ViewHolder();
             holder.title = (TextView) v.findViewById(R.id.ListItemTitleTextView);
 

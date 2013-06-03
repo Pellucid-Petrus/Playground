@@ -223,13 +223,13 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void onFeedSelected(RSSFeed feed) {
-        Log.d(TAG, "Feed selected");
+        Log.d(TAG, "ON FEED SELECTED");
     }
 
     private class DrawerItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
+            feedSelected(position);
         }
     }
 
@@ -254,10 +254,11 @@ public class MainActivity extends FragmentActivity
             return true;
         }
     }
-    private void selectItem(int position) {
+    private void feedSelected(int position) {
         // update selected item and title, then close the drawer
         String feedTitle = ((RSSFeed)mDrawerList.getAdapter().getItem(position)).title;
-        Log.d(TAG, "Item " + feedTitle + "clicked!");
+        Log.d(TAG, "Feed: " + feedTitle + "clicked!");
+        //EntryListFragment elf = (EntryListFragment) getSupportFragmentManager().findFragmentById(R.id.);
 
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerPanelLayout);

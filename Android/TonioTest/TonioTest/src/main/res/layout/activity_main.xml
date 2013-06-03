@@ -21,7 +21,7 @@
                   android:name="com.gnuton.newshub.DetailFragment"
                   android:id="@+id/detailFragment"
                   android:layout_centerVertical="true"
-                  android:layout_alignRight="@+id/listView"
+                  android:layout_alignRight="@+id/entrylistView"
                   android:layout_weight=".75"
                   tools:layout="@layout/detail_fragment"/>
 
