@@ -42,6 +42,7 @@ public class MainActivity extends FragmentActivity
 
     private RSSFeedDataSource mFeedDataSource;
     private RSSEntryDataSource mEntryDataSource;
+    private Fragment mEntryListFragment;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -60,13 +61,13 @@ public class MainActivity extends FragmentActivity
         if (rotation == Surface.ROTATION_180 || rotation == Surface.ROTATION_0 )*/
 
         if (savedInstanceState == null) {
-            Fragment listFragment =  new EntryListFragment();
-            listFragment.setRetainInstance(true);
+            mEntryListFragment =  new EntryListFragment();
+            mEntryListFragment.setRetainInstance(true);
 
-            Log.d(TAG, "ID_:" + listFragment.getId());
+            Log.d(TAG, "ID_:" + mEntryListFragment.getId());
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, listFragment)
+                    .add(R.id.container, mEntryListFragment)
                     .commit();
         }
 
@@ -204,23 +205,10 @@ public class MainActivity extends FragmentActivity
                     .addToBackStack(null)
                     .commit();
             df.setEntry(e);
-
-            // Fragment not present in layout. Launch Detail activity
-            /*Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-            intent.putExtra(DetailActivity.ENTRY, e);
-
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-                // New activity slides in and old slides out
-                Bundle bndlanimation =
-                        ActivityOptions.makeCustomAnimation(getApplicationContext(), R.animator.slidein, R.animator.slideout).toBundle();
-                startActivity(intent, bndlanimation);
-            } else {
-                startActivity(intent);
-            }*/
-
         }
     }
 
+    //FIXME Is this used anywhere?
     @Override
     public void onFeedSelected(RSSFeed feed) {
         Log.d(TAG, "ON FEED SELECTED");
@@ -256,9 +244,13 @@ public class MainActivity extends FragmentActivity
     }
     private void feedSelected(int position) {
         // update selected item and title, then close the drawer
-        String feedTitle = ((RSSFeed)mDrawerList.getAdapter().getItem(position)).title;
-        Log.d(TAG, "Feed: " + feedTitle + "clicked!");
-        //EntryListFragment elf = (EntryListFragment) getSupportFragmentManager().findFragmentById(R.id.);
+        RSSFeed feed = (RSSFeed)mDrawerList.getAdapter().getItem(position);
+
+        Log.d(TAG, "Feed: " + feed.title + " clicked!");
+        EntryListFragment elf = (EntryListFragment) mEntryListFragment;
+        if (elf != null){
+            elf.setUrl(feed);
+        }
 
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerPanelLayout);

@@ -56,7 +56,12 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
 
     private List parseRSSString(String xml) throws XmlPullParserException, IOException {
         List entries = new ArrayList();
+        if (xml == null) {
+            Log.e(TAG, "XML Buffer is empty");
+            return entries;
+        }
 
+        Log.d(TAG, xml);
         XmlPullParser xpp = Xml.newPullParser();
         xpp.setInput(new StringReader(xml));
 

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.tasks.DownloadWebTask;
 import com.gnuton.newshub.tasks.RSSParseTask;
+import com.gnuton.newshub.types.RSSFeed;
 
 import java.util.List;
 
@@ -27,19 +28,26 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
     private static final String TAG = "MY_LIST_FRAGMENT";
     private OnItemSelectedListener itemSelectedListener;
     private List rssEntries = null;
+    private RSSFeed mFeed;
 
     // Sends data to another fragment trough the activity using an internal interface.
     public interface OnItemSelectedListener {
         public void onItemSelected(RSSEntry entry);
     }
 
+    // Executed when data is downloaded from the internet
     @Override
-    public void onRequestCompleted(final String buffer) {
+    public void onRequestCompleted(String buffer) {
         Log.d(TAG, "Got Buffer");
+        if (buffer == null) {
+            Log.e(TAG, "Unable to download content");
+            return;
+        }
         // Parse RSS buffer in a separate thread. onParsingCompleted is called when the operation terminates
         new RSSParseTask(this).execute(buffer);
     }
 
+    // Callback executed when parsing is completed
     @Override
     public void onParsingCompleted(final List entries) {
         Log.d(TAG, "Parsing completed");
@@ -86,14 +94,6 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "CREATEVIEW");
         View view = inflater.inflate(R.layout.entrylist_fragment, container, false);
-        Button updateButton = (Button) view.findViewById(R.id.entrylistupdatebutton);
-        View.OnClickListener l = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateDetails();
-            }
-        };
-        updateButton.setOnClickListener(l);
         return view;
     }
 
@@ -107,16 +107,17 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
         }
     }
 
-    private void updateDetails() {
+    private void updateList() {
         Log.d(TAG, "UPDATE");
-        String url ="http://stackoverflow.com/feeds/tag?tagnames=android&sort=newest";
-
+        if (this.mFeed == null)
+            return;
+        //String url ="http://stackoverflow.com/feeds/tag?tagnames=android&sort=newest";
         Context c = getActivity().getApplicationContext();
         ConnectivityManager connMgr = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             // fetch data
-            new DownloadWebTask(this).execute(url);
+            new DownloadWebTask(this).execute(this.mFeed.url);
         } else {
             Log.w(TAG, "Device not connected");
             //TODO display error (use notification API?)
@@ -124,6 +125,12 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
 
         //String newTime = String.valueOf(System.currentTimeMillis());
     }
+
+    public void setUrl(RSSFeed feed) {
+        this.mFeed= feed;
+        this.updateList();
+    }
+    
     @Override
     public void onDestroy() {
         super.onDestroy();
