@@ -44,6 +44,11 @@ public class MainActivity extends FragmentActivity
     private RSSEntryDataSource mEntryDataSource;
     private Fragment mEntryListFragment;
 
+    @Override
+    public void onBackPressed() {
+        mDrawerLayout.openDrawer(mDrawerPanelLayout);
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
