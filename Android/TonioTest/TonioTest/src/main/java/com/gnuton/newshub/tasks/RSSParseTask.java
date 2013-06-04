@@ -14,7 +14,12 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -61,17 +66,21 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
             return entries;
         }
 
-        Log.d(TAG, xml);
+        Log.d(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" + xml);
         XmlPullParser xpp = Xml.newPullParser();
         xpp.setInput(new StringReader(xml));
-
-        xpp.nextTag(); // skip START.DOCUMENT
-        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "feed");
+        xpp.nextTag();
+        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "rss");
+        xpp.nextTag();
+        String name = xpp.getName();
+        Log.d(TAG, "NAME " + name);
+        //xpp.nextTag(); // skip START.DOCUMENT
+        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "channel"); // or feed
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG)
                 continue;
 
-            if (xpp.getName().equals("entry")) {
+            if (xpp.getName().equals("item")) {
                 entries.add(readEntry(xpp));
             } else {
                 skip(xpp);
@@ -103,7 +112,7 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
 
     @TargetApi(Build.VERSION_CODES.FROYO)
     private RSSEntry readEntry(XmlPullParser xpp) throws IOException, XmlPullParserException {
-        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "entry");
+        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "item");
         String title = null;
         String summary = null;
         String link = null;
@@ -119,13 +128,19 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
             if (name.equals("title")) {
                 title = readTagText(xpp, "title");
             } else if (name.equals("summary")) {
-                summary = readTagText(xpp, "summary");
+                summary = readTagText(xpp, "description");
             } else if (name.equals("link")) {
-                link = readLink(xpp);
-            } else if (name.equals("published")) {
-                String dateString = readTagText(xpp, "published");
+                link = readTagText(xpp, "link");
+            } else if (name.equals("pubDate")) {
+                String dateString = readTagText(xpp, "pubDate");
+                DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
                 try {
-                    publishedData = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateString);
+                    Date date = formatter.parse(dateString);
+                    GregorianCalendar c = new GregorianCalendar();
+                    c.setTime(date);
+                    publishedData = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 } catch (DatatypeConfigurationException e) {
                     e.printStackTrace();
                 }
@@ -152,21 +167,6 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
                     break;
             }
         }
-    }
-
-    private String readLink(XmlPullParser xpp) throws IOException, XmlPullParserException {
-        String link = "";
-        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "link");
-        String tag = xpp.getName();
-        String relType = xpp.getAttributeValue(null, "rel");
-        if (tag.equals("link")) {
-            if (relType.equals("alternate")){
-                link = xpp.getAttributeValue(null, "href");
-                xpp.nextTag();
-            }
-        }
-        xpp.require(XmlPullParser.END_TAG, xmlNamespace, "link");
-        return link;
     }
 
     private String readTagText(XmlPullParser xpp, String tag) throws IOException, XmlPullParserException {
