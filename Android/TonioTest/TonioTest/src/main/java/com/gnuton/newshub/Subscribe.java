@@ -46,6 +46,7 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
 
     private final ListView mDrawerList;
     private ArrayAdapter<RSSFeed> adapter;
+    private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
 
     onDialogListener mListener;
 
@@ -132,12 +133,12 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
                 public void onRequestCompleted(String buffer) {
                     Log.d(TAG, "Got new providers");
                     mFeeds.clear();
-
                     try {
-                        JSONArray jArray = new JSONArray(buffer);
+                        JSONArray jArray = new JSONObject(buffer).getJSONObject("responseData").getJSONArray("entries");
                         for (int i=0; i< jArray.length(); ++i) {
                             JSONObject j = jArray.getJSONObject(i);
-                            String title = j.getString(DbHelper.FEEDS_TITLE);
+                            //FIXME title contains unencoded chars
+                            String title = j.getString(DbHelper.FEEDS_TITLE).replaceAll("</*b>","");
                             String url = j.getString(DbHelper.FEEDS_URL);
                             RSSFeed f = new RSSFeed(title, url);
                             mFeeds.add(f);
@@ -158,7 +159,7 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
                     EditText e = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
 
                     // Fetch RSS list from gnuton.org
-                    String url = "http://www.gnuton.org/newshub/recomm.php?q=" + e.getText().toString();
+                    String url = mFindFeedsUrl + e.getText().toString();
                     new DownloadWebTask(this).execute(url);
                 }
             }
