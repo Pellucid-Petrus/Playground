@@ -3,19 +3,16 @@ package com.gnuton.newshub;
 import android.app.Activity;
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -24,12 +21,12 @@ import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.db.RSSFeedDataSource;
 import com.gnuton.newshub.tasks.DownloadWebTask;
 import com.gnuton.newshub.types.RSSFeed;
-import android.os.Handler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,8 +128,13 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
 
                 @Override
                 public void onRequestCompleted(String buffer) {
-                    Log.d(TAG, "Got new providers");
                     mFeeds.clear();
+                    if (buffer == null){
+                        Log.d(TAG, "Got empty buffer, no providers found");
+                        return;
+                    }
+                    Log.d(TAG, "Got new providers");
+
                     try {
                         JSONArray jArray = new JSONObject(buffer).getJSONObject("responseData").getJSONArray("entries");
                         for (int i=0; i< jArray.length(); ++i) {
@@ -159,7 +161,7 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
                     EditText e = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
 
                     // Fetch RSS list from gnuton.org
-                    String url = mFindFeedsUrl + e.getText().toString();
+                    String url = mFindFeedsUrl + URLEncoder.encode(e.getText().toString());
                     new DownloadWebTask(this).execute(url);
                 }
             }
