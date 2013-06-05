@@ -49,6 +49,7 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
     protected RSSFeed doInBackground(RSSFeed... feeds) {
         try {
             try {
+                feeds[0].xml = DownloadWebTask.downloadUrl(feeds[0].url);
                 return parseRSSBuffer(feeds[0]);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -150,8 +151,7 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
             } else if (name.equals("pubDate")) {
                 String dateString = readTagText(xpp, "pubDate");
                 DateFormat formatter2 = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-                DateFormat formatter1 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z");
-                //<pubDate>05 Jun 2013 06:00:00 +0300  </pubDate>
+                DateFormat formatter1 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z");//<pubDate>05 Jun 2013 06:00:00 +0300  </pubDate>
                 try {
                     try {
                         publishedData = parseDate(dateString, formatter1);
@@ -165,12 +165,10 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
                 } catch (DatatypeConfigurationException e) {
                     e.printStackTrace();
                 }
-
             } else {
                 skip(xpp);
             }
         }
-
 
         return (RSSEntry) eds.create(
                 new String[] {
@@ -181,9 +179,9 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
                         content,
                         publishedData.toString()
                 });
-        //return new RSSEntry(0, feedID, title, description, link, publishedData);
     }
 
+    //TODO Getting read of XMLGregorianCalendar
     @TargetApi(Build.VERSION_CODES.FROYO)
     private XMLGregorianCalendar parseDate(String dateString, DateFormat formatter) throws ParseException, DatatypeConfigurationException {
         Date date = formatter.parse(dateString);

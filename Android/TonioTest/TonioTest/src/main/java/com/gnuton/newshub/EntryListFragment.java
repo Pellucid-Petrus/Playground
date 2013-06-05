@@ -25,41 +25,15 @@ import java.util.List;
 /**
  * Created by gnuton on 5/18/13.
  */
-public class EntryListFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener, RSSParseTask.OnParsingCompletedListener {
+public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntryListFetchedListener {
     private static final String TAG = "MY_LIST_FRAGMENT";
     private OnItemSelectedListener itemSelectedListener;
     private RSSFeed mFeed;
 
-    // Sends data to another fragment trough the activity using an internal interface.
-    public interface OnItemSelectedListener {
-        public void onItemSelected(RSSEntry entry);
-    }
-
-    // Executed when data is downloaded from the internet
     @Override
-    public void onRequestCompleted(String buffer) {
-        Log.d(TAG, "Got Buffer");
-        if (buffer == null) {
-            Log.e(TAG, "Unable to download content");
-            return;
-        }
-        // Parse RSS buffer in a separate thread. onParsingCompleted is called when the operation terminates
-        mFeed.xml = buffer;
-        new RSSParseTask(this).execute(mFeed);
-    }
-
-    // Callback executed when parsing is completed
-    @Override
-    public void onParsingCompleted(final RSSFeed feed) {
-        Log.d(TAG, "Parsing completed");
-
+    public void onEntryListFetched(RSSFeed feed) {
         Context context = getActivity();
-        if (feed.entries == null) {
-            CharSequence text = context.getResources().getString(R.string.warning_no_entries_found);
-            Notifications.showWarning(text.toString());
-            return;
-        }
-
+        this.mFeed = feed;
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
         EntryListAdapter adapter = new EntryListAdapter(context, R.id.entrylistView, mFeed.entries);
@@ -68,13 +42,18 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
 
         // Define action (open activity) when a list item is selected
         listView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
-            private final List rssEntries = feed.entries;
+            private final List rssEntries = mFeed.entries;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
-                RSSEntry entry = (RSSEntry) feed.entries.get(i);
+                RSSEntry entry = (RSSEntry) mFeed.entries.get(i);
                 itemSelectedListener.onItemSelected(entry);
             }
         });
+    }
+
+    // Sends data to another fragment trough the activity using an internal interface.
+    public interface OnItemSelectedListener {
+        public void onItemSelected(RSSEntry entry);
     }
 
     // onAttach checks that activity implements itemSelectedListener
@@ -103,11 +82,11 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
         // called when fragment is visible
         if (mFeed != null)
         if (mFeed.entries != null) {
-            onParsingCompleted(this.mFeed);
+            //onParsingCompleted(this.mFeed);
         }
     }
 
-    private void updateList() {
+    /*private void updateList() {
         Log.d(TAG, "UPDATE");
         if (this.mFeed == null)
             return;
@@ -124,13 +103,13 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
         }
 
         //String newTime = String.valueOf(System.currentTimeMillis());
-    }
+    }*/
 
     public void setUrl(RSSFeed feed) {
         this.mFeed= feed;
         RSSFeedManager mgr = RSSFeedManager.getInstance();
-        mgr.requestEntryList(feed);
-        this.updateList();
+        mgr.requestEntryList(feed, this);
+        //this.updateList();
     }
     
     @Override

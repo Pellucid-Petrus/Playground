@@ -40,7 +40,7 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
         listener.onRequestCompleted(s);
     }
 
-    private String downloadUrl(String url) throws IOException {
+    static public String downloadUrl(String url) throws IOException {
         InputStream is = null;
         try {
             URL u = new URL(url);
@@ -60,7 +60,7 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
         }
     }
 
-    private String readText(InputStream is) {
+    static private String readText(InputStream is) {
         //return IOUtils.toString(is, "UTF-8");
         return new Scanner(is, "UTF-8").useDelimiter("\\A").next();
     }
