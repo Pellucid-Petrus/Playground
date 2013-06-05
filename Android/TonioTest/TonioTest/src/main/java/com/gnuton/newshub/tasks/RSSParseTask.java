@@ -23,6 +23,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -34,6 +35,8 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
     private static final String xmlNamespace = null; // No namespace
     private static final String TAG = "RSS_PARSE_TASK" ;
     private static final RSSEntryDataSource eds = new RSSEntryDataSource(MyApp.getContext());
+    private static final int UPDATE_INTERVAL = 30;
+    private static final int MILLISECONDS_IN_A_MINUTE = 60000;
 
     private static OnParsingCompletedListener listener;
 
@@ -49,8 +52,25 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
     protected RSSFeed doInBackground(RSSFeed... feeds) {
         try {
             try {
-                feeds[0].xml = DownloadWebTask.downloadUrl(feeds[0].url);
-                return parseRSSBuffer(feeds[0]);
+                RSSFeed feed = feeds[0];
+                Calendar rightNow = Calendar.getInstance();
+                if (feed.lastUpdate == null){
+                    // Fetch data from the internet if this is the first time
+                    feed.lastUpdate = rightNow;
+                    Log.d(TAG, "RSS has never been updated during the app life span. Downloading...");
+                    feed.xml = DownloadWebTask.downloadUrl(feed.url);
+                } else {
+                    Calendar offset = Calendar.getInstance();
+                    offset.add(Calendar.MINUTE, UPDATE_INTERVAL);
+                    if (feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE) {
+                        Log.d(TAG, "RSS LOOKS OLD. Downloading...");
+                        feed.xml = DownloadWebTask.downloadUrl(feed.url);
+                    } else {
+                        Log.d(TAG, "RSS that we have looks to be updated.");
+                    }
+                }
+
+                return parseRSSBuffer(feed);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
