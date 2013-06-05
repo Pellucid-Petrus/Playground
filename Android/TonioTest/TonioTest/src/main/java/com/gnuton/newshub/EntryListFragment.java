@@ -18,6 +18,7 @@ import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.tasks.DownloadWebTask;
 import com.gnuton.newshub.tasks.RSSParseTask;
 import com.gnuton.newshub.types.RSSFeed;
+import com.gnuton.newshub.util.Notifications;
 
 import java.util.List;
 
@@ -55,9 +56,7 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
         Context context = getActivity().getApplicationContext();
         if (entries == null) {
             CharSequence text = context.getResources().getString(R.string.warning_no_entries_found);
-            int duration = Toast.LENGTH_LONG;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            Notifications.showWarning(text.toString());
             return;
         }
         this.rssEntries = entries;
