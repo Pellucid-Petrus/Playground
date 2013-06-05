@@ -127,7 +127,7 @@ public class MainActivity extends FragmentActivity
             e.printStackTrace();
         }
 
-        RSSEntry e = (RSSEntry) mEntryDataSource.create(new String[]{"ETitolo", "Esummary", "ELink", "content", publishedData.toString()});
+        RSSEntry e = (RSSEntry) mEntryDataSource.create(new String[]{"111","ETitolo", "Esummary", "ELink", "content", publishedData.toString()});
         List<RSSEntry> entries = mEntryDataSource.getAll();
         Log.d(TAG, "ENTRIES in DB" + entries.toString());
         for (RSSEntry entry : entries) {

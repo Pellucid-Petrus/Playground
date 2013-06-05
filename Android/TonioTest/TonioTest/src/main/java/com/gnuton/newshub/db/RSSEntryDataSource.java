@@ -28,7 +28,9 @@ public class RSSEntryDataSource extends GenericDataSource {
 
     @Override
     String[] allColumns() {
-        return new String[] {DbHelper.ID,
+        return new String[] {
+                DbHelper.ID,
+                DbHelper.ENTRIES_FEEDID,
                 DbHelper.ENTRIES_TITLE,
                 DbHelper.ENTRIES_SUMMARY,
                 DbHelper.ENTRIES_URL,
@@ -40,11 +42,12 @@ public class RSSEntryDataSource extends GenericDataSource {
     @Override
     public Serializable create(String[] record) {
         ContentValues values = new ContentValues();
-        values.put(DbHelper.ENTRIES_TITLE, record[0]);
-        values.put(DbHelper.ENTRIES_SUMMARY, record[1]);
-        values.put(DbHelper.ENTRIES_URL, record[2]);
-        values.put(DbHelper.ENTRIES_CONTENT, record[3]);
-        values.put(DbHelper.ENTRIES_PUBLISHEDDATE, record[4]);
+        values.put(DbHelper.ENTRIES_FEEDID, Integer.parseInt(record[0]));
+        values.put(DbHelper.ENTRIES_TITLE, record[1]);
+        values.put(DbHelper.ENTRIES_SUMMARY, record[2]);
+        values.put(DbHelper.ENTRIES_URL, record[3]);
+        values.put(DbHelper.ENTRIES_CONTENT, record[4]);
+        values.put(DbHelper.ENTRIES_PUBLISHEDDATE, record[5]);
 
         long insertId = database.insert(DbHelper.TABLE_ENTRIES, null, values);
         Cursor cursor = database.query(DbHelper.TABLE_ENTRIES,
@@ -82,7 +85,8 @@ public class RSSEntryDataSource extends GenericDataSource {
     @TargetApi(Build.VERSION_CODES.FROYO)
     @Override
     Serializable cursorTo(Cursor cursor) {
-        final long id = cursor.getLong(cursor.getColumnIndex(DbHelper.ID));
+        final int id = cursor.getInt(cursor.getColumnIndex(DbHelper.ID));
+        final int feedId = cursor.getInt(cursor.getColumnIndex(DbHelper.ENTRIES_FEEDID));
         final String title = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_TITLE));
         final String summary = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_SUMMARY));
         final String url = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_URL));
@@ -97,7 +101,7 @@ public class RSSEntryDataSource extends GenericDataSource {
         }
         Log.d(TAG,"PUBLISHED DATE" + publishedData.toString());
 
-        RSSEntry entry = new RSSEntry(id, title, summary, url, publishedData);
+        RSSEntry entry = new RSSEntry(id, feedId, title, summary, url, publishedData);
         entry.content = content;
         return entry;
     }

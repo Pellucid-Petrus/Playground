@@ -5,7 +5,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.util.Xml;
+
+import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.types.RSSEntry;
+import com.gnuton.newshub.types.RSSFeed;
+import com.gnuton.newshub.utils.MyApp;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -25,9 +30,10 @@ import java.util.List;
 /**
  * Created by gnuton on 5/19/13.
  */
-public class RSSParseTask extends AsyncTask<String, Void, List> {
+public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
     private static final String xmlNamespace = null; // No namespace
     private static final String TAG = "RSS_PARSE_TASK" ;
+    private static final RSSEntryDataSource eds = new RSSEntryDataSource(MyApp.getContext());
 
     private static OnParsingCompletedListener listener;
 
@@ -40,10 +46,10 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
     }
 
     @Override
-    protected List doInBackground(String... strings) {
+    protected RSSFeed doInBackground(RSSFeed... feeds) {
         try {
             try {
-                return parseRSSString(strings[0]);
+                return parseRSSBuffer(feeds[0]);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -55,15 +61,16 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
     }
 
     @Override
-    protected void onPostExecute(List list) {
-        listener.onParsingCompleted(list);
+    protected void onPostExecute(RSSFeed feed) {
+        listener.onParsingCompleted(feed);
     }
 
-    private List parseRSSString(String xml) throws XmlPullParserException, IOException {
+    private RSSFeed parseRSSBuffer(RSSFeed feed) throws XmlPullParserException, IOException {
+        String xml = feed.xml;
         List entries = new ArrayList();
         if (xml == null) {
             Log.e(TAG, "XML Buffer is empty");
-            return entries;
+            return feed;
         }
 
         Log.d(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" + xml);
@@ -81,7 +88,7 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
                 continue;
 
             if (xpp.getName().equals("item")) {
-                entries.add(readEntry(xpp));
+                entries.add(readEntry(xpp, feed.id));
             } else {
                 skip(xpp);
             }
@@ -106,15 +113,24 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
         }
         System.out.println("End document");*/
         Log.d(TAG, "PARSED " + entries.size() + " ENTRIES");
-
-        return entries;
+        feed.entries = entries;
+        return feed;
     }
 
+    /**
+     *
+     * @param xpp
+     * @param feedID
+     * @return RSSEntry pointing to the entry into the DB
+     * @throws IOException
+     * @throws XmlPullParserException
+     */
     @TargetApi(Build.VERSION_CODES.FROYO)
-    private RSSEntry readEntry(XmlPullParser xpp) throws IOException, XmlPullParserException {
+    private RSSEntry readEntry(XmlPullParser xpp, int feedID) throws IOException, XmlPullParserException {
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "item");
         String title = null;
-        String summary = null;
+        String description = null;
+        String content = null;
         String link = null;
         XMLGregorianCalendar publishedData = null;
 
@@ -127,29 +143,53 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
 
             if (name.equals("title")) {
                 title = readTagText(xpp, "title");
-            } else if (name.equals("summary")) {
-                summary = readTagText(xpp, "description");
+            } else if (name.equals("description")) {
+                description = readTagText(xpp, "description");
             } else if (name.equals("link")) {
                 link = readTagText(xpp, "link");
             } else if (name.equals("pubDate")) {
                 String dateString = readTagText(xpp, "pubDate");
-                DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+                DateFormat formatter2 = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+                DateFormat formatter1 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z");
+                //<pubDate>05 Jun 2013 06:00:00 +0300  </pubDate>
                 try {
-                    Date date = formatter.parse(dateString);
-                    GregorianCalendar c = new GregorianCalendar();
-                    c.setTime(date);
-                    publishedData = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    try {
+                        publishedData = parseDate(dateString, formatter1);
+                    } catch (ParseException e) {
+                        try {
+                            publishedData = parseDate(dateString, formatter2);
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                 } catch (DatatypeConfigurationException e) {
                     e.printStackTrace();
                 }
+
             } else {
                 skip(xpp);
             }
         }
 
-        return new RSSEntry(0, title, summary, link, publishedData);
+
+        return (RSSEntry) eds.create(
+                new String[] {
+                        Integer.toString(feedID),
+                        title,
+                        description,
+                        link,
+                        content,
+                        publishedData.toString()
+                });
+        //return new RSSEntry(0, feedID, title, description, link, publishedData);
+    }
+
+    @TargetApi(Build.VERSION_CODES.FROYO)
+    private XMLGregorianCalendar parseDate(String dateString, DateFormat formatter) throws ParseException, DatatypeConfigurationException {
+        Date date = formatter.parse(dateString);
+        GregorianCalendar c = new GregorianCalendar();
+        c.setTime(date);
+        return DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
     }
 
     private void skip(XmlPullParser xpp) throws XmlPullParserException, IOException {
@@ -181,6 +221,6 @@ public class RSSParseTask extends AsyncTask<String, Void, List> {
     }
 
     public interface OnParsingCompletedListener {
-        public void onParsingCompleted(final List list);
+        public void onParsingCompleted(final RSSFeed feed);
     }
 }

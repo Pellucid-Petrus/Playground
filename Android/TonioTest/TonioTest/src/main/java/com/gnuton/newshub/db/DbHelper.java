@@ -14,7 +14,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static DbHelper mInstance = null;
 
     private static final String DATABASE_NAME = "rssdb";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 9;
 
     public static final String TABLE_FEEDS = "feeds";
     public static final String TABLE_ENTRIES = "entries";
@@ -23,6 +23,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String FEEDS_TITLE = "title";
     public static final String FEEDS_URL = "url";
 
+    public static final String ENTRIES_FEEDID = "feedid";
     public static final String ENTRIES_TITLE = "title";
     public static final String ENTRIES_URL = "url";
     public static final String ENTRIES_SUMMARY = "summary";
@@ -42,10 +43,11 @@ public class DbHelper extends SQLiteOpenHelper {
             + TABLE_ENTRIES
             + "("
             + ID + " integer primary key autoincrement, "
+            + ENTRIES_FEEDID + " integer not null, "
             + ENTRIES_TITLE + " text not null, "
             + ENTRIES_URL + " text not null, "
             + ENTRIES_SUMMARY + " text not null, "
-            + ENTRIES_CONTENT + " text not null, "
+            + ENTRIES_CONTENT + " text, "
             + ENTRIES_PUBLISHEDDATE + " text not null "
             + ");";
 

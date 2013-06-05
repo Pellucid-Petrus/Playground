@@ -8,16 +8,19 @@ import java.io.Serializable;
  */
 
 public class RSSEntry implements Serializable{
-    public final long id;
+    public final int id;
+    public final int feedId;
     public final String title;
     public final String link;
     public final String summary;
     public final XMLGregorianCalendar date;
+
     public String content = "";
     //public Boolean isMarkedAsRead;
 
-    public RSSEntry(long id, String title, String summary, String link, XMLGregorianCalendar date) {
+    public RSSEntry(int id, int feedId, String title, String summary, String link, XMLGregorianCalendar date) {
         this.title = title;
+        this.feedId = feedId;
         this.summary = summary;
         this.link = link;
         this.id = id;

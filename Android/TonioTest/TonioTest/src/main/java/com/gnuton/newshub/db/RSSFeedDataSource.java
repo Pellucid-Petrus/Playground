@@ -76,7 +76,7 @@ public class RSSFeedDataSource extends GenericDataSource {
 
     @Override
     Serializable cursorTo(Cursor cursor) {
-        final long id = cursor.getLong(0);
+        final int id = cursor.getInt(0);
         final String title = cursor.getString(1);
         final String uri = cursor.getString(2);
         Log.d(TAG, "CURSOR " + id + " " + title + " " + uri);

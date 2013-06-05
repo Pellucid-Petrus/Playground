@@ -18,6 +18,7 @@ import com.gnuton.newshub.tasks.DownloadWebTask;
 import com.gnuton.newshub.tasks.RSSParseTask;
 import com.gnuton.newshub.types.RSSFeed;
 import com.gnuton.newshub.utils.Notifications;
+import com.gnuton.newshub.utils.RSSFeedManager;
 
 import java.util.List;
 
@@ -27,7 +28,6 @@ import java.util.List;
 public class EntryListFragment extends Fragment implements DownloadWebTask.OnRequestCompletedListener, RSSParseTask.OnParsingCompletedListener {
     private static final String TAG = "MY_LIST_FRAGMENT";
     private OnItemSelectedListener itemSelectedListener;
-    private List rssEntries = null;
     private RSSFeed mFeed;
 
     // Sends data to another fragment trough the activity using an internal interface.
@@ -44,33 +44,34 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
             return;
         }
         // Parse RSS buffer in a separate thread. onParsingCompleted is called when the operation terminates
-        new RSSParseTask(this).execute(buffer);
+        mFeed.xml = buffer;
+        new RSSParseTask(this).execute(mFeed);
     }
 
     // Callback executed when parsing is completed
     @Override
-    public void onParsingCompleted(final List entries) {
+    public void onParsingCompleted(final RSSFeed feed) {
         Log.d(TAG, "Parsing completed");
 
         Context context = getActivity();
-        if (entries == null) {
+        if (feed.entries == null) {
             CharSequence text = context.getResources().getString(R.string.warning_no_entries_found);
             Notifications.showWarning(text.toString());
             return;
         }
-        this.rssEntries = entries;
+
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
-        EntryListAdapter adapter = new EntryListAdapter(context, R.id.entrylistView, entries);
+        EntryListAdapter adapter = new EntryListAdapter(context, R.id.entrylistView, mFeed.entries);
         ListView listView = (ListView) getView().findViewById(R.id.entrylistView);
         listView.setAdapter(adapter);
 
         // Define action (open activity) when a list item is selected
         listView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
-            private final List rssEntries = entries;
+            private final List rssEntries = feed.entries;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
-                RSSEntry entry = (RSSEntry) entries.get(i);
+                RSSEntry entry = (RSSEntry) feed.entries.get(i);
                 itemSelectedListener.onItemSelected(entry);
             }
         });
@@ -100,8 +101,9 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
         super.onStart();
         Log.d(TAG, "START");
         // called when fragment is visible
-        if (this.rssEntries != null) {
-            onParsingCompleted(this.rssEntries);
+        if (mFeed != null)
+        if (mFeed.entries != null) {
+            onParsingCompleted(this.mFeed);
         }
     }
 
@@ -126,6 +128,8 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
 
     public void setUrl(RSSFeed feed) {
         this.mFeed= feed;
+        RSSFeedManager mgr = RSSFeedManager.getInstance();
+        mgr.requestEntryList(feed);
         this.updateList();
     }
     
