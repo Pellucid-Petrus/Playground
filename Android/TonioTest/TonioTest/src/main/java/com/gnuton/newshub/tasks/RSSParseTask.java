@@ -15,8 +15,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.DateFormat;
@@ -153,7 +151,7 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
         String description = null;
         String content = null;
         String link = null;
-        XMLGregorianCalendar publishedData = null;
+        Calendar publishedData = null;
 
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
@@ -197,17 +195,17 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
                         description,
                         link,
                         content,
-                        publishedData.toString()
+                        String.valueOf(publishedData.getTimeInMillis())
                 });
     }
 
     //TODO Getting read of XMLGregorianCalendar
     @TargetApi(Build.VERSION_CODES.FROYO)
-    private XMLGregorianCalendar parseDate(String dateString, DateFormat formatter) throws ParseException, DatatypeConfigurationException {
+    private Calendar parseDate(String dateString, DateFormat formatter) throws ParseException, DatatypeConfigurationException {
         Date date = formatter.parse(dateString);
         GregorianCalendar c = new GregorianCalendar();
         c.setTime(date);
-        return DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+        return c;
     }
 
     private void skip(XmlPullParser xpp) throws XmlPullParserException, IOException {

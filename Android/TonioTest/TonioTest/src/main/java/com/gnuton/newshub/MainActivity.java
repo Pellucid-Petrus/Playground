@@ -23,11 +23,6 @@ import com.gnuton.newshub.db.RSSFeedDataSource;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.List;
-
 
 public class MainActivity extends FragmentActivity
         implements EntryListFragment.OnItemSelectedListener, Subscribe.onDialogListener {
@@ -119,7 +114,7 @@ public class MainActivity extends FragmentActivity
             mFeedDataSource.delete(feed);
         }*/
 
-        XMLGregorianCalendar publishedData = null;
+        /*XMLGregorianCalendar publishedData = null;
         String dateString = "2013-05-26T19:33:06Z";
         try {
             publishedData = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateString);
@@ -132,7 +127,7 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "ENTRIES in DB" + entries.toString());
         for (RSSEntry entry : entries) {
             mEntryDataSource.delete(entry);
-        }
+        }*/
 
         ArrayAdapter<RSSFeed> drawerListAdapter = new ArrayAdapter<RSSFeed>(this, android.R.layout.simple_list_item_1, mFeedDataSource.getAll());
         mDrawerList.setAdapter(drawerListAdapter);

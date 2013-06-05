@@ -1,7 +1,7 @@
 package com.gnuton.newshub.types;
 
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * Created by gnuton on 5/24/13.
@@ -13,12 +13,12 @@ public class RSSEntry implements Serializable{
     public final String title;
     public final String link;
     public final String summary;
-    public final XMLGregorianCalendar date;
+    public final Calendar date;
 
     public String content = "";
     //public Boolean isMarkedAsRead;
 
-    public RSSEntry(int id, int feedId, String title, String summary, String link, XMLGregorianCalendar date) {
+    public RSSEntry(int id, int feedId, String title, String summary, String link, Calendar date) {
         this.title = title;
         this.feedId = feedId;
         this.summary = summary;

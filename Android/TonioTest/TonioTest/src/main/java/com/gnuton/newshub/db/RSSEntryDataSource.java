@@ -7,12 +7,10 @@ import android.database.Cursor;
 import android.os.Build;
 import android.util.Log;
 import com.gnuton.newshub.types.RSSEntry;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -47,7 +45,7 @@ public class RSSEntryDataSource extends GenericDataSource {
         values.put(DbHelper.ENTRIES_SUMMARY, record[2]);
         values.put(DbHelper.ENTRIES_URL, record[3]);
         values.put(DbHelper.ENTRIES_CONTENT, record[4]);
-        values.put(DbHelper.ENTRIES_PUBLISHEDDATE, record[5]);
+        values.put(DbHelper.ENTRIES_PUBLISHEDDATE, Long.parseLong(record[5]));
 
         long insertId = database.insert(DbHelper.TABLE_ENTRIES, null, values);
         Cursor cursor = database.query(DbHelper.TABLE_ENTRIES,
@@ -91,14 +89,10 @@ public class RSSEntryDataSource extends GenericDataSource {
         final String summary = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_SUMMARY));
         final String url = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_URL));
         final String content = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_CONTENT));
-        final String publishedDataString = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_PUBLISHEDDATE));
+        final long publishedDataLong = cursor.getLong(cursor.getColumnIndex(DbHelper.ENTRIES_PUBLISHEDDATE));
 
-        XMLGregorianCalendar publishedData = null;
-        try {
-            publishedData = DatatypeFactory.newInstance().newXMLGregorianCalendar(publishedDataString);
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
+        Calendar publishedData = new GregorianCalendar();
+        publishedData.setTimeInMillis(publishedDataLong);
         Log.d(TAG,"PUBLISHED DATE" + publishedData.toString());
 
         RSSEntry entry = new RSSEntry(id, feedId, title, summary, url, publishedData);
