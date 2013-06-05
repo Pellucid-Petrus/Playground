@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -54,7 +55,10 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
             Log.d(TAG, "Response: " + response);
             is = conn.getInputStream();
             return readText(is);
-        } finally {
+        } catch(SocketTimeoutException e) {
+            return null;
+        }
+        finally {
             if (is != null)
                 is.close();
         }

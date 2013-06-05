@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class RSSFeedManager extends Object implements RSSParseTask.OnParsingCompletedListener{
     private final String TAG = getClass().toString();
-    private RSSEntryDataSource mEntryDataSource = new RSSEntryDataSource(MyApp.getContext());
     private OnEntryListFetchedListener mListener;
 
     // Singleton
@@ -51,14 +50,11 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
         mListener.onEntryListFetched(feed);
     }
     /**
-     * This method
-     * @param feed
+     * This method is called when a client object asks for the list of entries associated on a feed
+     * When the list is retrieved from DB and Internet, listener.onEntryListFetched callback is called.
      */
     public void requestEntryList(RSSFeed feed, OnEntryListFetchedListener listener){
         mListener = listener;
-        // Get list from DB
-
-        // Check if list is updated, if not download
         new RSSParseTask(this).execute(feed);
     }
 

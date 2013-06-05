@@ -57,18 +57,20 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
                     feed.lastUpdate = rightNow;
                     Log.d(TAG, "RSS has never been updated during the app life span. Downloading...");
                     feed.xml = DownloadWebTask.downloadUrl(feed.url);
+                    parseRSSBuffer(feed);
                 } else {
                     Calendar offset = Calendar.getInstance();
                     offset.add(Calendar.MINUTE, UPDATE_INTERVAL);
                     if (feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE) {
                         Log.d(TAG, "RSS LOOKS OLD. Downloading...");
                         feed.xml = DownloadWebTask.downloadUrl(feed.url);
+                        parseRSSBuffer(feed);
                     } else {
                         Log.d(TAG, "RSS that we have looks to be updated.");
                     }
                 }
 
-                return parseRSSBuffer(feed);
+                return feed;
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
