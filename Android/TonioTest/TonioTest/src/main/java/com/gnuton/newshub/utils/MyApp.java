@@ -1,4 +1,4 @@
-package com.gnuton.newshub.util;
+package com.gnuton.newshub.utils;
 
 import android.app.Application;
 import android.content.Context;

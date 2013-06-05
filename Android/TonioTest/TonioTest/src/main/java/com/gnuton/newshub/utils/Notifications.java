@@ -1,9 +1,7 @@
-package com.gnuton.newshub.util;
+package com.gnuton.newshub.utils;
 
 import android.content.Context;
 import android.widget.Toast;
-
-import com.gnuton.newshub.R;
 
 /**
  * Created by gnuton on 6/5/13.

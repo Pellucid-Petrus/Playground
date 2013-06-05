@@ -11,14 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.tasks.DownloadWebTask;
 import com.gnuton.newshub.tasks.RSSParseTask;
 import com.gnuton.newshub.types.RSSFeed;
-import com.gnuton.newshub.util.Notifications;
+import com.gnuton.newshub.utils.Notifications;
 
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class EntryListFragment extends Fragment implements DownloadWebTask.OnReq
     public void onParsingCompleted(final List entries) {
         Log.d(TAG, "Parsing completed");
 
-        Context context = getActivity().getApplicationContext();
+        Context context = getActivity();
         if (entries == null) {
             CharSequence text = context.getResources().getString(R.string.warning_no_entries_found);
             Notifications.showWarning(text.toString());
