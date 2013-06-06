@@ -45,8 +45,6 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
     private ArrayAdapter<RSSFeed> adapter;
     private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
 
-    onDialogListener mListener;
-
     Subscribe(final ListView drawerList){
         super();
         this.mDrawerList = drawerList;
@@ -64,24 +62,6 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
             return;
         mFeedDataSource.create(f);
         this.dismiss();
-    }
-
-    public interface onDialogListener {
-        public void onFeedSelected(RSSFeed feed);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (onDialogListener) activity;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
-                    + " must implement DialogListener");
-        }
     }
 
     @Override

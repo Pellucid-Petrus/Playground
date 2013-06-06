@@ -28,7 +28,7 @@ import java.util.List;
 
 
 public class MainActivity extends FragmentActivity
-        implements EntryListFragment.OnItemSelectedListener, Subscribe.onDialogListener {
+        implements EntryListFragment.OnItemSelectedListener {
     private static final String TAG = "MAIN_ACTIVITY";
     private String[] mItems = {};
 
@@ -229,12 +229,6 @@ public class MainActivity extends FragmentActivity
                     .commit();
             df.setEntry(e);
         }
-    }
-
-    //FIXME Is this used anywhere?
-    @Override
-    public void onFeedSelected(RSSFeed feed) {
-        Log.d(TAG, "ON FEED SELECTED");
     }
 
     private class DrawerItemClickListener implements AdapterView.OnItemClickListener {
