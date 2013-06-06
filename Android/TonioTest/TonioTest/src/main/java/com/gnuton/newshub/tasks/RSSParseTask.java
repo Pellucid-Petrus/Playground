@@ -56,26 +56,26 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
                 return feed;
 
             Calendar rightNow = Calendar.getInstance();
-            if (feed.lastUpdate == null){
-                // Fetch data from the internet if this is the first time
-                feed.lastUpdate = rightNow;
-                Log.d(TAG, "RSS has never been updated during the app life span. Downloading...");
+            Calendar offset = Calendar.getInstance();
+            offset.add(Calendar.MINUTE, UPDATE_INTERVAL);
+
+            // Fetch data from the internet if this is the first time or if data is older than 30 mins
+            if (feed.lastUpdate == null || feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE){
+
+                Log.d(TAG, "Downloading entries from provider...");
                 feed.xml = DownloadWebTask.downloadUrl(feed.url);
+                if (feed.xml != null && feed.xml != "")
+                    feed.lastUpdate = rightNow;
+
                 new XMLFeedParser(eds).parseXML(feed);
             } else {
-                Calendar offset = Calendar.getInstance();
-                offset.add(Calendar.MINUTE, UPDATE_INTERVAL);
-                if (feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE) {
-                    Log.d(TAG, "RSS LOOKS OLD. Downloading...");
-                    feed.xml = DownloadWebTask.downloadUrl(feed.url);
-                    new XMLFeedParser(eds).parseXML(feed);
-                } else {
-                    Log.d(TAG, "RSS that we have looks to be updated.");
-                }
+                Log.d(TAG, "RSS that we have looks to be updated.");
             }
+
             String selection = DbHelper.ENTRIES_FEEDID + " = " + String.valueOf(feed.id);
             String orderBy = DbHelper.ENTRIES_PUBLISHEDDATE +" DESC";
             feed.entries = eds.getAll(selection,null, null, null, orderBy);
+
             return feed;
         } catch (IOException e) {
             e.printStackTrace();

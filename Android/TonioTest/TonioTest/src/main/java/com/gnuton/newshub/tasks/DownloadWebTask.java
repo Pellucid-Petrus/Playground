@@ -3,12 +3,17 @@ package com.gnuton.newshub.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.gnuton.newshub.R;
+import com.gnuton.newshub.utils.Notifications;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Created by gnuton on 5/19/13.
@@ -43,17 +48,36 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
 
     static public String downloadUrl(String url) throws IOException {
         InputStream is = null;
+        Log.d(TAG, "Downloading: " + url);
         try {
             URL u = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+            conn.setInstanceFollowRedirects(false);
+
             conn.setReadTimeout(10 * 1000);
             conn.setConnectTimeout(10 * 1000);
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
-            conn.connect();
-            int response = conn.getResponseCode();
-            Log.d(TAG, "Response: " + response);
+            //conn.connect();
+
+            int status = conn.getResponseCode();
+            if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM || status == 307 || status == HttpURLConnection.HTTP_SEE_OTHER)
+            {
+                String redUrl = conn.getHeaderField("Location");
+                Log.d(TAG, "Redirect URL:>" + redUrl + "<");
+                u = new URL(url);
+                System.err.println("=> " + u);
+                conn = (HttpURLConnection) u.openConnection();
+            }
+
+            Log.d(TAG, "Status: " + status);
             is = conn.getInputStream();
+
+            if ("gzip".equals(conn.getContentEncoding())) {
+                Log.d(TAG,"GZIP input stream");
+                is = new GZIPInputStream(is);
+            }
+
             return readText(is);
         } catch(SocketTimeoutException e) {
             return null;
@@ -65,8 +89,10 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
     }
 
     static private String readText(InputStream is) {
-        //return IOUtils.toString(is, "UTF-8");
-        return new Scanner(is, "UTF-8").useDelimiter("\\A").next();
+        Scanner scanner = new Scanner(is, "UTF-8").useDelimiter("\\A");
+        if (scanner.hasNext())
+            return scanner.next();
+        return "";
     }
 
     public interface OnRequestCompletedListener {

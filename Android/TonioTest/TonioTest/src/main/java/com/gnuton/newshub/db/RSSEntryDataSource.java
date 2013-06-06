@@ -48,9 +48,7 @@ public class RSSEntryDataSource extends GenericDataSource {
         long publishDate = Long.parseLong(record[5]);
 
         // Do not double records
-        String selection = DbHelper.ENTRIES_FEEDID + " = " + feedId +
-                " AND " + DbHelper.ENTRIES_TITLE + " = " + DatabaseUtils.sqlEscapeString(title) +
-                " AND " + DbHelper.ENTRIES_PUBLISHEDDATE + " = " + publishDate;
+        String selection = DbHelper.ENTRIES_URL + " = "+ DatabaseUtils.sqlEscapeString(url);
 
         List<RSSEntry> entries = this.getAll(selection, null, null, null, null);
         if (entries.size() != 0){

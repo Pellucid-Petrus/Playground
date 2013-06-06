@@ -22,5 +22,8 @@
     <string name="action_dlg_msg_clear_entry_cache">Do you really want to remove all the articles
         stored on your device?
     </string>
+    <string name="warning_unable_to_download_content">Unable to download content from the server,
+        error:
+    </string>
 
 </resources>
