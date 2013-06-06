@@ -6,6 +6,7 @@ import android.os.Build;
 import android.util.Log;
 import android.util.Xml;
 
+import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
@@ -69,7 +70,9 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
                         Log.d(TAG, "RSS that we have looks to be updated.");
                     }
                 }
-
+                String selection = DbHelper.ENTRIES_FEEDID + " = " + String.valueOf(feed.id);
+                String orderBy = DbHelper.ENTRIES_PUBLISHEDDATE +" DESC";
+                feed.entries = eds.getAll(selection,null, null, null, orderBy);
                 return feed;
             } catch (IOException e) {
                 e.printStackTrace();

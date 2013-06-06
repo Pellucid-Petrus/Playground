@@ -66,9 +66,14 @@ public class RSSEntryDataSource extends GenericDataSource {
     }
 
     @Override
-    public List getAll() {
+    public List getAll(){
+        return getAll(null, null, null, null, null);
+    }
+
+    public List getAll(String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
+        Log.d(TAG, "Getting records with selection: " + selection + " GroupBy:" + groupBy);
         List<RSSEntry> entries = new ArrayList<RSSEntry>();
-        Cursor cursor = database.query(DbHelper.TABLE_ENTRIES, this.allColumns(), null, null, null, null, null);
+        Cursor cursor = database.query(DbHelper.TABLE_ENTRIES, this.allColumns(), selection, selectionArgs, groupBy, having, orderBy);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             RSSEntry entry = (RSSEntry) cursorTo(cursor);
