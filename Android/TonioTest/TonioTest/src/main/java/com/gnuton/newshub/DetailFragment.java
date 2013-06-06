@@ -6,6 +6,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,8 +91,13 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
             return;
 
         TextView view = (TextView) v.findViewById(R.id.ContentTextView);
-        if (view != null)
-            view.setText(buffer);
+        if (view != null){
+
+            Spanned myStringSpanned = Html.fromHtml(buffer, null, null);
+            view.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
+
+        }
+            //view.setText(buffer);
 
         this.task = null;
     }

@@ -2,9 +2,16 @@ package com.gnuton.newshub.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
+import org.xml.sax.SAXException;
+
+import de.l3s.boilerpipe.BoilerpipeExtractor;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
+import de.l3s.boilerpipe.extractors.CommonExtractors;
+import de.l3s.boilerpipe.sax.HTMLHighlighter;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -39,14 +46,26 @@ public class BoilerPipeTask extends AsyncTask<String, Void, String> {
             return "Error: Malformed URL";
         }
         Log.d(TAG, "Processing " + url);
+        //return ArticleExtractor.INSTANCE.getText(url);
+        return extractArticle(url);
+    }
+
+    public String extractArticle(URL url){
+        String article= null;
+        final BoilerpipeExtractor extractor = CommonExtractors.ARTICLE_EXTRACTOR;
+        final HTMLHighlighter hh = HTMLHighlighter.newExtractingInstance();
+
         try {
-            return ArticleExtractor.INSTANCE.getText(url);
+            article = hh.process(url, extractor);
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (BoilerpipeProcessingException e) {
             e.printStackTrace();
-            Log.e(TAG, "Unable to remove a boilerplate");
-            return "Error removing boilerplate";
+        } catch (SAXException e) {
+            e.printStackTrace();
         }
 
+        return article;
     }
 
     @Override
