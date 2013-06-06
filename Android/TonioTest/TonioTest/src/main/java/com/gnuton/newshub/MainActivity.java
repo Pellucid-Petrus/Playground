@@ -3,7 +3,6 @@ package com.gnuton.newshub;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -172,6 +171,7 @@ public class MainActivity extends FragmentActivity
                                     mEntryDataSource.delete(entry);
                                 }
                                 Notifications.showWarning(R.string.info_article_cache_cleaned);
+                                feedSelected(-1);
                             }
 
                         })
@@ -261,15 +261,21 @@ public class MainActivity extends FragmentActivity
             return true;
         }
     }
-    private void feedSelected(int position) {
-        // update selected item and title, then close the drawer
-        RSSFeed feed = (RSSFeed)mDrawerList.getAdapter().getItem(position);
-
-        Log.d(TAG, "Feed: " + feed.title + " clicked!");
+    protected void feedSelected(int position) {
         EntryListFragment elf = (EntryListFragment) mEntryListFragment;
-        if (elf != null){
-            elf.setUrl(feed);
+        if (elf == null){
+            Log.d(TAG, "EntryListFragment instance is null");
+            return;
         }
+
+        // update selected item and title, then close the drawer
+        if (position == -1){
+            elf.setRSSFeed(null);
+            return;
+        }
+        RSSFeed feed = (RSSFeed)mDrawerList.getAdapter().getItem(position);
+        Log.d(TAG, "Feed: " + feed.title + " clicked!");
+        elf.setRSSFeed(feed);
 
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerPanelLayout);

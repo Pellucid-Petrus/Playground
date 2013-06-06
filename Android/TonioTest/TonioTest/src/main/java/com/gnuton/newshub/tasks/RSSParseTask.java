@@ -52,6 +52,10 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
         try {
             try {
                 RSSFeed feed = feeds[0];
+
+                if (feed == null)
+                    return feed;
+
                 Calendar rightNow = Calendar.getInstance();
                 if (feed.lastUpdate == null){
                     // Fetch data from the internet if this is the first time

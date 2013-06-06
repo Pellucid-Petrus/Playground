@@ -42,7 +42,7 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
         Log.d(TAG, "Parsing completed");
 
         Context context = MyApp.getContext();
-        if (feed.entries == null) {
+        if (feed != null && feed.entries == null) {
             Notifications.showWarning(R.string.warning_no_entries_found);
             return;
         }

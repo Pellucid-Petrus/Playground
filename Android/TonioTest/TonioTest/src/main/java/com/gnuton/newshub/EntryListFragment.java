@@ -33,11 +33,17 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
     @Override
     public void onEntryListFetched(RSSFeed feed) {
         Context context = getActivity();
+        ListView listView = (ListView) getView().findViewById(R.id.entrylistView);
+
         this.mFeed = feed;
+
+        if (feed == null){
+            listView.setAdapter(null);
+            return;
+        }
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
         EntryListAdapter adapter = new EntryListAdapter(context, R.id.entrylistView, mFeed.entries);
-        ListView listView = (ListView) getView().findViewById(R.id.entrylistView);
         listView.setAdapter(adapter);
 
         // Define action (open activity) when a list item is selected
@@ -81,9 +87,9 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         Log.d(TAG, "START");
         // called when fragment is visible
         if (mFeed != null)
-        if (mFeed.entries != null) {
-            //onParsingCompleted(this.mFeed);
-        }
+            if (mFeed.entries != null) {
+                //onParsingCompleted(this.mFeed);
+            }
     }
 
     /*private void updateList() {
@@ -105,13 +111,12 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         //String newTime = String.valueOf(System.currentTimeMillis());
     }*/
 
-    public void setUrl(RSSFeed feed) {
+    public void setRSSFeed(RSSFeed feed) {
         this.mFeed= feed;
         RSSFeedManager mgr = RSSFeedManager.getInstance();
         mgr.requestEntryList(feed, this);
-        //this.updateList();
     }
-    
+
     @Override
     public void onDestroy() {
         super.onDestroy();
