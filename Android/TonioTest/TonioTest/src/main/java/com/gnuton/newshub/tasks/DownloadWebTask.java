@@ -52,7 +52,7 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
         try {
             URL u = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
-            conn.setInstanceFollowRedirects(false);
+            conn.setInstanceFollowRedirects(true);
 
             conn.setReadTimeout(10 * 1000);
             conn.setConnectTimeout(10 * 1000);
@@ -64,10 +64,11 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
             if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM || status == 307 || status == HttpURLConnection.HTTP_SEE_OTHER)
             {
                 String redUrl = conn.getHeaderField("Location");
+                String cookies = conn.getHeaderField("Set-Cookie");
+
                 Log.d(TAG, "Redirect URL:>" + redUrl + "<");
-                u = new URL(url);
-                System.err.println("=> " + u);
-                conn = (HttpURLConnection) u.openConnection();
+                conn = (HttpURLConnection) new URL(redUrl).openConnection();
+                conn.setRequestProperty("Cookie", cookies);
             }
 
             Log.d(TAG, "Status: " + status);
