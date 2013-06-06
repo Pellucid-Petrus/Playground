@@ -127,7 +127,10 @@ public class MainActivity extends FragmentActivity
 
         RSSEntry e = (RSSEntry) mEntryDataSource.create(new String[]{"111","ETitolo", "Esummary", "ELink", "content", publishedData.toString()});
         */
+        updateDrawerList();
+    }
 
+    protected void updateDrawerList() {
         ArrayAdapter<RSSFeed> drawerListAdapter = new ArrayAdapter<RSSFeed>(this, android.R.layout.simple_list_item_1, mFeedDataSource.getAll());
         mDrawerList.setAdapter(drawerListAdapter);
     }
@@ -172,6 +175,7 @@ public class MainActivity extends FragmentActivity
                                 }
                                 Notifications.showWarning(R.string.info_article_cache_cleaned);
                                 feedSelected(-1);
+                                updateDrawerList();
                             }
 
                         })
@@ -250,9 +254,7 @@ public class MainActivity extends FragmentActivity
                     Log.d(TAG, "Removing item");
                     RSSFeed f = (RSSFeed) mDrawerList.getItemAtPosition(position);
                     mFeedDataSource.delete(f);
-                    ArrayAdapter<RSSFeed> drawerListAdapter =
-                            new ArrayAdapter<RSSFeed>(view.getContext(), android.R.layout.simple_list_item_1, mFeedDataSource.getAll());
-                    mDrawerList.setAdapter(drawerListAdapter);
+                    updateDrawerList();
                 }
             });
             builder.setNegativeButton(android.R.string.no, null);
