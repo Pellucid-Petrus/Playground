@@ -30,6 +30,7 @@ public abstract class GenericDataSource {
         dbHelper.close();
     }
 
+    //TODO user ContentValues instead of String[]
     abstract public Serializable create(String[] record);
 
     abstract public void delete(Serializable record);

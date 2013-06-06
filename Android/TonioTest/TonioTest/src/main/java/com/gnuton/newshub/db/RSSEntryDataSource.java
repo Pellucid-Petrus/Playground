@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Build;
 import android.util.Log;
 import com.gnuton.newshub.types.RSSEntry;
@@ -39,13 +40,34 @@ public class RSSEntryDataSource extends GenericDataSource {
 
     @Override
     public Serializable create(String[] record) {
+        int feedId = Integer.parseInt(record[0]);
+        String title = record[1];
+        String summary = record[2];
+        String url = record[3];
+        String content = record[4];
+        long publishDate = Long.parseLong(record[5]);
+
+        // Do not double records
+        String selection = DbHelper.ENTRIES_FEEDID + " = " + feedId +
+                " AND " + DbHelper.ENTRIES_TITLE + " = " + DatabaseUtils.sqlEscapeString(title) +
+                " AND " + DbHelper.ENTRIES_PUBLISHEDDATE + " = " + publishDate;
+
+        List<RSSEntry> entries = this.getAll(selection, null, null, null, null);
+        if (entries.size() != 0){
+            Log.d(TAG, title + "is already in the DB");
+            if (entries.size() > 1)
+                Log.d(TAG, "WARNING: More than an entry has same title");
+            return entries.get(0);
+        }
+        Log.d(TAG, "No similar item found in the DB. Adding new record...");
+        // Create new record in the DB.
         ContentValues values = new ContentValues();
-        values.put(DbHelper.ENTRIES_FEEDID, Integer.parseInt(record[0]));
-        values.put(DbHelper.ENTRIES_TITLE, record[1]);
-        values.put(DbHelper.ENTRIES_SUMMARY, record[2]);
-        values.put(DbHelper.ENTRIES_URL, record[3]);
-        values.put(DbHelper.ENTRIES_CONTENT, record[4]);
-        values.put(DbHelper.ENTRIES_PUBLISHEDDATE, Long.parseLong(record[5]));
+        values.put(DbHelper.ENTRIES_FEEDID, feedId);
+        values.put(DbHelper.ENTRIES_TITLE, title);
+        values.put(DbHelper.ENTRIES_SUMMARY, summary);
+        values.put(DbHelper.ENTRIES_URL, url);
+        values.put(DbHelper.ENTRIES_CONTENT, content);
+        values.put(DbHelper.ENTRIES_PUBLISHEDDATE, publishDate);
 
         long insertId = database.insert(DbHelper.TABLE_ENTRIES, null, values);
         Cursor cursor = database.query(DbHelper.TABLE_ENTRIES,
@@ -98,7 +120,7 @@ public class RSSEntryDataSource extends GenericDataSource {
 
         Calendar publishedData = new GregorianCalendar();
         publishedData.setTimeInMillis(publishedDataLong);
-        Log.d(TAG,"PUBLISHED DATE" + publishedData.toString());
+        //Log.d(TAG,"PUBLISHED DATE" + publishedData.toString());
 
         RSSEntry entry = new RSSEntry(id, feedId, title, summary, url, publishedData);
         entry.content = content;
