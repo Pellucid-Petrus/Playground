@@ -3,6 +3,7 @@ package com.gnuton.newshub;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -22,6 +23,9 @@ import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.db.RSSFeedDataSource;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
+import com.gnuton.newshub.utils.Notifications;
+
+import java.util.List;
 
 
 public class MainActivity extends FragmentActivity
@@ -123,11 +127,7 @@ public class MainActivity extends FragmentActivity
         }
 
         RSSEntry e = (RSSEntry) mEntryDataSource.create(new String[]{"111","ETitolo", "Esummary", "ELink", "content", publishedData.toString()});
-        List<RSSEntry> entries = mEntryDataSource.getAll();
-        Log.d(TAG, "ENTRIES in DB" + entries.toString());
-        for (RSSEntry entry : entries) {
-            mEntryDataSource.delete(entry);
-        }*/
+        */
 
         ArrayAdapter<RSSFeed> drawerListAdapter = new ArrayAdapter<RSSFeed>(this, android.R.layout.simple_list_item_1, mFeedDataSource.getAll());
         mDrawerList.setAdapter(drawerListAdapter);
@@ -157,8 +157,27 @@ public class MainActivity extends FragmentActivity
         }
         // Handle action buttons
         switch(item.getItemId()) {
-            case R.id.action_settings:
-                Log.d(TAG, "Settings");
+            case R.id.action_clear_entry_cache:
+
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle(R.string.action_clear_entry_cache)
+                        .setMessage(R.string.action_dlg_msg_clear_entry_cache)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d(TAG, "Clear entry cache");
+                                List<RSSEntry> entries = mEntryDataSource.getAll();
+                                for (RSSEntry entry : entries) {
+                                    mEntryDataSource.delete(entry);
+                                }
+                                Notifications.showWarning(R.string.info_article_cache_cleaned);
+                            }
+
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -16,5 +16,11 @@
     <string name="unsubscribeConfermation">Do you wanna stop to follow this provider?</string>
     <string name="warning_feed_already_in_db">You are already following news from this provider
     </string>
+    <string name="action_clear_entry_cache">Clear articles cache</string>
+    <string name="info_article_cache_cleaned">All articles have been removed from the device.
+    </string>
+    <string name="action_dlg_msg_clear_entry_cache">Do you really want to remove all the articles
+        stored on your device?
+    </string>
 
 </resources>
