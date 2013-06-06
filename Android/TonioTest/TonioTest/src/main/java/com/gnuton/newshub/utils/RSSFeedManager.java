@@ -43,8 +43,7 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
 
         Context context = MyApp.getContext();
         if (feed.entries == null) {
-            CharSequence text = context.getResources().getString(R.string.warning_no_entries_found);
-            Notifications.showWarning(text.toString());
+            Notifications.showWarning(R.string.warning_no_entries_found);
             return;
         }
         mListener.onEntryListFetched(feed);

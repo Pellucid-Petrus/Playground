@@ -3,8 +3,12 @@ package com.gnuton.newshub.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.util.Log;
+
+import com.gnuton.newshub.R;
 import com.gnuton.newshub.types.RSSFeed;
+import com.gnuton.newshub.utils.Notifications;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,9 +34,26 @@ public class RSSFeedDataSource extends GenericDataSource {
 
     @Override
     public Serializable create(String[] record) {
+        String title = record[0];
+        String url = record[1];
+
+        // Do not double records
+        String selection = DbHelper.FEEDS_URL + " = " + DatabaseUtils.sqlEscapeString(url);
+
+        List<RSSFeed> feeds = this.getAll(selection, null, null, null, null);
+        if (feeds.size() != 0){
+            Log.d(TAG, title + "is already in the DB");
+            Notifications.showWarning(R.string.warning_feed_already_in_db);
+            if (feeds.size() > 1)
+                Log.d(TAG, "WARNING: More than one feed has same url");
+            return feeds.get(0);
+        }
+        Log.d(TAG, "No similar item found in the DB. Adding new feed ...");
+
+        // Create new record in the DB
         ContentValues values = new ContentValues();
-        values.put(DbHelper.FEEDS_TITLE, record[0]);
-        values.put(DbHelper.FEEDS_URL, record[1]);
+        values.put(DbHelper.FEEDS_TITLE, title);
+        values.put(DbHelper.FEEDS_URL, url);
 
         long insertId = database.insert(DbHelper.TABLE_FEEDS, null, values);
         Cursor cursor = database.query(DbHelper.TABLE_FEEDS,
@@ -60,9 +81,13 @@ public class RSSFeedDataSource extends GenericDataSource {
     }
 
     @Override
-    public List getAll() {
+    public List getAll(){
+        return getAll(null, null, null, null, null);
+    }
+
+    public List getAll(String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
         List<RSSFeed> feeds = new ArrayList<RSSFeed>();
-        Cursor cursor = database.query(DbHelper.TABLE_FEEDS, this.allColumns(), null, null, null, null, null);
+        Cursor cursor = database.query(DbHelper.TABLE_FEEDS, this.allColumns(), selection, selectionArgs, groupBy, having, orderBy);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             RSSFeed feed = (RSSFeed) cursorTo(cursor);
