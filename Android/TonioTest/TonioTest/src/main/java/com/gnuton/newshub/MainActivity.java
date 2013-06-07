@@ -97,13 +97,17 @@ public class MainActivity extends FragmentActivity
                 R.string.drawer_close  /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(R.string.app_name);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    getActionBar().setTitle(R.string.app_name);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(R.string.drawer_title);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    getActionBar().setTitle(R.string.drawer_title);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
             }
         };
 
