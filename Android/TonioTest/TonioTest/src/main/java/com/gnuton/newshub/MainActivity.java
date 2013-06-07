@@ -40,7 +40,7 @@ public class MainActivity extends FragmentActivity
 
     private RSSFeedDataSource mFeedDataSource;
     private RSSEntryDataSource mEntryDataSource;
-    private Fragment mEntryListFragment;
+    static private Fragment mEntryListFragment;
 
     /*@Override
     public void onBackPressed() {

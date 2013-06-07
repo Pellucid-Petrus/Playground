@@ -28,19 +28,24 @@ import java.util.List;
 public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntryListFetchedListener {
     private static final String TAG = "MY_LIST_FRAGMENT";
     private OnItemSelectedListener itemSelectedListener;
-    private RSSFeed mFeed;
+    static private RSSFeed mFeed;
 
     @Override
     public void onEntryListFetched(RSSFeed feed) {
         Context context = getActivity();
-        ListView listView = (ListView) getView().findViewById(R.id.entrylistView);
 
         this.mFeed = feed;
+        View v = getView();
+        // This should prevent a crash. The feed will be set in the list as soon as the fragment starts.
+        if (v == null)
+            return;
 
+        ListView listView = (ListView) v.findViewById(R.id.entrylistView);
         if (feed == null){
             listView.setAdapter(null);
             return;
         }
+
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
         EntryListAdapter adapter = new EntryListAdapter(context, R.id.entrylistView, mFeed.entries);
@@ -86,10 +91,7 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         super.onStart();
         Log.d(TAG, "START");
         // called when fragment is visible
-        if (mFeed != null)
-            if (mFeed.entries != null) {
-                //onParsingCompleted(this.mFeed);
-            }
+        onEntryListFetched(mFeed);
     }
 
     /*private void updateList() {
