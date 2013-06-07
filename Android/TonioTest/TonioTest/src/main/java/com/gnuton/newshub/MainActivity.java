@@ -83,6 +83,7 @@ public class MainActivity extends FragmentActivity
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB){
             // enable ActionBar app icon to behave as action to toggle nav drawer
             getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -104,6 +105,12 @@ public class MainActivity extends FragmentActivity
             }
 
             public void onDrawerOpened(View drawerView) {
+                // If the drawer is open the user may want to select a different provider
+                // Before picking the provider, the entry list has to load
+                ListView listView = (ListView) findViewById(R.id.entrylistView);
+                if (listView == null){
+                    onBackPressed();
+                }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     getActionBar().setTitle(R.string.drawer_title);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
