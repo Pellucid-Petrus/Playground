@@ -89,16 +89,16 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
         View v = getView();
         if (v == null)
             return;
+        if (buffer == null || buffer == ""){
+            return;
+        }
 
         TextView view = (TextView) v.findViewById(R.id.ContentTextView);
         if (view != null){
-
             Spanned myStringSpanned = Html.fromHtml(buffer, null, null);
             view.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
 
         }
-            //view.setText(buffer);
-
         this.task = null;
     }
 }

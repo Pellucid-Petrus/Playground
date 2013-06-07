@@ -9,10 +9,20 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:id="@+id/TitleTextView" android:layout_gravity="center" android:textAlignment="center"/>
-    <TextView
+            android:id="@+id/TitleTextView"
+            android:layout_gravity="center"
+            android:textAlignment="center"/>
+    <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Lorem Ipsum"
-            android:id="@+id/ContentTextView" android:layout_gravity="center" android:layout_weight="20"/>
+            android:layout_height="fill_parent"
+            android:id="@+id/scrollView"
+            android:layout_gravity="center">
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Lorem Ipsum"
+                android:id="@+id/ContentTextView"
+                android:layout_gravity="top"
+                android:layout_weight="20"/>
+    </ScrollView>
 </LinearLayout>
