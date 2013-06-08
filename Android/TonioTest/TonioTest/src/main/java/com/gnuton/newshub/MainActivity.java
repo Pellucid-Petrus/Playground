@@ -83,7 +83,7 @@ public class MainActivity extends FragmentActivity
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB){
             // enable ActionBar app icon to behave as action to toggle nav drawer
