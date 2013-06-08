@@ -16,7 +16,7 @@
                 android:id="@+id/container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".25" >
+                android:layout_weight=".35" >
         </FrameLayout>
         <fragment android:layout_width="0dp"
                   android:layout_height="match_parent"
@@ -24,7 +24,7 @@
                   android:id="@+id/detailFragment"
                   android:layout_centerVertical="true"
                   android:layout_alignRight="@+id/entrylistView"
-                  android:layout_weight=".75"
+                  android:layout_weight=".65"
                   tools:layout="@layout/detail_fragment"/>
 
 

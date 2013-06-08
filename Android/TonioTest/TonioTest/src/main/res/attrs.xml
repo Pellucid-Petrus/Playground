@@ -1,0 +1,9 @@
+<resources>
+    <style name="NewsHubIcons" parent="android:Theme">
+        <item name="listitem_check" >@drawable/square</item>
+    </style>
+
+    <style name="NewsHubIcons.Light" parent="android:Theme.Light">
+        <item name="listitem_check" >@drawable/square_light</item>
+    </style>
+</resources>
