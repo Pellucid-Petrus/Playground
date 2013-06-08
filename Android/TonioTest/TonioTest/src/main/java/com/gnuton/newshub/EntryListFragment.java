@@ -2,8 +2,6 @@ package com.gnuton.newshub;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,10 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.gnuton.newshub.types.RSSEntry;
-import com.gnuton.newshub.tasks.DownloadWebTask;
-import com.gnuton.newshub.tasks.RSSParseTask;
 import com.gnuton.newshub.types.RSSFeed;
-import com.gnuton.newshub.utils.Notifications;
 import com.gnuton.newshub.utils.RSSFeedManager;
 
 import java.util.List;

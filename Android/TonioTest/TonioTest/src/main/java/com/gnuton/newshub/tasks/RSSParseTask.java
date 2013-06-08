@@ -1,32 +1,15 @@
 package com.gnuton.newshub.tasks;
 
-import android.annotation.TargetApi;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
-import android.util.Xml;
-
 import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.db.RSSEntryDataSource;
-import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
 import com.gnuton.newshub.utils.MyApp;
 import com.gnuton.newshub.utils.XMLFeedParser;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import javax.xml.datatype.DatatypeConfigurationException;
 import java.io.IOException;
-import java.io.StringReader;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+
 
 /**
  * Created by gnuton on 5/19/13.

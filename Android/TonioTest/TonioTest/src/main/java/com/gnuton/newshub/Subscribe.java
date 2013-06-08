@@ -1,6 +1,5 @@
 package com.gnuton.newshub;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.support.v4.app.DialogFragment;

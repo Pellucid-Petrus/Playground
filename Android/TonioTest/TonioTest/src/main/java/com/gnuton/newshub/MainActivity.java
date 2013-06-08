@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
 import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.db.RSSFeedDataSource;
 import com.gnuton.newshub.types.RSSEntry;
@@ -114,6 +115,21 @@ public class MainActivity extends FragmentActivity
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     getActionBar().setTitle(R.string.drawer_title);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                LinearLayout l = (LinearLayout) findViewById(R.id.mainActivityLayout);
+                LinearLayout d = (LinearLayout) findViewById(R.id.layout_panel_drawer);
+
+                float offset = slideOffset * d.getWidth();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    l.setX(offset);
+                } else {
+                    //lastOffset = (int)offset - lastOffset;
+                    //l.offsetLeftAndRight(lastOffset);
                 }
             }
         };

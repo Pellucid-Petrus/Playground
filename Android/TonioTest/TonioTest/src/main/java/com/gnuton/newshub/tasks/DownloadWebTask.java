@@ -2,13 +2,8 @@ package com.gnuton.newshub.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.gnuton.newshub.R;
-import com.gnuton.newshub.utils.Notifications;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
