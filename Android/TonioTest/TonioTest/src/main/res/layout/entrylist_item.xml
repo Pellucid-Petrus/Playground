@@ -3,20 +3,21 @@
               android:orientation="horizontal"
               android:layout_width="fill_parent"
               android:layout_height="70dp"
-              android:padding="3dp">
+              android:padding="3dp"
+        >
 
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/imageView"
             android:src="@drawable/square_light"
-            android:padding="12dp"
+            android:padding="4dp"
             />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-            >
+                    android:paddingRight="10dp">
 
         <TextView
                 android:layout_width="fill_parent"
