@@ -150,6 +150,7 @@ public class XMLFeedParser {
         feed.entries = entries;
         return feed;
     }
+    @TargetApi(Build.VERSION_CODES.FROYO)
     private RSSEntry parseAtomEntry(XmlPullParser xpp, int feedID) throws IOException, XmlPullParserException {
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "entry");
         String title = null;
@@ -214,7 +215,7 @@ public class XMLFeedParser {
         String description = null;
         String content = null;
         String link = null;
-        Calendar publishedData = null;
+        Calendar publishedData = GregorianCalendar.getInstance(); // Avoid crashes if data is not parsed correctly
 
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
@@ -229,22 +230,36 @@ public class XMLFeedParser {
                 description = readTagText(xpp, "description");
             } else if (name.equals("link")) {
                 link = readTagText(xpp, "link");
-            } else if (name.equals("pubDate")) {
-                String dateString = readTagText(xpp, "pubDate");
-                DateFormat formatter2 = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-                DateFormat formatter1 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z");//<pubDate>05 Jun 2013 06:00:00 +0300  </pubDate>
+            } else if (name.toLowerCase().equals("pubdate")) {
+                String dateString = null;
                 try {
+                    dateString = readTagText(xpp, "pubDate");
+                } catch (XmlPullParserException e) {
+                    dateString = readTagText(xpp, "pubdate");
+                }
+
+                String[] formatStrings = {
+                        "dd MMM yyyy HH:mm:ss Z",
+                        "EEE, dd MMM yyyy HH:mm:ss zzz",
+                        "MM/dd/yy",
+                        "MM/dd/yyyy",
+                        "MM/dd/yy HH:mm",
+                        "MM/dd/yyyy HH:mm",
+                        "MM/dd/yy HH:mm:ss",
+                        "MM/dd/yyyy HH:mm:ss"
+                };
+
+                for (String formatString : formatStrings) {
+                    DateFormat formatter= new SimpleDateFormat(formatString);
                     try {
-                        publishedData = parseRSSDate(dateString, formatter1);
+                        publishedData = parseRSSDate(dateString, formatter);
+                        Log.d(TAG, "PublishedDate=" + publishedData.toString());
+                        break;
                     } catch (ParseException e) {
-                        try {
-                            publishedData = parseRSSDate(dateString, formatter2);
-                        } catch (ParseException e1) {
-                            e1.printStackTrace();
-                        }
+                        e.printStackTrace();
+                    } catch (DatatypeConfigurationException e) {
+                        e.printStackTrace();
                     }
-                } catch (DatatypeConfigurationException e) {
-                    e.printStackTrace();
                 }
             } else {
                 skip(xpp);
