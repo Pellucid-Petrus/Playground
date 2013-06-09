@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.db.RSSFeedDataSource;
 import com.gnuton.newshub.tasks.DownloadWebTask;
 import com.gnuton.newshub.types.RSSFeed;
+import com.gnuton.newshub.utils.MyApp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -139,9 +141,14 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
                     Log.d(TAG," Start searching");
                     EditText e = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
 
+                    // CLOSE SOFT KEYBOARD
+                    InputMethodManager imm = (InputMethodManager) MyApp.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(e.getWindowToken(), 0);
+
                     // Fetch RSS list from gnuton.org
                     String url = mFindFeedsUrl + URLEncoder.encode(e.getText().toString());
                     new DownloadWebTask(this).execute(url);
+
                 }
             }
 
