@@ -64,15 +64,4 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
         // returns the updated delegate
         return v;
     }
-
-    String dateToString(Calendar cal) {
-        String strdate = "";
-
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yy HH:mm");
-
-        if (cal != null) {
-            strdate = sdf.format(cal.getTime());
-        }
-        return strdate;
-    }
 }
