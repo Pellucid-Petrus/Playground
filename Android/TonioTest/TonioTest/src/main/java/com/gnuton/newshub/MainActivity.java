@@ -158,7 +158,7 @@ public class MainActivity extends FragmentActivity
     }
 
     protected void updateDrawerList() {
-        ArrayAdapter<RSSFeed> drawerListAdapter = new ArrayAdapter<RSSFeed>(this, android.R.layout.simple_list_item_1, mFeedDataSource.getAll());
+        ArrayAdapter<RSSFeed> drawerListAdapter = new FeedListAdapter(this, R.layout.feedlist_item, mFeedDataSource.getAll());
         mDrawerList.setAdapter(drawerListAdapter);
     }
 
