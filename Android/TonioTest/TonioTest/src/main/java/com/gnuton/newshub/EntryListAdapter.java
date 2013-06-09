@@ -7,7 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.gnuton.newshub.types.RSSEntry;
+import com.gnuton.newshub.utils.NetworkUtils;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -23,6 +28,8 @@ public class EntryListAdapter extends ArrayAdapter<RSSEntry> {
 
     public static class ViewHolder{
         public TextView title;
+        public TextView date;
+        public TextView url;
     }
 
     @Override
@@ -36,6 +43,8 @@ public class EntryListAdapter extends ArrayAdapter<RSSEntry> {
             v = vi.inflate(R.layout.entrylist_item, null);
             holder = new ViewHolder();
             holder.title = (TextView) v.findViewById(R.id.ListItemTitleTextView);
+            holder.url = (TextView) v.findViewById(R.id.ListItemProviderTextView);
+            holder.date = (TextView) v.findViewById(R.id.ListItemDateTextView);
 
             v.setTag(holder);
         }
@@ -46,10 +55,22 @@ public class EntryListAdapter extends ArrayAdapter<RSSEntry> {
         final RSSEntry e = entries.get(position);
         if (e != null) {
             holder.title.setText(e.title);
+            holder.url.setText(NetworkUtils.getDomainName(e.link));
+            holder.date.setText(dateToString(e.date));
         }
 
         // returns the updated delegate
         return v;
     }
 
+    String dateToString(Calendar cal) {
+        String strdate = null;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yy HH:mm");
+
+        if (cal != null) {
+            strdate = sdf.format(cal.getTime());
+        }
+        return strdate;
+    }
 }
