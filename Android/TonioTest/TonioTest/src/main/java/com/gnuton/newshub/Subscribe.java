@@ -91,7 +91,7 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
         Context ctx = this.getActivity();
 
         mFeeds = new ArrayList<RSSFeed>();
-        adapter = new ArrayAdapter<RSSFeed>(ctx, android.R.layout.simple_list_item_1, mFeeds);
+        adapter = new FeedListAdapter(ctx, R.layout.feedlist_item, mFeeds);
         ListView lv = (ListView) mDlgLayout.findViewById(R.id.subscribe_listView);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
