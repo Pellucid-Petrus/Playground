@@ -308,7 +308,7 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "SUBSCRIBE TO A NEW FEED");
 
         // Shows subscribe to feed dialog
-        DialogFragment subscribe = new Subscribe(mDrawerList);
+        DialogFragment subscribe = new Subscribe(this);
         subscribe.show(getSupportFragmentManager(), "Subscribe dialog");
     }
 }

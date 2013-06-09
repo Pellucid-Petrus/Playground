@@ -17,6 +17,8 @@ public class NetworkUtils {
             return null;
         }
         String domain = uri.getHost();
+        if (domain == null || domain == "")
+            return "";
         return domain.startsWith("www.") ? domain.substring(4) : domain;
     }
 }

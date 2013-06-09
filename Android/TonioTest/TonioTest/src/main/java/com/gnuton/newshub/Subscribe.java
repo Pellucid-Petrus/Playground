@@ -42,14 +42,14 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
     private final RSSFeedDataSource mFeedDataSource;
     private List<RSSFeed> mFeeds;
 
-    private final ListView mDrawerList;
+    private MainActivity mMainActivity;
     private ArrayAdapter<RSSFeed> adapter;
     private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
 
-    Subscribe(final ListView drawerList){
+    Subscribe(final MainActivity mainActivity){
         super();
-        this.mDrawerList = drawerList;
-        this.mFeedDataSource = new RSSFeedDataSource(drawerList.getContext());
+        this.mMainActivity = mainActivity;
+        this.mFeedDataSource = new RSSFeedDataSource(mMainActivity);
     }
 
     // ListView.OnClickListener
@@ -177,7 +177,6 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         Log.d(TAG, "Closing dialog");
-        ArrayAdapter<RSSFeed> drawerListAdapter = new ArrayAdapter<RSSFeed>(getActivity(), android.R.layout.simple_list_item_1, mFeedDataSource.getAll());
-        mDrawerList.setAdapter(drawerListAdapter);
+        mMainActivity.updateDrawerList();
     }
 }
