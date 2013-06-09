@@ -74,7 +74,7 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mDlgLayout = inflater.inflate(R.layout.subscribe_dialog, null);
         builder.setView(mDlgLayout);
-        builder.setTitle("TEST");
+        builder.setTitle(R.string.subscribe_dialog_title);
 
         /*
         builder.setItems(providers, new DialogInterface.OnClickListener() {

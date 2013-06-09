@@ -25,5 +25,6 @@
     <string name="warning_unable_to_download_content">Unable to download content from the server,
         error:
     </string>
+    <string name="subscribe_dialog_title">Subscribe to a new news provider</string>
 
 </resources>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="70dp"
+                android:padding="10dp">
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:id="@+id/FeedListItemTitleTextView"
+            android:layout_gravity="center"
+            android:maxLines="2"
+            android:textSize="15sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/imageView"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Desc"
+            android:id="@+id/FeedListItemDescTextView"
+            android:maxLines="1"
+            android:lines="1"
+            android:textColor="@android:color/darker_gray"
+            android:layout_gravity="center_horizontal|top"
+            android:textSize="12sp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/FeedListItemTitleTextView"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8281"
+            android:id="@+id/FeedListItemEntriesCountTextView"
+            android:maxLines="1"
+            android:lines="1"
+            android:textColor="#ff8688"
+            android:layout_gravity="center_horizontal|bottom"
+            android:textSize="12sp"
+            android:layout_alignTop="@+id/FeedListItemDescTextView"
+            android:layout_toLeftOf="@+id/imageView"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/imageView"
+            android:src="@drawable/square_light"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"/>
+</RelativeLayout>
+
