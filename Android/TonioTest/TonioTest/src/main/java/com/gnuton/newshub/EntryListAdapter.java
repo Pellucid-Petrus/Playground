@@ -1,6 +1,7 @@
 package com.gnuton.newshub;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class EntryListAdapter extends ArrayAdapter<RSSEntry> {
         final RSSEntry e = entries.get(position);
         if (e != null) {
             holder.title.setText(e.title);
+            holder.title.setTypeface(null, e.isRead ? Typeface.NORMAL : Typeface.BOLD);
             holder.url.setText(NetworkUtils.getDomainName(e.link));
             holder.date.setText(dateToString(e.date));
         }

@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.gnuton.newshub.db.DbHelper;
+import com.gnuton.newshub.tasks.UpdateEntryInDB;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
 import com.gnuton.newshub.utils.RSSFeedManager;
@@ -43,7 +45,7 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
 
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
-        EntryListAdapter adapter = new EntryListAdapter(context, R.id.entrylistView, mFeed.entries);
+        final EntryListAdapter adapter = new EntryListAdapter(context, R.id.entrylistView, mFeed.entries);
         listView.setAdapter(adapter);
 
         // Define action (open activity) when a list item is selected
@@ -52,6 +54,13 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 RSSEntry entry = (RSSEntry) mFeed.entries.get(i);
+
+                // Set item as read
+                entry.isRead = true;
+                entry.columnsToUpdate.add(DbHelper.ENTRIES_ISREAD);
+                new UpdateEntryInDB().execute(entry);
+                adapter.notifyDataSetChanged();
+
                 itemSelectedListener.onItemSelected(entry);
             }
         });

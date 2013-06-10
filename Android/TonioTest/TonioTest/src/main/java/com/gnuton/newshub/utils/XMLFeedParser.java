@@ -273,7 +273,8 @@ public class XMLFeedParser {
                         description,
                         link,
                         content,
-                        String.valueOf(publishedData.getTimeInMillis())
+                        String.valueOf(publishedData.getTimeInMillis()),
+                        String.valueOf(0) // Not read
                 });
     }
 

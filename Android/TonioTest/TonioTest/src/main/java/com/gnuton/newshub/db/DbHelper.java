@@ -14,7 +14,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static DbHelper mInstance = null;
 
     private static final String DATABASE_NAME = "rssdb";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
     public static final String TABLE_FEEDS = "feeds";
     public static final String TABLE_ENTRIES = "entries";
@@ -29,6 +29,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String ENTRIES_SUMMARY = "summary";
     public static final String ENTRIES_CONTENT = "content";
     public static final String ENTRIES_PUBLISHEDDATE = "date";
+    public static final String ENTRIES_ISREAD = "isread";
+
 
     private static final String TAG = DbHelper.class.getName();
 
@@ -48,7 +50,8 @@ public class DbHelper extends SQLiteOpenHelper {
             + ENTRIES_URL + " text not null, "
             + ENTRIES_SUMMARY + " text not null, "
             + ENTRIES_CONTENT + " text, "
-            + ENTRIES_PUBLISHEDDATE + " int not null "
+            + ENTRIES_PUBLISHEDDATE + " int not null, "
+            + ENTRIES_ISREAD + " int"
             + ");";
 
 

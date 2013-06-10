@@ -34,7 +34,8 @@ public class RSSEntryDataSource extends GenericDataSource {
                 DbHelper.ENTRIES_SUMMARY,
                 DbHelper.ENTRIES_URL,
                 DbHelper.ENTRIES_CONTENT,
-                DbHelper.ENTRIES_PUBLISHEDDATE
+                DbHelper.ENTRIES_PUBLISHEDDATE,
+                DbHelper.ENTRIES_ISREAD
         };
     }
 
@@ -46,6 +47,7 @@ public class RSSEntryDataSource extends GenericDataSource {
         String url = record[3];
         String content = record[4];
         long publishDate = Long.parseLong(record[5]);
+        int isRead = Integer.parseInt(record[6]);
 
         // Do not double records
         String selection = DbHelper.ENTRIES_URL + " = "+ DatabaseUtils.sqlEscapeString(url);
@@ -58,6 +60,7 @@ public class RSSEntryDataSource extends GenericDataSource {
             return entries.get(0);
         }
         Log.d(TAG, "No similar item found in the DB. Adding new record...");
+
         // Create new record in the DB.
         ContentValues values = new ContentValues();
         values.put(DbHelper.ENTRIES_FEEDID, feedId);
@@ -66,6 +69,8 @@ public class RSSEntryDataSource extends GenericDataSource {
         values.put(DbHelper.ENTRIES_URL, url);
         values.put(DbHelper.ENTRIES_CONTENT, content);
         values.put(DbHelper.ENTRIES_PUBLISHEDDATE, publishDate);
+        values.put(DbHelper.ENTRIES_ISREAD, isRead);
+
 
         long insertId = database.insert(DbHelper.TABLE_ENTRIES, null, values);
         Cursor cursor = database.query(DbHelper.TABLE_ENTRIES,
@@ -115,6 +120,7 @@ public class RSSEntryDataSource extends GenericDataSource {
         final String url = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_URL));
         final String content = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_CONTENT));
         final long publishedDataLong = cursor.getLong(cursor.getColumnIndex(DbHelper.ENTRIES_PUBLISHEDDATE));
+        final Boolean isRead = cursor.getInt(cursor.getColumnIndex(DbHelper.ENTRIES_ISREAD)) > 0;
 
         Calendar publishedData = new GregorianCalendar();
         publishedData.setTimeInMillis(publishedDataLong);
@@ -122,6 +128,23 @@ public class RSSEntryDataSource extends GenericDataSource {
 
         RSSEntry entry = new RSSEntry(id, feedId, title, summary, url, publishedData);
         entry.content = content;
+        entry.isRead = isRead;
+
         return entry;
+    }
+
+    public void update(RSSEntry e) {
+        List<String> columnsToUpdate = e.columnsToUpdate;
+
+        ContentValues args = new ContentValues();
+        if (columnsToUpdate.contains(DbHelper.ENTRIES_ISREAD))
+            args.put(DbHelper.ENTRIES_ISREAD, e.isRead);
+        if (columnsToUpdate.contains(DbHelper.ENTRIES_CONTENT))
+            args.put(DbHelper.ENTRIES_ISREAD, e.content);
+
+        if (args.size() > 0)
+            database.update(DbHelper.TABLE_ENTRIES, args, DbHelper.ID + "=" + e.id, null);
+        
+        e.columnsToUpdate.clear();
     }
 }
