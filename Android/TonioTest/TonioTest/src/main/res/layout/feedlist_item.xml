@@ -57,6 +57,8 @@
             android:id="@+id/imageView2"
             android:src="@drawable/ic_action_news"
             android:layout_below="@+id/FeedListItemTitleTextView"
-            android:layout_alignRight="@+id/FeedListItemTitleTextView"/>
+            android:layout_alignRight="@+id/FeedListItemTitleTextView"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"/>
 </RelativeLayout>
 
