@@ -3,6 +3,8 @@ package com.gnuton.newshub.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.gnuton.newshub.types.RSSEntry;
+
 import org.xml.sax.SAXException;
 
 import de.l3s.boilerpipe.BoilerpipeExtractor;
@@ -17,36 +19,43 @@ import java.net.URL;
 /**
  * Created by gnuton on 5/22/13.
  */
-public class BoilerPipeTask extends AsyncTask<String, Void, String> {
+public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, Void> {
     private static final String TAG = "BOILER PIPE TASK";
 
-    private static OnBoilerplateRemovedListener listener;
+    private static OnBoilerplateRemovedListener mListener;
 
     public interface OnBoilerplateRemovedListener {
-        public void onBoilerplateRemoved(final String buffer);
+        public void onBoilerplateRemoved();
+    }
+
+    public BoilerPipeTask() {
+        mListener = null;
     }
 
     public BoilerPipeTask(Object o) {
         if (o instanceof OnBoilerplateRemovedListener) {
-            this.listener = (OnBoilerplateRemovedListener) o;
+            this.mListener = (OnBoilerplateRemovedListener) o;
         } else {
             throw new ClassCastException(o.toString() + " must implement BoilerPipeTask.OnBoilerplateRemovedListener");
         }
     }
 
     @Override
-    protected String doInBackground(String... strings) {
-        URL url = null;
-        try {
-            url = new URL(strings[0]);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            Log.e(TAG, "Bad URL");
-            return "Error: Malformed URL";
+    protected Void doInBackground(RSSEntry... entries) {
+
+        for (RSSEntry e : entries) {
+            URL url = null;
+            try {
+                url = new URL(e.link);
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+                Log.e(TAG, "Bad URL");
+                continue;
+            }
+            Log.d(TAG, "Processing " + url);
+            e.content = extractArticle(url);
         }
-        Log.d(TAG, "Processing " + url);
-        //return ArticleExtractor.INSTANCE.getText(url);
-        return extractArticle(url);
+        return null;
     }
 
     public String extractArticle(URL url){
@@ -68,7 +77,10 @@ public class BoilerPipeTask extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String s) {
-        listener.onBoilerplateRemoved(s);
+    protected void onPostExecute(Void v) {
+        Log.d(TAG, "Boilerpipe thread terminated");
+
+        if (mListener != null)
+            mListener.onBoilerplateRemoved();
     }
 }

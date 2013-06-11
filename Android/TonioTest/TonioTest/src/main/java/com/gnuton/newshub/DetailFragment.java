@@ -66,23 +66,31 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
         }
 
         //Set Title
-        TextView view = (TextView) getView().findViewById(R.id.TitleTextView);
+        TextView titleView = (TextView) getView().findViewById(R.id.TitleTextView);
+        titleView.setText(entry.title);
 
-        view.setText(entry.title);
+        //Set page content
+        if (entry.content != null) {
+            TextView contentView = (TextView) getView().findViewById(R.id.ContentTextView);
+            Spanned myStringSpanned = Html.fromHtml(entry.content, null, null);
+            contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
+        } else {
 
+        }
+/*
         //Load page
         Context c = getActivity().getApplicationContext();
         ConnectivityManager connMgr = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             // fetch data
-            this.task = new BoilerPipeTask(this).execute(entry.link);
+            //this.task = new BoilerPipeTask(this).execute(entry.link);
         } else {
             Log.w(TAG, "Device not connected");
             //TODO display error (use notification API?)
-        }
+        }*/
     }
-
+/*
     @Override
     public void onBoilerplateRemoved(String buffer) {
         Log.d(TAG, "Page Downloaded");
@@ -100,5 +108,10 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
 
         }
         this.task = null;
+    }
+*/
+    @Override
+    public void onBoilerplateRemoved() {
+        Log.d("TAG", "BOILER PLATE REMOVED");
     }
 }

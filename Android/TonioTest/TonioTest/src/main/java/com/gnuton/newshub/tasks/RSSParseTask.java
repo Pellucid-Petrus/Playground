@@ -4,11 +4,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.db.RSSEntryDataSource;
+import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
 import com.gnuton.newshub.utils.MyApp;
 import com.gnuton.newshub.utils.XMLFeedParser;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 
 /**
@@ -68,6 +70,17 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
 
     @Override
     protected void onPostExecute(RSSFeed feed) {
+        if (feed == null)
+            return;
+
+        List<RSSEntry> entries = feed.entries;
+        if (entries.size() == 0) {
+            Log.d(TAG, "ERROR: onPostExecute - no entries.");
+            return;
+        }
+
+        new BoilerPipeTask().execute(entries.toArray(new RSSEntry[entries.size()]));
+
         listener.onParsingCompleted(feed);
     }
 
