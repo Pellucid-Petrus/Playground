@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.*;
@@ -244,11 +243,11 @@ public class MainActivity extends FragmentActivity
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onItemSelected(RSSEntry e) {
-        DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
+        ArticleFragment df = (ArticleFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
         if (df != null && df.isInLayout()) {
             df.setEntry(e);
         } else {
-            df = new DetailFragment();
+            df = new ArticleFragment();
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.animator.slidein,R.animator.slideout,R.animator.slideinpop, R.animator.slideoutpop)
                     .replace(R.id.container, df)

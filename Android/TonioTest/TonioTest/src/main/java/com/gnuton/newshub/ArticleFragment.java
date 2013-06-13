@@ -1,8 +1,5 @@
 package com.gnuton.newshub;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,7 +16,7 @@ import com.gnuton.newshub.tasks.BoilerPipeTask;
 /**
  * Created by gnuton on 5/18/13.
  */
-public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
+public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "DETAIL_FRAGMENT";
     private RSSEntry entry = null;
     private AsyncTask task = null;
@@ -29,7 +26,7 @@ public class DetailFragment extends Fragment implements BoilerPipeTask.OnBoilerp
         Log.d(TAG, "Create view");
         //return super.onCreateView(inflater, container, savedInstanceState);
         // Created when FAsyncTask<String,Void,String>ragment needs to crerate its UI
-        View view = inflater.inflate(R.layout.detail_fragment, container, false);
+        View view = inflater.inflate(R.layout.article_fragment, container, false);
 
         return view;
     }
