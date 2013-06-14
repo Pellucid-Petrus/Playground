@@ -2,6 +2,8 @@ package com.gnuton.newshub;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +57,8 @@ public class EntryListAdapter extends ArrayAdapter<RSSEntry> {
         // Update the delegate setting data stored in the holder
         final RSSEntry e = entries.get(position);
         if (e != null) {
-            holder.title.setText(e.title);
+            Spanned titleSpanned = Html.fromHtml(e.title, null, null);
+            holder.title.setText(titleSpanned, TextView.BufferType.SPANNABLE);
             holder.title.setTypeface(null, e.isRead ? Typeface.NORMAL : Typeface.BOLD);
             holder.url.setText(NetworkUtils.getDomainName(e.link));
             holder.date.setText(dateToString(e.date));
