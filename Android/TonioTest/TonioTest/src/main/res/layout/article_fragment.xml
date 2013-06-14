@@ -1,29 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="@dimen/gen_margin">
-
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:id="@+id/TitleTextView"
-            android:layout_gravity="center"
-            android:textAlignment="center"/>
+              android:padding="2dp">
     <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/scrollView"
-            android:layout_gravity="center">
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="Lorem Ipsum"
-                android:id="@+id/ContentTextView"
-                android:layout_gravity="top"
-                android:layout_weight="20"/>
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/article_frame"
+            >
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+            <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="240sp"
+                    android:id="@+id/imageView"
+                    android:layout_gravity="center"
+                    android:src="#b4d4ff"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:id="@+id/TitleTextView"
+                    android:layout_gravity="left|center_vertical"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"/>
+
+            <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="2sp"
+                    android:id="@+id/imageView2"
+                    android:src="#92caff"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"/>
+
+
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Lorem Ipsum"
+                    android:id="@+id/ContentTextView"
+                    android:layout_gravity="top"
+                    android:layout_weight="20"
+                    android:layout_margin="10dp"
+                    android:textSize="18sp"/>
+
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>
