@@ -46,7 +46,6 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
 
             // Fetch data from the internet if this is the first time or if data is older than 30 mins
             if (feed.lastUpdate == null || feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE){
-
                 Log.d(TAG, "Downloading entries from provider...");
                 feed.xml = DownloadWebTask.downloadUrl(feed.url);
                 if (feed.xml != null && feed.xml != "")

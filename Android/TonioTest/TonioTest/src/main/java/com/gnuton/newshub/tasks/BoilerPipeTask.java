@@ -3,7 +3,10 @@ package com.gnuton.newshub.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.gnuton.newshub.db.DbHelper;
+import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.types.RSSEntry;
+import com.gnuton.newshub.utils.MyApp;
 
 import org.xml.sax.SAXException;
 
@@ -23,6 +26,7 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, Void> {
     private static final String TAG = "BOILER PIPE TASK";
 
     private static OnBoilerplateRemovedListener mListener;
+    private static final RSSEntryDataSource eds = new RSSEntryDataSource(MyApp.getContext());
 
     public interface OnBoilerplateRemovedListener {
         public void onBoilerplateRemoved();
@@ -44,6 +48,13 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, Void> {
     protected Void doInBackground(RSSEntry... entries) {
 
         for (RSSEntry e : entries) {
+            if (e.content != null || "".equals(e.content)) {
+                if (e.content!=null)
+                    Log.d(TAG, e.content);
+                Log.d(TAG, "Skipping...");
+                continue;
+            }
+
             URL url = null;
             try {
                 url = new URL(e.link);
@@ -54,8 +65,23 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, Void> {
             }
             Log.d(TAG, "Processing " + url);
             e.content = extractArticle(url);
+            e.content = sanitizeArticle(e);
+            e.columnsToUpdate.add(DbHelper.ENTRIES_CONTENT);
+            eds.update(e);
         }
         return null;
+    }
+
+    private String sanitizeArticle(RSSEntry e) {
+        String article = e.content;
+
+        // Sanitize html
+        if (article != null) {
+            article = article.replaceFirst("<style[^>]*>[^<]*</style>","");
+            article = article.replaceFirst(e.title,"");
+        }
+
+        return article;
     }
 
     public String extractArticle(URL url){
