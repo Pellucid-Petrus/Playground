@@ -39,6 +39,8 @@ public class XMLFeedParser {
     }
 
     public RSSFeed parseXML(RSSFeed feed){
+        if (feed != null && feed.xml == null)
+            return feed;
 
         try {
             try {

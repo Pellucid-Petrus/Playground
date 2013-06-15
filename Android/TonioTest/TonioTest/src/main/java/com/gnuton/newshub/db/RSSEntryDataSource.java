@@ -134,17 +134,19 @@ public class RSSEntryDataSource extends GenericDataSource {
     }
 
     public void update(RSSEntry e) {
+        Log.d(TAG, "Updating entry in DB");
+
         List<String> columnsToUpdate = e.columnsToUpdate;
 
         ContentValues args = new ContentValues();
         if (columnsToUpdate.contains(DbHelper.ENTRIES_ISREAD))
             args.put(DbHelper.ENTRIES_ISREAD, e.isRead);
         if (columnsToUpdate.contains(DbHelper.ENTRIES_CONTENT))
-            args.put(DbHelper.ENTRIES_ISREAD, e.content);
+            args.put(DbHelper.ENTRIES_CONTENT, e.content);
 
         if (args.size() > 0)
             database.update(DbHelper.TABLE_ENTRIES, args, DbHelper.ID + "=" + e.id, null);
-        
+
         e.columnsToUpdate.clear();
     }
 }
