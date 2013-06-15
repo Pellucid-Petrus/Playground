@@ -56,10 +56,12 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
                 RSSEntry entry = (RSSEntry) mFeed.entries.get(i);
 
                 // Set item as read
-                entry.isRead = true;
-                entry.columnsToUpdate.add(DbHelper.ENTRIES_ISREAD);
-                new UpdateEntryInDB().execute(entry);
-                adapter.notifyDataSetChanged();
+                if (!entry.isRead) {
+                    entry.isRead = true;
+                    entry.columnsToUpdate.add(DbHelper.ENTRIES_ISREAD);
+                    new UpdateEntryInDB().execute(entry);
+                    adapter.notifyDataSetChanged();
+                }
 
                 itemSelectedListener.onItemSelected(entry);
             }
