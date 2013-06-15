@@ -67,13 +67,14 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         titleView.setText(entry.title);
 
         //Set page content
+        TextView contentView = (TextView) getView().findViewById(R.id.ContentTextView);
+        Spanned myStringSpanned;
         if (entry.content != null) {
-            TextView contentView = (TextView) getView().findViewById(R.id.ContentTextView);
-            Spanned myStringSpanned = Html.fromHtml(entry.content, null, null);
-            contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
+            myStringSpanned = Html.fromHtml(entry.content, null, null);
         } else {
-
+            myStringSpanned = Html.fromHtml(entry.summary, null, null);
         }
+        contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
 /*
         //Load page
         Context c = getActivity().getApplicationContext();
