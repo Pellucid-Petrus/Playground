@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
 import com.gnuton.newshub.db.DbHelper;
@@ -16,8 +17,6 @@ import com.gnuton.newshub.tasks.UpdateEntryInDB;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
 import com.gnuton.newshub.utils.RSSFeedManager;
-
-import java.util.List;
 
 /**
  * Created by gnuton on 5/18/13.
@@ -27,12 +26,14 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
     private OnItemSelectedListener itemSelectedListener;
     private RSSFeed mFeed;
     private ListView mListView;
+    private View mListViewHeader;
 
     @Override
     public void onEntryListFetched(final RSSFeed feed) {
         Context context = getActivity();
 
         this.mFeed = feed;
+        setBusyIndicatorStatus(false);
 
         View v = getView();
         // This should prevent a crash. The feed will be set in the list as soon as the fragment starts.
@@ -48,6 +49,17 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         if (feed.adapter == null)
             feed.adapter = new EntryListAdapter(context, R.id.entrylistView, feed.entries);
         mListView.setAdapter(feed.adapter);
+    }
+
+    private void setBusyIndicatorStatus(Boolean busy){
+        if (mListViewHeader == null)
+            return;
+
+        View spinner = mListViewHeader.findViewById(R.id.spinningImage);
+        //if (spinner == null)
+        //    return;
+
+        spinner.setVisibility(busy ? View.VISIBLE : View.GONE);
     }
 
     // Sends data to another fragment trough the activity using an internal interface.
@@ -88,8 +100,10 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         mListView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
-                EntryListAdapter adapter = ((EntryListAdapter) mListView.getAdapter());
-                RSSEntry entry = (RSSEntry) adapter.getItem(i);
+                HeaderViewListAdapter hAdapter = (HeaderViewListAdapter) mListView.getAdapter();
+                EntryListAdapter adapter = (EntryListAdapter) hAdapter.getWrappedAdapter();
+
+                RSSEntry entry = (RSSEntry) adapter.getItem(i-1);
 
                 // Set item as read
                 if (!entry.isRead) {
@@ -102,6 +116,13 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
                 itemSelectedListener.onItemSelected(entry);
             }
         });
+
+        // Add header to list
+        LayoutInflater inflater =
+                (LayoutInflater)getView().getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mListViewHeader = inflater.inflate(R.layout.entrylist_header, mListView, false);
+        mListView.addHeaderView(mListViewHeader);
+        setBusyIndicatorStatus(false);
     }
 
     /*private void updateList() {
@@ -130,6 +151,7 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         onEntryListFetched(null);
 
         // ask for data
+        setBusyIndicatorStatus(true);
         RSSFeedManager mgr = RSSFeedManager.getInstance();
         mgr.requestEntryList(feed, this);
     }
