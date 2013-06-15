@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
@@ -56,10 +58,14 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
             return;
 
         View spinner = mListViewHeader.findViewById(R.id.spinningImage);
-        //if (spinner == null)
-        //    return;
-
         spinner.setVisibility(busy ? View.VISIBLE : View.GONE);
+
+        if (busy){
+            Animation animation = AnimationUtils.loadAnimation(getView().getContext(), R.animator.fadeout);
+            spinner.startAnimation(animation);
+        } else {
+            spinner.clearAnimation();
+        }
     }
 
     // Sends data to another fragment trough the activity using an internal interface.
