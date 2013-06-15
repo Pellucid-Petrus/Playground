@@ -17,7 +17,7 @@ public class RSSEntry implements Serializable{
     public final String summary;
     public final Calendar date;
 
-    public String content = "";
+    public String content = null;
     public Boolean isRead = false;
 
     public List<String> columnsToUpdate = new ArrayList<String>(); //Columns which to save into the DB
