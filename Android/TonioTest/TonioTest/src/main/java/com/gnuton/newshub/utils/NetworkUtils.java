@@ -10,12 +10,14 @@ import java.net.URISyntaxException;
 public class NetworkUtils {
     public static String getDomainName(String url) {
         URI uri = null;
+        url = url.replaceFirst("\\?.*","");
         try {
             uri = new URI(url);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return null;
         }
+
         String domain = uri.getHost();
         if (domain == null || domain == "")
             return "";
