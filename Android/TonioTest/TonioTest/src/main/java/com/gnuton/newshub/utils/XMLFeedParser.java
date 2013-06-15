@@ -55,6 +55,10 @@ public class XMLFeedParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Clean
+        feed.xml= null;
+
         return feed;
     }
 
