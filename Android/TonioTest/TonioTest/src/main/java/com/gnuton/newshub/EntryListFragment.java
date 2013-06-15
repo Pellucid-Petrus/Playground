@@ -25,47 +25,29 @@ import java.util.List;
 public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntryListFetchedListener {
     private static final String TAG = "MY_LIST_FRAGMENT";
     private OnItemSelectedListener itemSelectedListener;
-    static private RSSFeed mFeed;
+    private RSSFeed mFeed;
+    private ListView mListView;
 
     @Override
-    public void onEntryListFetched(RSSFeed feed) {
+    public void onEntryListFetched(final RSSFeed feed) {
         Context context = getActivity();
 
         this.mFeed = feed;
+
         View v = getView();
         // This should prevent a crash. The feed will be set in the list as soon as the fragment starts.
-        if (v == null)
+        if (v == null ||mListView == null)
             return;
 
-        ListView listView = (ListView) v.findViewById(R.id.entrylistView);
         if (feed == null){
-            listView.setAdapter(null);
+            mListView.setAdapter(null);
             return;
         }
 
-
         // Creates data controller (adapter) for listview abd set "entries" as  data
-        final EntryListAdapter adapter = new EntryListAdapter(context, R.id.entrylistView, mFeed.entries);
-        listView.setAdapter(adapter);
-
-        // Define action (open activity) when a list item is selected
-        listView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
-            private final List rssEntries = mFeed.entries;
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
-                RSSEntry entry = (RSSEntry) mFeed.entries.get(i);
-
-                // Set item as read
-                if (!entry.isRead) {
-                    entry.isRead = true;
-                    entry.columnsToUpdate.add(DbHelper.ENTRIES_ISREAD);
-                    new UpdateEntryInDB().execute(entry);
-                    adapter.notifyDataSetChanged();
-                }
-
-                itemSelectedListener.onItemSelected(entry);
-            }
-        });
+        if (feed.adapter == null)
+            feed.adapter = new EntryListAdapter(context, R.id.entrylistView, feed.entries);
+        mListView.setAdapter(feed.adapter);
     }
 
     // Sends data to another fragment trough the activity using an internal interface.
@@ -98,6 +80,28 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         Log.d(TAG, "START");
         // called when fragment is visible
         onEntryListFetched(mFeed);
+
+        mListView = (ListView) getView().findViewById(R.id.entrylistView);
+        // Define action (open activity) when a list item is selected
+        // NOTE: setOnItemClickListener MUST act directly on the adapter to get notifyDataSetChanged
+        // working
+        mListView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
+                EntryListAdapter adapter = ((EntryListAdapter) mListView.getAdapter());
+                RSSEntry entry = (RSSEntry) adapter.getItem(i);
+
+                // Set item as read
+                if (!entry.isRead) {
+                    entry.isRead = true;
+                    entry.columnsToUpdate.add(DbHelper.ENTRIES_ISREAD);
+                    new UpdateEntryInDB().execute(entry);
+                    adapter.notifyDataSetChanged();
+                }
+
+                itemSelectedListener.onItemSelected(entry);
+            }
+        });
     }
 
     /*private void updateList() {
@@ -121,6 +125,11 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
 
     public void setRSSFeed(RSSFeed feed) {
         this.mFeed= feed;
+
+        // reset
+        onEntryListFetched(null);
+
+        // ask for data
         RSSFeedManager mgr = RSSFeedManager.getInstance();
         mgr.requestEntryList(feed, this);
     }
