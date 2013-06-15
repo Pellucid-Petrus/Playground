@@ -179,6 +179,8 @@ public class XMLFeedParser {
                 title = readTagText(xpp, "title");
             } else if (name.equals("content")) {
                 description = readTagText(xpp, "content");
+            } else if (name.equals("summary")) {
+                description = readTagText(xpp, "summary");
             } else if (name.equals("link")) {
                 link = readAtomLink(xpp);
             } else if (name.equals("updated")) {
