@@ -18,7 +18,7 @@ import com.gnuton.newshub.tasks.BoilerPipeTask;
  * Created by gnuton on 5/18/13.
  */
 public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
-    private static final String TAG = "DETAIL_FRAGMENT";
+    private static final String TAG = "ARTICLE_FRAGMENT";
     private RSSEntry mEntry = null;
     private AsyncTask mTask = null;
 
@@ -33,13 +33,19 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
     }
 
     @Override
-    public void onStart() {
+    public void onActivityCreated(android.os.Bundle savedInstanceState) {
         super.onStart();
-        Log.d(TAG, "START");
+        Log.d(TAG, "ACTIVITY CREATED");
         // called when fragment is visible
         if (mEntry != null) {
             setEntry(mEntry);
         }
+    }
+
+    @Override
+    public void onStart() {
+        Log.d(TAG, "START");
+        super.onStart();
     }
 
     @Override

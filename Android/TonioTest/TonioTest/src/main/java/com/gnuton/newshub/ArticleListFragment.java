@@ -23,8 +23,8 @@ import com.gnuton.newshub.utils.RSSFeedManager;
 /**
  * Created by gnuton on 5/18/13.
  */
-public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntryListFetchedListener {
-    private static final String TAG = "MY_LIST_FRAGMENT";
+public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEntryListFetchedListener {
+    private static final String TAG = "ARTICLELIST_FRAGMENT";
     private OnItemSelectedListener itemSelectedListener;
     private RSSFeed mFeed;
     private ListView mListView;
@@ -81,7 +81,7 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         if (activity instanceof OnItemSelectedListener) {
             itemSelectedListener = (OnItemSelectedListener) activity;
         } else {
-            throw new ClassCastException(activity.toString() + " must implement EntryListFragment.OnItemSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement ArticleListFragment.OnItemSelectedListener");
         }
     }
 
@@ -94,16 +94,6 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         mListViewHeader = inflater.inflate(R.layout.entrylist_header, mListView, false);
         mListView.addHeaderView(mListViewHeader);
         setBusyIndicatorStatus(false);
-
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "START");
-        // called when fragment is visible
-        onEntryListFetched(mFeed);
 
         // Define action (open activity) when a list item is selected
         // NOTE: setOnItemClickListener MUST act directly on the adapter to get notifyDataSetChanged
@@ -127,6 +117,15 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
                 itemSelectedListener.onItemSelected(entry);
             }
         });
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "START");
+        // called when fragment is visible
+        onEntryListFetched(mFeed);
     }
 
     /*private void updateList() {

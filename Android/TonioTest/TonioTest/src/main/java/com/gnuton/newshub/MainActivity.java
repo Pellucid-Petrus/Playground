@@ -28,7 +28,7 @@ import java.util.List;
 
 
 public class MainActivity extends FragmentActivity
-        implements EntryListFragment.OnItemSelectedListener {
+        implements ArticleListFragment.OnItemSelectedListener {
     private static final String TAG = "MAIN_ACTIVITY";
     private String[] mItems = {};
 
@@ -64,7 +64,7 @@ public class MainActivity extends FragmentActivity
         if (rotation == Surface.ROTATION_180 || rotation == Surface.ROTATION_0 )*/
 
         if (savedInstanceState == null) {
-            mEntryListFragment =  new EntryListFragment();
+            mEntryListFragment =  new ArticleListFragment();
             mEntryListFragment.setRetainInstance(true);
 
             Log.d(TAG, "ID_:" + mEntryListFragment.getId());
@@ -240,17 +240,20 @@ public class MainActivity extends FragmentActivity
         //savedInstanceState.putString("MyString", "Welcome back to Android");
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onItemSelected(RSSEntry e) {
-        ArticleFragment df = (ArticleFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
+        Log.d(TAG, "ON ITEM SELECTED"+ e.title);
+
+        ArticleFragment df = (ArticleFragment) getSupportFragmentManager().findFragmentById(R.id.articleFragment);
+
         if (df != null && df.isInLayout()) {
             df.setEntry(e);
         } else {
             df = new ArticleFragment();
+
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.animator.slidein,R.animator.slideout,R.animator.slideinpop, R.animator.slideoutpop)
-                    .replace(R.id.container, df)
+                    .replace(R.id.container, df, "POTRAIT_ARTICLE_FRAGMENT_TAG")
                     .addToBackStack(null)
                     .commit();
             df.setEntry(e);
@@ -285,9 +288,9 @@ public class MainActivity extends FragmentActivity
         }
     }
     protected void feedSelected(int position) {
-        EntryListFragment elf = (EntryListFragment) mEntryListFragment;
+        ArticleListFragment elf = (ArticleListFragment) mEntryListFragment;
         if (elf == null){
-            Log.d(TAG, "EntryListFragment instance is null");
+            Log.d(TAG, "ArticleListFragment instance is null");
             return;
         }
 

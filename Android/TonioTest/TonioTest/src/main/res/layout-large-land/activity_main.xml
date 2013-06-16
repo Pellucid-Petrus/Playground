@@ -21,7 +21,7 @@
         <fragment android:layout_width="0dp"
                   android:layout_height="match_parent"
                   android:name="com.gnuton.newshub.ArticleFragment"
-                  android:id="@+id/detailFragment"
+                  android:id="@+id/articleFragment"
                   android:layout_centerVertical="true"
                   android:layout_alignRight="@+id/entrylistView"
                   android:layout_weight=".65"
