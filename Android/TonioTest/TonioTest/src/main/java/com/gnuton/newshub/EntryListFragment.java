@@ -109,7 +109,7 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
                 HeaderViewListAdapter hAdapter = (HeaderViewListAdapter) mListView.getAdapter();
                 EntryListAdapter adapter = (EntryListAdapter) hAdapter.getWrappedAdapter();
 
-                RSSEntry entry = (RSSEntry) adapter.getItem(i-1);
+                RSSEntry entry = (RSSEntry) adapter.getItem((int)l);
 
                 // Set item as read
                 if (!entry.isRead) {
