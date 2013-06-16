@@ -89,6 +89,12 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "CREATEVIEW");
         View view = inflater.inflate(R.layout.entrylist_fragment, container, false);
+        // Add header to list
+        mListView = (ListView) view.findViewById(R.id.entrylistView);
+        mListViewHeader = inflater.inflate(R.layout.entrylist_header, mListView, false);
+        mListView.addHeaderView(mListViewHeader);
+        setBusyIndicatorStatus(false);
+
         return view;
     }
 
@@ -99,7 +105,6 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         // called when fragment is visible
         onEntryListFetched(mFeed);
 
-        mListView = (ListView) getView().findViewById(R.id.entrylistView);
         // Define action (open activity) when a list item is selected
         // NOTE: setOnItemClickListener MUST act directly on the adapter to get notifyDataSetChanged
         // working
@@ -122,13 +127,6 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
                 itemSelectedListener.onItemSelected(entry);
             }
         });
-
-        // Add header to list
-        LayoutInflater inflater =
-                (LayoutInflater)getView().getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mListViewHeader = inflater.inflate(R.layout.entrylist_header, mListView, false);
-        mListView.addHeaderView(mListViewHeader);
-        setBusyIndicatorStatus(false);
     }
 
     /*private void updateList() {
