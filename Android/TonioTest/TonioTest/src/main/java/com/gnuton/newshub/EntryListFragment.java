@@ -157,9 +157,11 @@ public class EntryListFragment extends Fragment implements RSSFeedManager.OnEntr
         onEntryListFetched(null);
 
         // ask for data
-        setBusyIndicatorStatus(true);
-        RSSFeedManager mgr = RSSFeedManager.getInstance();
-        mgr.requestEntryList(feed, this);
+        if (feed != null){
+            setBusyIndicatorStatus(true);
+            RSSFeedManager mgr = RSSFeedManager.getInstance();
+            mgr.requestEntryList(feed, this);
+        }
     }
 
     @Override
