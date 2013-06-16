@@ -275,6 +275,7 @@ public class MainActivity extends FragmentActivity
                     RSSFeed f = (RSSFeed) mDrawerList.getItemAtPosition(position);
                     mFeedDataSource.delete(f);
                     updateDrawerList();
+                    feedSelected(-1);
                 }
             });
             builder.setNegativeButton(android.R.string.no, null);
