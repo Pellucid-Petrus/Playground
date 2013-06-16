@@ -247,8 +247,8 @@ public class XMLFeedParser {
                     dateString = readTagText(xpp, "pubdate");
                 }
                 String[] formatStrings = {
+                        "EEE, dd MMM yyyy HH:mm:ss Z",
                         "dd MMM yyyy HH:mm:ss Z",
-                        "EEE, dd MMM yyyy HH:mm:ss zzz",
                         "MM/dd/yy",
                         "MM/dd/yyyy",
                         "MM/dd/yy HH:mm",
