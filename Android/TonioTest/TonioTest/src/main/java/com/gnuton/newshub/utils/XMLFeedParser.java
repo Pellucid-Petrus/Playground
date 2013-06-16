@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -258,7 +259,7 @@ public class XMLFeedParser {
                 };
 
                 for (String formatString : formatStrings) {
-                    DateFormat formatter= new SimpleDateFormat(formatString);
+                    DateFormat formatter= new SimpleDateFormat(formatString, Locale.ENGLISH);
                     try {
                         publishedData = parseRSSDate(dateString, formatter);
                         Log.d(TAG, "PublishedDate=" + publishedData.toString());
