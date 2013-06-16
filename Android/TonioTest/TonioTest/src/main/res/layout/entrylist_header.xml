@@ -11,5 +11,5 @@
             android:id="@+id/spinningImage"
             android:layout_gravity="center"
             android:src="@drawable/ic_action_alarm_2"
-            android:layout_margin="50dp"/>
+            android:layout_margin="25dp"/>
 </LinearLayout>

@@ -70,10 +70,10 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
     }
 
     private void setBusyIndicatorStatus(Boolean busy){
-        if (mListViewHeader == null)
+        if (mDlgLayout == null)
             return;
 
-        View spinner = mListViewHeader.findViewById(R.id.spinningImage);
+        View spinner = mDlgLayout.findViewById(R.id.spinningImage);
         spinner.setVisibility(busy ? View.VISIBLE : View.GONE);
 
         if (busy){
@@ -111,18 +111,14 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
         // Binds SQLite to list
         Context ctx = this.getActivity();
 
+        // Initlialize list
         mFeeds = new ArrayList<RSSFeed>();
         adapter = new FeedListAdapter(ctx, R.layout.feedlist_item, mFeeds);
         mListView = (ListView) mDlgLayout.findViewById(R.id.subscribe_listView);
-        // Add header to list
-        mListViewHeader = inflater.inflate(R.layout.entrylist_header, mListView, false);
-        mListView.addHeaderView(mListViewHeader);
-        setBusyIndicatorStatus(false);
-
+        mListView. setEmptyView(mDlgLayout.findViewById(R.id.subscribe_emptyView));
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(this);
-
-
+        setBusyIndicatorStatus(false);
 
         // Add listeners to editText
         EditText et = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
@@ -168,15 +164,17 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
                 @Override
                 public void onFinish() {
                     Log.d(TAG," Start searching");
+                    setBusyIndicatorStatus(true);
                     EditText e = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
-                    //mListView.setAdapter(null);
+
+                    mFeeds.clear();
 
                     // CLOSE SOFT KEYBOARD
                     InputMethodManager imm = (InputMethodManager) MyApp.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(e.getWindowToken(), 0);
 
                     String url = mFindFeedsUrl + URLEncoder.encode(e.getText().toString());
-                    setBusyIndicatorStatus(true);
+
 
                     new DownloadWebTask(this).execute(url);
                 }
