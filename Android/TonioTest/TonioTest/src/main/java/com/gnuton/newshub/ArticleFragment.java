@@ -19,8 +19,8 @@ import com.gnuton.newshub.tasks.BoilerPipeTask;
  */
 public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "DETAIL_FRAGMENT";
-    private RSSEntry entry = null;
-    private AsyncTask task = null;
+    private RSSEntry mEntry = null;
+    private AsyncTask mTask = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,16 +37,16 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         super.onStart();
         Log.d(TAG, "START");
         // called when fragment is visible
-        if (entry != null) {
-            setEntry(entry);
+        if (mEntry != null) {
+            setEntry(mEntry);
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (this.task != null)
-            this.task.cancel(true);
+        if (this.mTask != null)
+            this.mTask.cancel(true);
         Log.d(TAG, "DESTROY");
     }
 
@@ -57,9 +57,10 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
     }
 
     public void setEntry(RSSEntry entry) {
-        Log.d(TAG,"Set entry");
+        Log.d(TAG,"Set mEntry");
+        this.mEntry = entry;
+
         if (getView() == null) {
-            this.entry = entry;
             return;
         }
 
@@ -87,7 +88,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             // fetch data
-            //this.task = new BoilerPipeTask(this).execute(entry.link);
+            //this.mTask = new BoilerPipeTask(this).execute(mEntry.link);
         } else {
             Log.w(TAG, "Device not connected");
             //TODO display error (use notification API?)
@@ -110,7 +111,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             view.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
 
         }
-        this.task = null;
+        this.mTask = null;
     }
 */
     @Override
