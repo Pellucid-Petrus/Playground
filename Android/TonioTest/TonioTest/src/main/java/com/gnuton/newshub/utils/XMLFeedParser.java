@@ -246,7 +246,6 @@ public class XMLFeedParser {
                 } catch (XmlPullParserException e) {
                     dateString = readTagText(xpp, "pubdate");
                 }
-
                 String[] formatStrings = {
                         "dd MMM yyyy HH:mm:ss Z",
                         "EEE, dd MMM yyyy HH:mm:ss zzz",
@@ -265,7 +264,7 @@ public class XMLFeedParser {
                         Log.d(TAG, "PublishedDate=" + publishedData.toString());
                         break;
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     } catch (DatatypeConfigurationException e) {
                         e.printStackTrace();
                     }
@@ -318,6 +317,7 @@ public class XMLFeedParser {
             xpp.nextTag();
         }
         xpp.require(XmlPullParser.END_TAG, xmlNamespace, tag);
+        text = TextUtils.removeNonPrintableChars(text);
         return text;
     }
 
