@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.tasks.BoilerPipeTask;
@@ -75,6 +76,10 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             myStringSpanned = Html.fromHtml(entry.summary, null, null);
         }
         contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
+
+        // scroll up
+        ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
+        scrollview.pageScroll(View.FOCUS_UP);
 /*
         //Load page
         Context c = getActivity().getApplicationContext();
