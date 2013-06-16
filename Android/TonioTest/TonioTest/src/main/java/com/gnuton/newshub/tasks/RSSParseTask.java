@@ -78,7 +78,7 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
             return;
         }
 
-        new BoilerPipeTask().execute(entries.toArray(new RSSEntry[entries.size()]));
+        //new BoilerPipeTask().execute(entries.toArray(new RSSEntry[entries.size()]));
 
         listener.onParsingCompleted(feed);
     }
