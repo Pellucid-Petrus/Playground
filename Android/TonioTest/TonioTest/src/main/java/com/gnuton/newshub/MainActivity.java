@@ -41,6 +41,7 @@ public class MainActivity extends FragmentActivity
     private RSSFeedDataSource mFeedDataSource;
     private RSSEntryDataSource mEntryDataSource;
     static private Fragment mEntryListFragment;
+    private static String mArticleFragmentTag = "POTRAIT_ARTICLE_FRAGMENT_TAG";
 
     /*@Override
     public void onBackPressed() {
@@ -70,7 +71,7 @@ public class MainActivity extends FragmentActivity
             Log.d(TAG, "ID_:" + mEntryListFragment.getId());
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, mEntryListFragment)
+                    .add(R.id.articlelist_container, mEntryListFragment)
                     .commit();
         }
 
@@ -232,12 +233,22 @@ public class MainActivity extends FragmentActivity
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
+
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
 
         //savedInstanceState.putString("MyString", "Welcome back to Android");
+
+        Fragment articleFragment = getSupportFragmentManager().findFragmentByTag(mArticleFragmentTag);
+        if (articleFragment!= null && articleFragment.isVisible()) {
+            Log.d(TAG,"FRAGMENT FOUND, REPLACING..");
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.articlelist_container, mEntryListFragment)
+                    //.remove(articleFragment)
+                    .commit();
+        }
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -252,8 +263,8 @@ public class MainActivity extends FragmentActivity
             df = new ArticleFragment();
 
             getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.animator.slidein,R.animator.slideout,R.animator.slideinpop, R.animator.slideoutpop)
-                    .replace(R.id.container, df, "POTRAIT_ARTICLE_FRAGMENT_TAG")
+                    .setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
+                    .replace(R.id.articlelist_container, df, mArticleFragmentTag)
                     .addToBackStack(null)
                     .commit();
             df.setEntry(e);
@@ -313,5 +324,26 @@ public class MainActivity extends FragmentActivity
         // Shows subscribe to feed dialog
         DialogFragment subscribe = new Subscribe(this);
         subscribe.show(getSupportFragmentManager(), "Subscribe dialog");
+    }
+
+    @Override
+    protected void onStop() {
+
+        Log.d(TAG, "ON STOP");
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG,"ON PAUSE");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"ON DESTROY");
     }
 }
