@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.utils.NetworkUtils;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -21,10 +19,10 @@ import java.util.List;
 /**
  * Created by gnuton on 5/21/13.
  */
-public class EntryListAdapter extends ArrayAdapter<RSSEntry> {
+public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
     private final List<RSSEntry> entries;
 
-    public EntryListAdapter(Context context, int textViewResourceId, List<RSSEntry> entries) {
+    public ArticleListAdapter(Context context, int textViewResourceId, List<RSSEntry> entries) {
         super(context, textViewResourceId, entries);
         this.entries = entries;
     }
@@ -43,7 +41,7 @@ public class EntryListAdapter extends ArrayAdapter<RSSEntry> {
         // Create delegate (View + view holder) when needed, or get the holder for the current view to convert.
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.entrylist_item, null);
+            v = vi.inflate(R.layout.articlelist_item, null);
             holder = new ViewHolder();
             holder.title = (TextView) v.findViewById(R.id.ListItemTitleTextView);
             holder.url = (TextView) v.findViewById(R.id.ListItemProviderTextView);

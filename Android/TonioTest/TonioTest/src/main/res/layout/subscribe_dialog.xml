@@ -20,7 +20,7 @@
                 android:maxLines="1"
                 />
     </LinearLayout>
-    <include layout="@layout/entrylist_header"/>
+    <include layout="@layout/articlelist_header"/>
     <TextView android:id="@+id/subscribe_emptyView"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"

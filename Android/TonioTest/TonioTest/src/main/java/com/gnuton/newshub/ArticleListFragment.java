@@ -49,7 +49,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
 
         // Creates data controller (adapter) for listview abd set "entries" as  data
         if (feed.adapter == null)
-            feed.adapter = new EntryListAdapter(context, R.id.entrylistView, feed.entries);
+            feed.adapter = new ArticleListAdapter(context, R.id.entrylistView, feed.entries);
         mListView.setAdapter(feed.adapter);
     }
 
@@ -88,10 +88,10 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "CREATEVIEW");
-        View view = inflater.inflate(R.layout.entrylist_fragment, container, false);
+        View view = inflater.inflate(R.layout.articlelist_fragment, container, false);
         // Add header to list
         mListView = (ListView) view.findViewById(R.id.entrylistView);
-        mListViewHeader = inflater.inflate(R.layout.entrylist_header, mListView, false);
+        mListViewHeader = inflater.inflate(R.layout.articlelist_header, mListView, false);
         mListView.addHeaderView(mListViewHeader);
         setBusyIndicatorStatus(false);
 
@@ -102,7 +102,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 HeaderViewListAdapter hAdapter = (HeaderViewListAdapter) mListView.getAdapter();
-                EntryListAdapter adapter = (EntryListAdapter) hAdapter.getWrappedAdapter();
+                ArticleListAdapter adapter = (ArticleListAdapter) hAdapter.getWrappedAdapter();
 
                 RSSEntry entry = (RSSEntry) adapter.getItem((int)l);
 

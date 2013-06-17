@@ -1,6 +1,6 @@
 package com.gnuton.newshub.types;
 
-import com.gnuton.newshub.EntryListAdapter;
+import com.gnuton.newshub.ArticleListAdapter;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -16,7 +16,7 @@ public class RSSFeed implements Serializable {
     public final String url;
 
     // temporary vars: not saved into DB
-    public EntryListAdapter adapter;
+    public ArticleListAdapter adapter;
     public String xml;
     public List entries;
     public Calendar lastUpdate;

@@ -2,19 +2,10 @@ package com.gnuton.newshub.utils;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
-import com.gnuton.newshub.EntryListAdapter;
 import com.gnuton.newshub.R;
-import com.gnuton.newshub.db.RSSEntryDataSource;
-import com.gnuton.newshub.tasks.DownloadWebTask;
 import com.gnuton.newshub.tasks.RSSParseTask;
-import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
-
-import java.util.List;
 
 /**
  * Created by gnuton on 6/5/13.
