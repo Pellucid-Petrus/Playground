@@ -1,5 +1,6 @@
 package com.gnuton.newshub;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.gnuton.newshub.tasks.ImageGetter;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.tasks.BoilerPipeTask;
 
@@ -76,12 +79,13 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         //Set page content
         TextView contentView = (TextView) getView().findViewById(R.id.ContentTextView);
-        Spanned myStringSpanned;
+        String content;
         if (entry.content != null) {
-            myStringSpanned = Html.fromHtml(entry.content, null, null);
+            content = entry.content;
         } else {
-            myStringSpanned = Html.fromHtml(entry.summary, null, null);
+            content = entry.summary;
         }
+        Spanned myStringSpanned = Html.fromHtml(content, new ImageGetter(contentView), null);
         contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
 
         // scroll up
@@ -120,8 +124,10 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         this.mTask = null;
     }
 */
+
     @Override
     public void onBoilerplateRemoved() {
         Log.d("TAG", "BOILER PLATE REMOVED");
     }
 }
+
