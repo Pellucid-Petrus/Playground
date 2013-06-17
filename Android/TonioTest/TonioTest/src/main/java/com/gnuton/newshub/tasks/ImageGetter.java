@@ -1,11 +1,14 @@
 package com.gnuton.newshub.tasks;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.Html;
 import android.view.View;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -14,6 +17,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class ImageGetter implements Html.ImageGetter {
     private final View mContainer;
@@ -79,6 +84,12 @@ public class ImageGetter implements Html.ImageGetter {
 
             // redraw the image by invalidating the container
             ImageGetter.this.mContainer.invalidate();
+            TextView tv = (TextView) ImageGetter.this.mContainer;
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+                tv.setHeight((tv.getHeight() + result.getIntrinsicHeight()));
+            } else {
+                tv.setEllipsize(null);
+            }
         }
 
         /***
@@ -98,11 +109,12 @@ public class ImageGetter implements Html.ImageGetter {
             }
         }
 
-        private InputStream fetch(String urlString) throws MalformedURLException, IOException {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpGet request = new HttpGet(urlString);
-            HttpResponse response = httpClient.execute(request);
-            return response.getEntity().getContent();
+        // Fetch images from phone cache or web
+        private InputStream fetch(String urlString) throws IOException {
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+            connection.setUseCaches(true);
+            return connection.getInputStream();
         }
     }
 
