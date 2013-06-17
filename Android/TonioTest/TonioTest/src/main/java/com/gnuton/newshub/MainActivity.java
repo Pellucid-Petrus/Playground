@@ -232,12 +232,10 @@ public class MainActivity extends FragmentActivity
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    // Save UI state changes to the savedInstanceState.
+    // This bundle will be passed to onCreate if the process is
+    // killed and restarted.
     public void onSaveInstanceState(Bundle savedInstanceState) {
-
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-
         //savedInstanceState.putString("MyString", "Welcome back to Android");
 
         Fragment articleFragment = getSupportFragmentManager().findFragmentByTag(mArticleFragmentTag);
@@ -248,6 +246,7 @@ public class MainActivity extends FragmentActivity
                     //.remove(articleFragment)
                     .commit();
         }
+
         super.onSaveInstanceState(savedInstanceState);
     }
 
