@@ -23,7 +23,6 @@ public class ImageAdapter extends PagerAdapter {
     Context mContext;
     public List<Drawable> mImages = new ArrayList<Drawable>();
     private List<ImageView> mImageViews = new ArrayList<ImageView>();
-    private Drawable mEmpty = MyApp.getInstance().getResources().getDrawable(android.R.color.transparent );
 
     public ImageAdapter(Context context){
         this.mContext=context;
@@ -38,7 +37,6 @@ public class ImageAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         return mImages.size();
-
     }
 
     @Override

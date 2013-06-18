@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import java.net.URLConnection;
 
 public class ImageGetter implements Html.ImageGetter {
     private final View mContainer;
+    private View mPageView;
     private ImageAdapter mImageAdapter;
     static private DiskLruImageCache mCache;
 
@@ -31,8 +33,9 @@ public class ImageGetter implements Html.ImageGetter {
         this.mContainer = t;
     }
 
-    public void setAdapter(ImageAdapter adapter) {
+    public void setAdapter(ImageAdapter adapter, View pageView) {
         mImageAdapter = adapter;
+        mPageView = pageView;
     }
 
     public Drawable getDrawable(String source) {
@@ -78,9 +81,17 @@ public class ImageGetter implements Html.ImageGetter {
 
         @Override
         protected void onPostExecute(Drawable result) {
+            int intHeight = result.getIntrinsicHeight();
+            int intWidth = result.getIntrinsicWidth();
+
+            if (intHeight >= mPageView.getHeight()/4 && mImageAdapter != null){
+                    mImageAdapter.mImages.add(result);
+                    mImageAdapter.notifyDataSetChanged();
+                    return;
+            }
+
             // set the correct bound according to the result from HTTP call
-            urlDrawable.setBounds(0, 0, 0 + result.getIntrinsicWidth(), 0
-                    + result.getIntrinsicHeight());
+            urlDrawable.setBounds(0, 0, intWidth, intHeight);
 
             // change the reference of the current drawable to the result
             // from the HTTP call
@@ -89,16 +100,11 @@ public class ImageGetter implements Html.ImageGetter {
             // redraw the image by invalidating the container
             ImageGetter.this.mContainer.invalidate();
             TextView tv = (TextView) ImageGetter.this.mContainer;
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH){
-                    tv.setHeight((tv.getHeight() + result.getIntrinsicHeight()));
-                } else {
-                    tv.setEllipsize(null);
-                }
-
-            if (mImageAdapter != null){
-                mImageAdapter.mImages.add(result);
-                mImageAdapter.notifyDataSetChanged();
-            }
+            /*if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+                tv.setHeight((tv.getHeight() + result.getMinimumHeight()));
+            } else {
+                tv.setEllipsize(null);
+            }*/
         }
 
         //FIXME Using drawable really sucks!

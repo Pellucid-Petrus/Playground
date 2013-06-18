@@ -42,7 +42,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager);
         viewPager.setOffscreenPageLimit(1);
         mImageAdapter = new ImageAdapter(view.getContext());
-        mImageGetter.setAdapter(mImageAdapter);
+        mImageGetter.setAdapter(mImageAdapter, viewPager);
         viewPager.setAdapter(mImageAdapter);
 
         return view;
