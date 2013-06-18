@@ -81,6 +81,12 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         Log.d(TAG,"Set mEntry");
         this.mEntry = entry;
 
+        // reset imageAdapter
+        if (mImageAdapter != null){
+                mImageAdapter.mImages.clear();
+                mImageAdapter.notifyDataSetChanged();
+        }
+
         if (getView() == null) {
             return;
         }

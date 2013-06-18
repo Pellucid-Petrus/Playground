@@ -27,7 +27,7 @@ public class ImageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-            return mImages.size();
+        return mImages.size();
     }
 
     @Override
@@ -37,10 +37,10 @@ public class ImageAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        if (mImages.size() == 0)
+        /*if (mImages.size() == 0)
             return null;
         position = Math.max(position, mImages.size()-1);
-
+*/
         ImageView imageView = new ImageView(mContext);
         //int padding = mContext.getResources().getDimensionPixelSize(0);
         //imageView.setPadding(padding, padding, padding, padding);
@@ -54,5 +54,10 @@ public class ImageAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         ((ViewPager) container).removeView((ImageView) object);
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

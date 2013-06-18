@@ -72,10 +72,6 @@ public class ImageGetter implements Html.ImageGetter {
 
         @Override
         protected Drawable doInBackground(String... params) {
-            if (mImageAdapter != null){
-                mImageAdapter.mImages.clear();
-                mImageAdapter.notifyDataSetChanged();
-            }
             String source = params[0];
             return fetchDrawable(source);
         }
