@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.gnuton.newshub.utils.MyApp;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +22,23 @@ import java.util.List;
 public class ImageAdapter extends PagerAdapter {
     Context mContext;
     public List<Drawable> mImages = new ArrayList<Drawable>();
+    private List<ImageView> mImageViews = new ArrayList<ImageView>();
+    private Drawable mEmpty = MyApp.getInstance().getResources().getDrawable(android.R.color.transparent );
 
     public ImageAdapter(Context context){
         this.mContext=context;
+        while (mImageViews.size() < 4) {
+            ImageView imageView = new ImageView(mContext);
+            imageView.setBackgroundColor(Color.parseColor("#000000"));
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            this.mImageViews.add(imageView);
+        }
     }
 
     @Override
     public int getCount() {
         return mImages.size();
+
     }
 
     @Override
@@ -37,15 +48,7 @@ public class ImageAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        /*if (mImages.size() == 0)
-            return null;
-        position = Math.max(position, mImages.size()-1);
-*/
-        ImageView imageView = new ImageView(mContext);
-        //int padding = mContext.getResources().getDimensionPixelSize(0);
-        //imageView.setPadding(padding, padding, padding, padding);
-        imageView.setBackgroundColor(Color.parseColor("#000000"));
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        ImageView imageView = mImageViews.get(position % 3);
         imageView.setImageDrawable(mImages.get(position));
         ((ViewPager) container).addView(imageView, 0);
         return imageView;
@@ -53,7 +56,8 @@ public class ImageAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        ((ViewPager) container).removeView((ImageView) object);
+        ImageView imageView = (ImageView) object;
+        ((ViewPager) container).removeView(imageView);
     }
 
     @Override
