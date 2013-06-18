@@ -81,6 +81,9 @@ public class ImageGetter implements Html.ImageGetter {
 
         @Override
         protected void onPostExecute(Drawable result) {
+            if (result == null)
+                return;
+
             int intHeight = result.getIntrinsicHeight();
             int intWidth = result.getIntrinsicWidth();
 
