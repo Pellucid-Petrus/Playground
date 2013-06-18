@@ -1,6 +1,8 @@
 package com.gnuton.newshub.tasks;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -10,22 +12,21 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.gnuton.newshub.utils.DiskLruImageCache;
+import com.gnuton.newshub.utils.MyApp;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class ImageGetter implements Html.ImageGetter {
     private final View mContainer;
-
+    private final DiskLruImageCache mCache;
 
     public ImageGetter(View t) {
         this.mContainer = t;
+        this.mCache = new DiskLruImageCache();
     }
 
 
@@ -55,8 +56,6 @@ public class ImageGetter implements Html.ImageGetter {
                 drawable.draw(canvas);
             }
         }
-
-
     }
 
     public class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable> {
@@ -99,10 +98,27 @@ public class ImageGetter implements Html.ImageGetter {
          */
         public Drawable fetchDrawable(String urlString) {
             try {
-                InputStream is = fetch(urlString);
-                Drawable drawable = Drawable.createFromStream(is, "src");
-                drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0
-                        + drawable.getIntrinsicHeight());
+                String key = String.valueOf(urlString.hashCode());
+                Drawable drawable;
+                Bitmap bitmap;
+                Context c = MyApp.getContext();
+                if (mCache.containsKey(key)) {
+                    bitmap = mCache.getBitmap(key);
+                    drawable = new BitmapDrawable(c.getResources(),bitmap);
+                    drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0
+                            + drawable.getIntrinsicHeight());
+                } else {
+                    // Download
+                    InputStream is = fetch(urlString);
+                    bitmap = BitmapFactory.decodeStream(is);
+                    drawable = new BitmapDrawable(c.getResources(),bitmap);
+                    //drawable = Drawable.createFromStream(is, "src");
+                    drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0
+                            + drawable.getIntrinsicHeight());
+
+                    if (bitmap != null)
+                        mCache.put(key, bitmap);
+                }
                 return drawable;
             } catch (Exception e) {
                 return null;
