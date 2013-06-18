@@ -1,4 +1,4 @@
-package com.gnuton.newshub;
+package com.gnuton.newshub.adapters;
 
 import android.content.Context;
 import android.text.Html;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.gnuton.newshub.R;
 import com.gnuton.newshub.types.RSSFeed;
 import com.gnuton.newshub.utils.NetworkUtils;
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.gnuton.newshub.tasks.ImageGetter;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.tasks.BoilerPipeTask;
+import com.gnuton.newshub.adapters.ImageAdapter;
 
 /**
  * Created by gnuton on 5/18/13.

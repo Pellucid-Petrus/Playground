@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
+import com.gnuton.newshub.adapters.ArticleListAdapter;
 import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.tasks.UpdateEntryInDB;
 import com.gnuton.newshub.types.RSSEntry;

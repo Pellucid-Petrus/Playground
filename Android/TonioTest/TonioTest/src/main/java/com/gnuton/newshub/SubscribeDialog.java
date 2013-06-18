@@ -19,6 +19,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.gnuton.newshub.adapters.FeedListAdapter;
 import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.db.RSSFeedDataSource;
 import com.gnuton.newshub.tasks.DownloadWebTask;
@@ -36,8 +38,8 @@ import java.util.List;
 /**
  * Created by gnuton on 5/28/13.
  */
-public class Subscribe extends DialogFragment implements ListView.OnItemClickListener {
-    private final String TAG = Subscribe.class.getName();
+public class SubscribeDialog extends DialogFragment implements ListView.OnItemClickListener {
+    private final String TAG = SubscribeDialog.class.getName();
     private CountDownTimer mSearchTiimer;
     private View mDlgLayout;
 
@@ -50,7 +52,7 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
     private View mListViewHeader;
     private ListView mListView;
 
-    Subscribe(final MainActivity mainActivity){
+    SubscribeDialog(final MainActivity mainActivity){
         super();
         this.mMainActivity = mainActivity;
         this.mFeedDataSource = new RSSFeedDataSource(mMainActivity);
@@ -86,7 +88,7 @@ public class Subscribe extends DialogFragment implements ListView.OnItemClickLis
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Subscribe t = this;
+        final SubscribeDialog t = this;
 
         String[] providers = new String[] {};
 

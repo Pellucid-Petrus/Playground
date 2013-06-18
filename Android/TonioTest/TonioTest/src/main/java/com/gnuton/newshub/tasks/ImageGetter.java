@@ -9,11 +9,10 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.gnuton.newshub.ImageAdapter;
+import com.gnuton.newshub.adapters.ImageAdapter;
 import com.gnuton.newshub.utils.DiskLruImageCache;
 import com.gnuton.newshub.utils.MyApp;
 

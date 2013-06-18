@@ -1,6 +1,6 @@
 package com.gnuton.newshub.types;
 
-import com.gnuton.newshub.ArticleListAdapter;
+import com.gnuton.newshub.adapters.ArticleListAdapter;
 
 import java.io.Serializable;
 import java.util.Calendar;

@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.gnuton.newshub.adapters.FeedListAdapter;
 import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.db.RSSFeedDataSource;
 import com.gnuton.newshub.types.RSSEntry;
@@ -321,8 +322,8 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "SUBSCRIBE TO A NEW FEED");
 
         // Shows subscribe to feed dialog
-        DialogFragment subscribe = new Subscribe(this);
-        subscribe.show(getSupportFragmentManager(), "Subscribe dialog");
+        DialogFragment subscribe = new SubscribeDialog(this);
+        subscribe.show(getSupportFragmentManager(), "SubscribeDialog dialog");
     }
 
     @Override
