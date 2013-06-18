@@ -8,20 +8,26 @@ import android.content.Context;
  */
 
 public class MyApp extends Application {
-    private static MyApp instance;
-
+    private static MyApp mInstance;
+    private static DiskLruImageCache mCache;
+    
     public static MyApp getInstance() {
-        return instance;
+        return mInstance;
     }
 
     public static Context getContext(){
-        return instance;
+        return mInstance;
         // or return instance.getApplicationContext();
     }
 
+    public static DiskLruImageCache getImageCache() {
+        return mCache;    
+    }
+    
     @Override
     public void onCreate() {
-        instance = this;
+        mInstance = this;
+        mCache = new DiskLruImageCache();
         super.onCreate();
     }
 }

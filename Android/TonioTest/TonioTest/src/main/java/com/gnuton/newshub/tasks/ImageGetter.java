@@ -9,9 +9,11 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.gnuton.newshub.ImageAdapter;
 import com.gnuton.newshub.utils.DiskLruImageCache;
 import com.gnuton.newshub.utils.MyApp;
 
@@ -22,13 +24,17 @@ import java.net.URLConnection;
 
 public class ImageGetter implements Html.ImageGetter {
     private final View mContainer;
-    private final DiskLruImageCache mCache;
+    private ImageAdapter mImageAdapter;
+    static private DiskLruImageCache mCache;
 
     public ImageGetter(View t) {
+        this.mCache = MyApp.getImageCache();
         this.mContainer = t;
-        this.mCache = new DiskLruImageCache();
     }
 
+    public void setAdapter(ImageAdapter adapter) {
+        mImageAdapter = adapter;
+    }
 
     public Drawable getDrawable(String source) {
         URLDrawable urlDrawable = new URLDrawable();
@@ -67,6 +73,10 @@ public class ImageGetter implements Html.ImageGetter {
 
         @Override
         protected Drawable doInBackground(String... params) {
+            if (mImageAdapter != null){
+                mImageAdapter.mImages.clear();
+                mImageAdapter.notifyDataSetChanged();
+            }
             String source = params[0];
             return fetchDrawable(source);
         }
@@ -84,18 +94,19 @@ public class ImageGetter implements Html.ImageGetter {
             // redraw the image by invalidating the container
             ImageGetter.this.mContainer.invalidate();
             TextView tv = (TextView) ImageGetter.this.mContainer;
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH){
-                tv.setHeight((tv.getHeight() + result.getIntrinsicHeight()));
-            } else {
-                tv.setEllipsize(null);
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+                    tv.setHeight((tv.getHeight() + result.getIntrinsicHeight()));
+                } else {
+                    tv.setEllipsize(null);
+                }
+
+            if (mImageAdapter != null){
+                mImageAdapter.mImages.add(result);
+                mImageAdapter.notifyDataSetChanged();
             }
         }
 
-        /***
-         * Get the Drawable from URL
-         * @param urlString
-         * @return
-         */
+        //FIXME Using drawable really sucks!
         public Drawable fetchDrawable(String urlString) {
             try {
                 String key = String.valueOf(urlString.hashCode());
@@ -104,6 +115,7 @@ public class ImageGetter implements Html.ImageGetter {
                 Context c = MyApp.getContext();
                 if (mCache.containsKey(key)) {
                     bitmap = mCache.getBitmap(key);
+
                     drawable = new BitmapDrawable(c.getResources(),bitmap);
                     drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0
                             + drawable.getIntrinsicHeight());
@@ -119,6 +131,7 @@ public class ImageGetter implements Html.ImageGetter {
                     if (bitmap != null)
                         mCache.put(key, bitmap);
                 }
+
                 return drawable;
             } catch (Exception e) {
                 return null;

@@ -18,11 +18,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
-
-            <ImageView
+            <android.support.v4.view.ViewPager
+                    android:id="@+id/view_pager"
                     android:layout_width="fill_parent"
                     android:layout_height="240sp"
-                    android:id="@+id/imageView"
                     android:layout_gravity="center"
                     android:src="#b4d4ff"
                     />

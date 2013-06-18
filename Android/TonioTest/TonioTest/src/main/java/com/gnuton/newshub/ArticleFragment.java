@@ -1,9 +1,9 @@
 package com.gnuton.newshub;
 
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -24,13 +24,24 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
     private static final String TAG = "ARTICLE_FRAGMENT";
     private RSSEntry mEntry = null;
     private AsyncTask mTask = null;
+    private ImageAdapter mImageAdapter;
+    private ImageGetter mImageGetter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "Create view");
         //return super.onCreateView(inflater, container, savedInstanceState);
-        // Created when FAsyncTask<String,Void,String>ragment needs to crerate its UI
         View view = inflater.inflate(R.layout.article_fragment, container, false);
+
+        // Instantiate imageGetter
+        TextView contentView = (TextView) view.findViewById(R.id.ContentTextView);
+        mImageGetter = new ImageGetter(contentView);
+
+        // View Pager
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        mImageAdapter = new ImageAdapter(view.getContext());
+        mImageGetter.setAdapter(mImageAdapter);
+        viewPager.setAdapter(mImageAdapter);
 
         return view;
     }
@@ -85,7 +96,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         } else {
             content = entry.summary;
         }
-        Spanned myStringSpanned = Html.fromHtml(content, new ImageGetter(contentView), null);
+        Spanned myStringSpanned = Html.fromHtml(content, mImageGetter, null);
         contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
 
         // scroll up
