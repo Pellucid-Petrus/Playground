@@ -8,11 +8,16 @@ import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.utils.MyApp;
 
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import de.l3s.boilerpipe.BoilerpipeExtractor;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.document.TextDocument;
 import de.l3s.boilerpipe.extractors.CommonExtractors;
+import de.l3s.boilerpipe.sax.BoilerpipeSAXInput;
+import de.l3s.boilerpipe.sax.HTMLDocument;
+import de.l3s.boilerpipe.sax.HTMLFetcher;
 import de.l3s.boilerpipe.sax.HTMLHighlighter;
 
 import java.io.IOException;
@@ -64,8 +69,22 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
                 continue;
             }
             Log.d(TAG, "Processing " + url);
-            e.content = extractArticle(url);
-            if (e.content != null) {
+
+            TextDocument doc = null;
+            HTMLDocument htmlDoc = null;
+            try {
+                htmlDoc = HTMLFetcher.fetch(url);
+                doc = new BoilerpipeSAXInput(htmlDoc.toInputSource()).getTextDocument();
+            } catch (BoilerpipeProcessingException e1) {
+                e1.printStackTrace();
+            } catch (SAXException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.content = extractArticle(doc, htmlDoc);
+
+            if (e.content != null ||e.media.size() > 0) {
                 e.content = sanitizeArticle(e);
                 e.columnsToUpdate.add(DbHelper.ENTRIES_CONTENT);
                 eds.update(e);
@@ -86,18 +105,16 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
         return article;
     }
 
-    public String extractArticle(URL url){
+    public String extractArticle(TextDocument doc, HTMLDocument htmlDoc) {
+        if (doc == null||htmlDoc == null)
+            return null;
         String article= null;
         final BoilerpipeExtractor extractor = CommonExtractors.ARTICLE_EXTRACTOR;
         final HTMLHighlighter hh = HTMLHighlighter.newExtractingInstance();
-
         try {
-            article = hh.process(url, extractor);
-        } catch (IOException e) {
-            e.printStackTrace();
+            extractor.process(doc);
+            article = hh.process(doc,htmlDoc.toInputSource());
         } catch (BoilerpipeProcessingException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
             e.printStackTrace();
         }
 
