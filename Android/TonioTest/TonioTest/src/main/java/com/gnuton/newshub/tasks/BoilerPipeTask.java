@@ -84,7 +84,7 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
             }
             e.content = extractArticle(doc, htmlDoc);
 
-            if (e.content != null ||e.media.size() > 0) {
+            if (e.content != null) {
                 e.content = sanitizeArticle(e);
                 e.columnsToUpdate.add(DbHelper.ENTRIES_CONTENT);
                 eds.update(e);
