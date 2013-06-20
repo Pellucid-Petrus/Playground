@@ -67,7 +67,6 @@
     <orderEntry type="jdk" jdkName="Android 4.2.2" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="android-support-v4" level="project" />
-    <orderEntry type="library" name="boilerpipe-1.2.0-android (3)" level="project" />
     <orderEntry type="library" name="boilerpipe-1.2.0-android" level="project" />
     <orderEntry type="library" name="nekohtml-1.9.13" level="project" />
     <orderEntry type="library" name="xerces-2.9.1" level="project" />

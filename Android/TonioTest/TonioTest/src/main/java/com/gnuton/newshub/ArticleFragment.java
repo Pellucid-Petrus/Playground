@@ -123,7 +123,8 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         //Set Title
         TextView titleView = (TextView) getView().findViewById(R.id.TitleTextView);
-        titleView.setText(entry.title);
+        Spanned titleSpanned = Html.fromHtml(entry.title, mImageGetter, null);
+        titleView.setText(titleSpanned);
 
         //Set page content
         TextView contentView = (TextView) getView().findViewById(R.id.ContentTextView);
@@ -134,8 +135,8 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             content = entry.summary;
             fetchFullArticle(entry);
         }
-        Spanned myStringSpanned = Html.fromHtml(content, mImageGetter, null);
-        contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
+        Spanned contentSpanned = Html.fromHtml(content, mImageGetter, null);
+        contentView.setText(contentSpanned, TextView.BufferType.SPANNABLE);
 
         // scroll up
         ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
