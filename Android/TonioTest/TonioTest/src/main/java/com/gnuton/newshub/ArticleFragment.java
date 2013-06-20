@@ -1,5 +1,7 @@
 package com.gnuton.newshub;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -35,7 +38,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         View view = inflater.inflate(R.layout.article_fragment, container, false);
 
         // Instantiate imageGetter
-        TextView contentView = (TextView) view.findViewById(R.id.ContentTextView);
+        final TextView contentView = (TextView) view.findViewById(R.id.ContentTextView);
         mImageGetter = new ImageGetter(contentView);
 
         // View Pager
@@ -44,6 +47,28 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         mImageAdapter = new ImageAdapter(view.getContext());
         mImageGetter.setAdapter(mImageAdapter, viewPager);
         viewPager.setAdapter(mImageAdapter);
+
+        // Define action for button
+        final Button readMoreButton = (Button) view.findViewById(R.id.ReadMoreButton);
+        readMoreButton.setVisibility(View.GONE);
+        readMoreButton.setOnClickListener(new View.OnClickListener() {
+             public void onClick(View v) {
+                 if (mEntry != null) {
+                    String content = mEntry.content;
+                    if (content != null) {
+                        Spanned myStringSpanned = Html.fromHtml(content, mImageGetter, null);
+                        contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
+                        readMoreButton.setVisibility(View.GONE);
+                    } else {
+                        // Show content in a browser
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(mEntry.link));
+                        startActivity(i);
+                    }
+                 }
+
+             }
+         });
 
         return view;
     }
@@ -92,6 +117,10 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             return;
         }
 
+        // Hide Read more button
+        Button readMoreButton = (Button) getView().findViewById(R.id.ReadMoreButton);
+        readMoreButton.setVisibility(View.GONE);
+
         //Set Title
         TextView titleView = (TextView) getView().findViewById(R.id.TitleTextView);
         titleView.setText(entry.title);
@@ -103,6 +132,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             content = entry.content;
         } else {
             content = entry.summary;
+            fetchFullArticle(entry);
         }
         Spanned myStringSpanned = Html.fromHtml(content, mImageGetter, null);
         contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
@@ -110,8 +140,14 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         // scroll up
         ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
         scrollview.pageScroll(View.FOCUS_UP);
-/*
-        //Load page
+
+        
+    }
+
+    private void fetchFullArticle(RSSEntry entry) {
+        this.mTask = new BoilerPipeTask(this).execute(entry);
+
+        /*
         Context c = getActivity().getApplicationContext();
         ConnectivityManager connMgr = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -123,7 +159,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             //TODO display error (use notification API?)
         }*/
     }
-/*
+    /*
     @Override
     public void onBoilerplateRemoved(String buffer) {
         Log.d(TAG, "Page Downloaded");
@@ -141,12 +177,16 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         }
         this.mTask = null;
-    }
-*/
+    }*/
+
 
     @Override
-    public void onBoilerplateRemoved() {
+    public void onBoilerplateRemoved(RSSEntry[] entries) {
         Log.d("TAG", "BOILER PLATE REMOVED");
+        this.mEntry = entries[0];
+        Button readMoreButton = (Button) getView().findViewById(R.id.ReadMoreButton);
+        readMoreButton.setVisibility(View.VISIBLE);
+
     }
 }
 

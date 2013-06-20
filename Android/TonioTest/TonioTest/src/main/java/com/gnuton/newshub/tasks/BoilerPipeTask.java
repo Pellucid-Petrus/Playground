@@ -22,14 +22,14 @@ import java.net.URL;
 /**
  * Created by gnuton on 5/22/13.
  */
-public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, Void> {
+public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
     private static final String TAG = "BOILER PIPE TASK";
 
     private static OnBoilerplateRemovedListener mListener;
     private static final RSSEntryDataSource eds = new RSSEntryDataSource(MyApp.getContext());
 
     public interface OnBoilerplateRemovedListener {
-        public void onBoilerplateRemoved();
+        public void onBoilerplateRemoved(RSSEntry[] entries);
     }
 
     public BoilerPipeTask() {
@@ -45,7 +45,7 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(RSSEntry... entries) {
+    protected RSSEntry[] doInBackground(RSSEntry... entries) {
 
         for (RSSEntry e : entries) {
             if (e.content != null || "".equals(e.content)) {
@@ -65,11 +65,13 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, Void> {
             }
             Log.d(TAG, "Processing " + url);
             e.content = extractArticle(url);
-            e.content = sanitizeArticle(e);
-            e.columnsToUpdate.add(DbHelper.ENTRIES_CONTENT);
-            eds.update(e);
+            if (e.content != null) {
+                e.content = sanitizeArticle(e);
+                e.columnsToUpdate.add(DbHelper.ENTRIES_CONTENT);
+                eds.update(e);
+            }
         }
-        return null;
+        return entries;
     }
 
     private String sanitizeArticle(RSSEntry e) {
@@ -103,10 +105,10 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void v) {
+    protected void onPostExecute(RSSEntry[] entries) {
         Log.d(TAG, "Boilerpipe thread terminated");
 
         if (mListener != null)
-            mListener.onBoilerplateRemoved();
+            mListener.onBoilerplateRemoved(entries);
     }
 }

@@ -15,11 +15,18 @@ import com.gnuton.newshub.utils.MyApp;
  */
 
 public class UninterceptableViewPager extends ViewPager {
-    private final Animation mScaleUpAnimation = AnimationUtils.loadAnimation(MyApp.getContext(), R.animator.scaleup);
-    private final Animation mScaleDownAnimation = AnimationUtils.loadAnimation(MyApp.getContext(), R.animator.scaledown);
+    private final Animation mScaleUpAnimation;
+    private final Animation mScaleDownAnimation;
 
     public UninterceptableViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if (!isInEditMode()) {
+            mScaleUpAnimation = AnimationUtils.loadAnimation(MyApp.getContext(), R.animator.scaleup);
+            mScaleDownAnimation = AnimationUtils.loadAnimation(MyApp.getContext(), R.animator.scaledown);
+        } else {
+            mScaleUpAnimation = null;
+            mScaleDownAnimation = null;
+        }
     }
 
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -34,7 +41,7 @@ public class UninterceptableViewPager extends ViewPager {
     @Override
     public void setVisibility(int visibility)
     {
-        if (getVisibility() != visibility)
+        if (!isInEditMode() && getVisibility() != visibility)
         {
             if (visibility == VISIBLE)
             {
@@ -47,4 +54,5 @@ public class UninterceptableViewPager extends ViewPager {
         }
         super.setVisibility(visibility);
     }
+
 }
