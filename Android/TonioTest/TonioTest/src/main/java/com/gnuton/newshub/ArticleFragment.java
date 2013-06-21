@@ -59,7 +59,6 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
                         Spanned myStringSpanned = Html.fromHtml(content, mImageGetter, null);
                         contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
                         readMoreButton.setVisibility(View.GONE);
-                        Log.d(TAG, content);
                     } else {
                         // Show content in a browser
                         Intent i = new Intent(Intent.ACTION_VIEW);
@@ -139,7 +138,6 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             content = entry.summary;
             fetchFullArticle(entry);
         }
-        Log.d("XXXXXXXXXXXXXXXXXXXXXXXXX", content);
         Spanned contentSpanned = Html.fromHtml(content, mImageGetter, null);
         contentView.setText(contentSpanned, TextView.BufferType.SPANNABLE);
 
