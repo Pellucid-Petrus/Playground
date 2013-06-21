@@ -35,6 +35,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -157,12 +158,14 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(new InputSource(new StringReader(html)));
         doc.getDocumentElement().normalize();
-        Element img = doc.createElement("img");
-        img.setAttribute("img", images.get(0).getSrc());
+        Element img = doc.createElement("IMG");
+        img.setAttribute("src", images.get(0).getSrc());
+
         Node body = doc.getElementsByTagName("BODY").item(0);
         body.appendChild(img);
         try {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             StreamResult result = new StreamResult(new StringWriter());
             DOMSource source = new DOMSource(doc);
             transformer.transform(source, result);

@@ -52,23 +52,26 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         final Button readMoreButton = (Button) view.findViewById(R.id.ReadMoreButton);
         readMoreButton.setVisibility(View.GONE);
         readMoreButton.setOnClickListener(new View.OnClickListener() {
-             public void onClick(View v) {
-                 if (mEntry != null) {
+            public void onClick(View v) {
+                if (mEntry != null) {
                     String content = mEntry.content;
                     if (content != null) {
                         Spanned myStringSpanned = Html.fromHtml(content, mImageGetter, null);
                         contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
                         readMoreButton.setVisibility(View.GONE);
+                        Log.d(TAG, content);
                     } else {
                         // Show content in a browser
                         Intent i = new Intent(Intent.ACTION_VIEW);
                         i.setData(Uri.parse(mEntry.link));
                         startActivity(i);
                     }
-                 }
-
-             }
-         });
+                }
+                // scroll up
+                ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
+                scrollview.pageScroll(View.FOCUS_UP);
+            }
+        });
 
         return view;
     }
@@ -109,8 +112,8 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         // reset imageAdapter
         if (mImageAdapter != null){
-                mImageAdapter.mImages.clear();
-                mImageAdapter.notifyDataSetChanged();
+            mImageAdapter.mImages.clear();
+            mImageAdapter.notifyDataSetChanged();
         }
 
         if (getView() == null) {
@@ -129,20 +132,20 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         //Set page content
         TextView contentView = (TextView) getView().findViewById(R.id.ContentTextView);
         String content;
+
         if (entry.content != null) {
             content = entry.content;
         } else {
             content = entry.summary;
             fetchFullArticle(entry);
         }
+        Log.d("XXXXXXXXXXXXXXXXXXXXXXXXX", content);
         Spanned contentSpanned = Html.fromHtml(content, mImageGetter, null);
         contentView.setText(contentSpanned, TextView.BufferType.SPANNABLE);
 
         // scroll up
         ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
         scrollview.pageScroll(View.FOCUS_UP);
-
-        
     }
 
     private void fetchFullArticle(RSSEntry entry) {
