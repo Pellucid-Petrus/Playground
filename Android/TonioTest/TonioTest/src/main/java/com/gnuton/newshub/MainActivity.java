@@ -249,6 +249,9 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onItemSelected(RSSEntry e) {
         Log.d(TAG, "ON ITEM SELECTED"+ e.title);
+        ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
+        if (pager != null)
+            pager.setCurrentItem(2);
         ArticleFragment df = (ArticleFragment) mArticleDetailFragment;
         df.setEntry(e);
     }

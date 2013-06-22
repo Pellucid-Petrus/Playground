@@ -107,6 +107,8 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
     public void setEntry(RSSEntry entry) {
         Log.d(TAG,"Set mEntry");
+        if (entry == mEntry)
+            return;
         this.mEntry = entry;
 
         // reset imageAdapter
