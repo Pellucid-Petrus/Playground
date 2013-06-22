@@ -135,12 +135,12 @@ public class MainActivity extends FragmentActivity
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                //LinearLayout l = (LinearLayout) findViewById(R.id.mainActivityLayout);
+                LinearLayout l = (LinearLayout) findViewById(R.id.mainActivityLayout);
                 LinearLayout d = (LinearLayout) findViewById(R.id.layout_panel_drawer);
 
                 float offset = slideOffset * d.getWidth();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    //l.setX(offset);
+                    l.setX(offset);
                 } else {
                     //lastOffset = (int)offset - lastOffset;
                     //l.offsetLeftAndRight(lastOffset);
