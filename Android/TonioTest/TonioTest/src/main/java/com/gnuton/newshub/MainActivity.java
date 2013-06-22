@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.*;
@@ -19,10 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.gnuton.newshub.adapters.FeedListAdapter;
+import com.gnuton.newshub.adapters.MainPageFragmentAdapter;
 import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.db.RSSFeedDataSource;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
+import com.gnuton.newshub.utils.FragmentUtils;
+import com.gnuton.newshub.utils.MyApp;
 import com.gnuton.newshub.utils.Notifications;
 
 import java.util.List;
@@ -30,24 +35,31 @@ import java.util.List;
 
 public class MainActivity extends FragmentActivity
         implements ArticleListFragment.OnItemSelectedListener {
+    // generic fields
     private static final String TAG = "MAIN_ACTIVITY";
-    private String[] mItems = {};
 
+    //Action Bar
     private ActionBarDrawerToggle mDrawerToggle;
 
+    //Layouts
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
     private LinearLayout mDrawerPanelLayout;
 
-    private RSSFeedDataSource mFeedDataSource;
-    private RSSEntryDataSource mEntryDataSource;
-    static private Fragment mEntryListFragment;
-    private static String mArticleFragmentTag = "POTRAIT_ARTICLE_FRAGMENT_TAG";
+    //Views
+    private ListView mDrawerList;
 
-    /*@Override
-    public void onBackPressed() {
-        mDrawerLayout.openDrawer(mDrawerPanelLayout);
-    }*/
+    //Data sources
+    private static RSSFeedDataSource mFeedDataSource = new RSSFeedDataSource(MyApp.getContext());
+    private static RSSEntryDataSource mEntryDataSource = new RSSEntryDataSource(MyApp.getContext());
+
+    //Fragments
+    private Fragment mArticleListFragment;
+    private Fragment mArticleDetailFragment;
+
+    //Adapters
+    private FragmentPagerAdapter mFragmentPagerAdapter;
+
+
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -55,27 +67,28 @@ public class MainActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFeedDataSource=  new RSSFeedDataSource(getApplicationContext());
-        mEntryDataSource=  new RSSEntryDataSource(getApplicationContext());
         Log.i(TAG, "CREATEEEEEEEE");
 
-        /*Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-        int rotation = display.getRotation();
-        Log.d(TAG, "Orientation " + rotation);
-        If in portrait mode
-        if (rotation == Surface.ROTATION_180 || rotation == Surface.ROTATION_0 )*/
+        mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
+        mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
 
-        if (savedInstanceState == null) {
-            mEntryListFragment =  new ArticleListFragment();
-            mEntryListFragment.setRetainInstance(true);
-
-            Log.d(TAG, "ID_:" + mEntryListFragment.getId());
+        ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
+        if (pager != null) {
+            // run in most of cases
+            mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
+            pager.setAdapter(mFragmentPagerAdapter);
+        } else {
+            // This is used for large portrait layouts
+            if (savedInstanceState == null) {
+            }
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.articlelist_container, mEntryListFragment)
+                            //.setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
+                    .replace(R.id.articlelist_container, mArticleListFragment)
+                    .replace(R.id.articledetail_container, mArticleDetailFragment)
                     .commit();
-        }
 
+        }
         //Set up Navigation drawer
         mDrawerPanelLayout = (LinearLayout) findViewById(R.id.layout_panel_drawer);
         mDrawerList = (ListView) findViewById(R.id.list_drawer);
@@ -122,12 +135,12 @@ public class MainActivity extends FragmentActivity
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                LinearLayout l = (LinearLayout) findViewById(R.id.mainActivityLayout);
+                //LinearLayout l = (LinearLayout) findViewById(R.id.mainActivityLayout);
                 LinearLayout d = (LinearLayout) findViewById(R.id.layout_panel_drawer);
 
                 float offset = slideOffset * d.getWidth();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    l.setX(offset);
+                    //l.setX(offset);
                 } else {
                     //lastOffset = (int)offset - lastOffset;
                     //l.offsetLeftAndRight(lastOffset);
@@ -137,24 +150,6 @@ public class MainActivity extends FragmentActivity
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        // TESTING DB
-        //RSSFeed f = (RSSFeed) mFeedDataSource.create(new String[]{"Titolo", "Url"});
-        //List<RSSFeed> feeds = mFeedDataSource.getAll();
-        //Log.d(TAG, "FEEDS in DB:" + feeds.toString());
-        /*for (RSSFeed feed : feeds) {
-            mFeedDataSource.delete(feed);
-        }*/
-
-        /*XMLGregorianCalendar publishedData = null;
-        String dateString = "2013-05-26T19:33:06Z";
-        try {
-            publishedData = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateString);
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        RSSEntry e = (RSSEntry) mEntryDataSource.create(new String[]{"111","ETitolo", "Esummary", "ELink", "content", publishedData.toString()});
-        */
         updateDrawerList();
     }
 
@@ -237,16 +232,10 @@ public class MainActivity extends FragmentActivity
     // This bundle will be passed to onCreate if the process is
     // killed and restarted.
     public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.d(TAG, "SAVE INSTANCE STATE");
         //savedInstanceState.putString("MyString", "Welcome back to Android");
-
-        Fragment articleFragment = getSupportFragmentManager().findFragmentByTag(mArticleFragmentTag);
-        if (articleFragment!= null && articleFragment.isVisible()) {
-            Log.d(TAG,"FRAGMENT FOUND, REPLACING..");
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.articlelist_container, mEntryListFragment)
-                    //.remove(articleFragment)
-                    .commit();
-        }
+        getSupportFragmentManager().beginTransaction().remove(mArticleListFragment).commit();
+        getSupportFragmentManager().beginTransaction().remove(mArticleDetailFragment).commit();
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -254,21 +243,8 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onItemSelected(RSSEntry e) {
         Log.d(TAG, "ON ITEM SELECTED"+ e.title);
-
-        ArticleFragment df = (ArticleFragment) getSupportFragmentManager().findFragmentById(R.id.articleFragment);
-
-        if (df != null && df.isInLayout()) {
-            df.setEntry(e);
-        } else {
-            df = new ArticleFragment();
-
-            getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
-                    .replace(R.id.articlelist_container, df, mArticleFragmentTag)
-                    .addToBackStack(null)
-                    .commit();
-            df.setEntry(e);
-        }
+        ArticleFragment df = (ArticleFragment) mArticleDetailFragment;
+        df.setEntry(e);
     }
 
     private class DrawerItemClickListener implements AdapterView.OnItemClickListener {
@@ -299,7 +275,7 @@ public class MainActivity extends FragmentActivity
         }
     }
     protected void feedSelected(int position) {
-        ArticleListFragment elf = (ArticleListFragment) mEntryListFragment;
+        ArticleListFragment elf = (ArticleListFragment) mArticleListFragment;
         if (elf == null){
             Log.d(TAG, "ArticleListFragment instance is null");
             return;
@@ -328,17 +304,20 @@ public class MainActivity extends FragmentActivity
 
     @Override
     protected void onStop() {
-
         Log.d(TAG, "ON STOP");
-
         super.onStop();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG,"ON PAUSE");
+    protected void onStart() {
+        Log.d(TAG, "ON START");
+        super.onStart();
+    }
 
+    @Override
+    protected void onPause() {
+        Log.d(TAG,"ON PAUSE");
+        super.onPause();
     }
 
     @Override
@@ -346,4 +325,9 @@ public class MainActivity extends FragmentActivity
         super.onDestroy();
         Log.d(TAG,"ON DESTROY");
     }
+
+     /*@Override
+    public void onBackPressed() {
+        mDrawerLayout.openDrawer(mDrawerPanelLayout);
+    }*/
 }
