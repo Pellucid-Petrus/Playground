@@ -37,6 +37,7 @@ public class MainActivity extends FragmentActivity
         implements ArticleListFragment.OnItemSelectedListener {
     // generic fields
     private static final String TAG = "MAIN_ACTIVITY";
+    private int mOrientation;
 
     //Action Bar
     private ActionBarDrawerToggle mDrawerToggle;
@@ -68,7 +69,7 @@ public class MainActivity extends FragmentActivity
         setContentView(R.layout.activity_main);
 
         Log.i(TAG, "CREATEEEEEEEE");
-
+        mOrientation = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
         mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
 
@@ -223,6 +224,7 @@ public class MainActivity extends FragmentActivity
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        Log.d(TAG,"CONFIGURATION CHANGED");
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
@@ -234,9 +236,13 @@ public class MainActivity extends FragmentActivity
     public void onSaveInstanceState(Bundle savedInstanceState) {
         Log.d(TAG, "SAVE INSTANCE STATE");
         //savedInstanceState.putString("MyString", "Welcome back to Android");
-        getSupportFragmentManager().beginTransaction().remove(mArticleListFragment).commit();
-        getSupportFragmentManager().beginTransaction().remove(mArticleDetailFragment).commit();
 
+        if (mOrientation != ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(mArticleListFragment)
+                    .remove(mArticleDetailFragment)
+                    .commit();
+        }
         super.onSaveInstanceState(savedInstanceState);
     }
 
