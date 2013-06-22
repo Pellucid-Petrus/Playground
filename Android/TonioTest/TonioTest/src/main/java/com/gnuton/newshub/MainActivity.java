@@ -259,6 +259,9 @@ public class MainActivity extends FragmentActivity
     private class DrawerItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
+            if (pager != null)
+                pager.setCurrentItem(0);
             feedSelected(position);
         }
     }
