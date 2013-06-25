@@ -19,7 +19,7 @@
             android:id="@+id/add_feed_button"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:layout_margin="5dp"
+            android:layout_margin="0dp"
             android:src="@drawable/add_feed_light" android:onClick="SubscribeToFeed"
             style="@android:style/Widget.Holo.Tab"/>
 </LinearLayout>
