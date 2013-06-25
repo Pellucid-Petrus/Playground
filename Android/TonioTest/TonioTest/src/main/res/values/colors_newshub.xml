@@ -18,5 +18,5 @@
 -->
 
 <resources>
-    <color name="pressed_newshub">#CC9933CC</color>
+    <color name="pressed_newshub">#CC000000</color>
 </resources>
