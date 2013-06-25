@@ -187,7 +187,12 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
     @Override
     public void onBoilerplateRemoved(RSSEntry[] entries) {
         Log.d("TAG", "BOILER PLATE REMOVED");
-        this.mEntry = entries[0];
+        RSSEntry e =entries[0];
+
+        if (!this.mEntry.link.equals(e.link))
+            return;
+
+        this.mEntry = e;
         Button readMoreButton = (Button) getView().findViewById(R.id.ReadMoreButton);
         readMoreButton.setVisibility(View.VISIBLE);
 
