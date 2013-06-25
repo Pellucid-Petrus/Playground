@@ -51,12 +51,13 @@
             <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="Lorem Ipsum"
+                    android:autoLink="all"
                     android:id="@+id/ContentTextView"
                     android:layout_gravity="top"
                     android:layout_weight="20"
                     android:layout_margin="10dp"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    />
 
             <Button
                     android:layout_width="wrap_content"
