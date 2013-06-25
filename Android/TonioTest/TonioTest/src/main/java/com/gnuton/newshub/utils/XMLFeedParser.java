@@ -179,11 +179,13 @@ public class XMLFeedParser {
             if (name.equals("title")) {
                 title = readTagText(xpp, "title");
             } else if (name.equals("content")) {
-                description = readTagText(xpp, "content");
+                content = readTagText(xpp, "content");
             } else if (name.equals("summary")) {
                 description = readTagText(xpp, "summary");
             } else if (name.equals("link")) {
-                link = readAtomLink(xpp);
+                String maybeALike = readAtomLink(xpp);
+                if (!maybeALike.isEmpty())
+                    link = maybeALike;
             } else if (name.equals("updated")) {
                 String dateString = readTagText(xpp, "updated");
                 try {
@@ -197,6 +199,9 @@ public class XMLFeedParser {
                 skip(xpp);
             }
         }
+
+        if (description == null && content != null)
+            description= "";
 
         return (RSSEntry) mEds.create(
                 new String[] {
@@ -295,10 +300,13 @@ public class XMLFeedParser {
         if (tag.equals("link")) {
             if (relType.equals("alternate")){
                 link = xpp.getAttributeValue(null, "href");
-                xpp.nextTag();
+                Log.d(TAG, "Read url:"+ link);
+            } else if (relType.equals("replies")) {
+                // not used yet
             }
+            xpp.nextTag();
         }
-        xpp.require(XmlPullParser.END_TAG, xmlNamespace, "link");
+        //link can be self-closing - xpp.require(XmlPullParser.END_TAG, xmlNamespace, "link");
         return link;
     }
 
