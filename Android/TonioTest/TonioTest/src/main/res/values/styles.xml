@@ -16,11 +16,30 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:background">#00000000</item>
     </style>
 
-    <style name="ArticleDetailScrollView" parent="AppBaseTheme">
-        <item name="android:background">@drawable/article_frame</item>
+    <style name="MainFragmentBackground" parent="AppBaseTheme">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="ArticleDetailFrame" parent="AppBaseTheme">
+        <item name="android:background">@drawable/frame</item>
+        <item name="android:padding">5dp</item>
+
+    </style>
+    <style name="ArticleDetailHeadline" parent="AppBaseTheme">
+        <item name="android:background">#ffffff</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+    <style name="ArticleDetailBody" parent="AppBaseTheme">
+        <item name="android:background">#ffffff</item>
+    </style>
+
+    <style name="ArticleDetailMoreButton" parent="AppBaseTheme">
+        <item name="android:background">#ff0000</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:padding">20dp</item>
+
     </style>
 
 </resources>

@@ -10,6 +10,7 @@
                   android:layout_height="match_parent"
                   tools:context=".MainActivity" android:orientation="horizontal"
                   android:id="@+id/mainActivityLayout"
+                  style="@style/MainFragmentBackground"
             >
 
         <FrameLayout

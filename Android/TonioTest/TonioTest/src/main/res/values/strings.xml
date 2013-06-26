@@ -26,6 +26,6 @@
         error:
     </string>
     <string name="subscribe_dialog_title">Subscribe to a new news provider</string>
-    <string name="subscribe_dialog_nofeedstext">No providers</string>
+    <string name="subscribe_dialog_nofeedstext">No providers</string><string name="read_more">Read more!</string>
 
 </resources>
