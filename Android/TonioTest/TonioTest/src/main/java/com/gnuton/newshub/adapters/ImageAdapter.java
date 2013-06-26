@@ -7,10 +7,8 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.gnuton.newshub.utils.MyApp;
 import com.gnuton.newshub.view.UninterceptableViewPager;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ public class ImageAdapter extends PagerAdapter {
             ImageView imageView = new ImageView(mContext);
             imageView.setMinimumHeight(240);
             imageView.setBackgroundColor(Color.parseColor("#000000"));
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);//FIT_CENTER
             this.mImageViews.add(imageView);
         }
     }
