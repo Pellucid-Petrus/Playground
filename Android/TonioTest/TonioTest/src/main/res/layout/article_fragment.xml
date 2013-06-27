@@ -34,11 +34,25 @@
                     android:layout_gravity="left|center_vertical"
                     android:textAlignment="center"
                     android:textSize="30sp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    />
+                    style="@style/ArticleDetailTitle"/>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/open_link"
+                    android:id="@+id/OpenLinkButton"
+                    style="@style/ArticleDetailOpenLinkButton"
+                    android:enabled="true"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share_link"
+                    android:id="@+id/ShareLinkButton"
+                    style="@style/ArticleDetailShareLinkButton"
+                    android:enabled="true"
+                    android:clickable="true"
+                    android:focusable="true"/>
 
             <TextView
                     android:layout_width="fill_parent"

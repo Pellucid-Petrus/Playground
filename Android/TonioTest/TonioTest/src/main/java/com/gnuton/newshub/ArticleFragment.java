@@ -72,6 +72,36 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             }
         });
 
+        // Define action for button
+        final Button openLinkButton = (Button) view.findViewById(R.id.OpenLinkButton);
+        openLinkButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (mEntry != null) {
+                    // Show content in a browser
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(mEntry.link));
+                    startActivity(i);
+                }
+            }
+
+        });
+
+        // Define action for button
+        final Button shareLinkButton = (Button) view.findViewById(R.id.ShareLinkButton);
+        shareLinkButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (mEntry != null) {
+                    // Show content in a browser
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, mEntry.link);
+                    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.sharing_url_string);
+                    startActivity(Intent.createChooser(intent, "Share"));
+                }
+            }
+
+        });
+
         return view;
     }
 

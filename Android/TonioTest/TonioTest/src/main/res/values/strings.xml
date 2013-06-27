@@ -27,5 +27,9 @@
     </string>
     <string name="subscribe_dialog_title">Subscribe to a new news provider</string>
     <string name="subscribe_dialog_nofeedstext">No providers</string><string name="read_more">Read more!</string>
+    <string name="open_link">View original</string>
+    <string name="share_link">Tell a friend!</string>
+    <string name="sharing_url_string">Check out this site! (Shared with News Hub on Android)
+    </string>
 
 </resources>
