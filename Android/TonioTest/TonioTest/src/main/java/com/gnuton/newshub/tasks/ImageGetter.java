@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -45,7 +44,12 @@ public class ImageGetter implements Html.ImageGetter {
         ImageGetterAsyncTask asyncTask =
                 new ImageGetterAsyncTask( urlDrawable);
 
-        asyncTask.execute(source);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, source);
+        } else {
+           asyncTask.execute(source);
+        }
+
 
         // return reference to URLDrawable where I will change with actual image from
         // the src tag
