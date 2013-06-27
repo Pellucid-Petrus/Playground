@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
     private final List<RSSEntry> entries;
+    private int dayOfTheMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
     public ArticleListAdapter(Context context, int textViewResourceId, List<RSSEntry> entries) {
         super(context, textViewResourceId, entries);
@@ -70,8 +71,12 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
 
     String dateToString(Calendar cal) {
         String strdate = null;
+        SimpleDateFormat sdf;
 
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yy HH:mm");
+        if (dayOfTheMonth == cal.get(Calendar.DAY_OF_MONTH))
+            sdf = new SimpleDateFormat("HH:mm");
+        else
+            sdf = new SimpleDateFormat("EEE, dd MMM");
 
         if (cal != null) {
             strdate = sdf.format(cal.getTime());
