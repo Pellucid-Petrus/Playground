@@ -35,24 +35,6 @@
                     android:textAlignment="center"
                     android:textSize="30sp"
                     style="@style/ArticleDetailTitle"/>
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/open_link"
-                    android:id="@+id/OpenLinkButton"
-                    style="@style/ArticleDetailOpenLinkButton"
-                    android:enabled="true"
-                    android:clickable="true"
-                    android:focusable="true"/>
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/share_link"
-                    android:id="@+id/ShareLinkButton"
-                    style="@style/ArticleDetailShareLinkButton"
-                    android:enabled="true"
-                    android:clickable="true"
-                    android:focusable="true"/>
 
             <TextView
                     android:layout_width="fill_parent"
@@ -72,6 +54,33 @@
                     android:id="@+id/ReadMoreButton"
                     android:layout_gravity="center"
                     style="@style/ArticleDetailMoreButton"/>
+            <RelativeLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/open_link"
+                        android:id="@+id/OpenLinkButton"
+                        style="@style/ArticleDetailOpenLinkButton"
+                        android:enabled="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"/>
+                <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/share_link"
+                        android:id="@+id/ShareLinkButton"
+                        style="@style/ArticleDetailShareLinkButton"
+                        android:enabled="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"/>
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

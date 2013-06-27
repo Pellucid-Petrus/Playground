@@ -51,7 +51,10 @@
     <style name="ArticleDetailShareLinkButton" parent="AppBaseTheme">
         <item name="android:background">@drawable/sharelink_button</item>
         <item name="android:textColor">#ffffff</item>
-        <item name="android:padding">20dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
         <item name="android:clickable">true</item>
         <item name="android:gravity">right|center_vertical</item>
     </style>
