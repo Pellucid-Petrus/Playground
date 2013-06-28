@@ -14,6 +14,10 @@ public class Notifications {
     static public void showWarning(int resourceMsg){
         Context context = MyApp.getContext();
         String msg = context.getResources().getString(resourceMsg).toString();
+        showWarning(msg);
+    }
+    static public void showWarning(String msg){
+        Context context = MyApp.getContext();
 
         int duration = Toast.LENGTH_LONG;
         Toast toast = Toast.makeText(context, msg, duration);
