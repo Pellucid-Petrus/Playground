@@ -11,12 +11,12 @@ public class Notifications {
      *
      * @param resourceMsg = R.string.something
      */
-    static public void showWarning(int resourceMsg){
+    static public void showMsg(int resourceMsg){
         Context context = MyApp.getContext();
         String msg = context.getResources().getString(resourceMsg).toString();
-        showWarning(msg);
+        showMsg(msg);
     }
-    static public void showWarning(String msg){
+    static public void showMsg(String msg){
         Context context = MyApp.getContext();
 
         int duration = Toast.LENGTH_LONG;

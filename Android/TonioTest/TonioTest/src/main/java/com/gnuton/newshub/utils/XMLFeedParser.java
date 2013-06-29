@@ -5,6 +5,7 @@ import android.os.Build;
 import android.util.Log;
 import android.util.Xml;
 
+import com.gnuton.newshub.BuildConfig;
 import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
@@ -17,7 +18,6 @@ import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -40,6 +40,10 @@ public class XMLFeedParser {
     }
 
     public RSSFeed parseXML(RSSFeed feed){
+        if ( BuildConfig.DEBUG ) {
+            Log.d(TAG, "PARSING XML at: " + feed.url);
+        }
+
         if (feed != null && feed.xml == null)
             return feed;
 
@@ -97,64 +101,94 @@ public class XMLFeedParser {
         return feed;
     }
     private RSSFeed parseAtomBuffer(RSSFeed feed) throws XmlPullParserException, IOException {
-        String xml = feed.xml;
-        List entries = new ArrayList();
+        final String xml = feed.xml;
+        final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
+        final List entries = feed.entries;
+        final XmlPullParser xpp = Xml.newPullParser();
+
+        // Some checking
         if (xml == null) {
-            Log.e(TAG, "XML Buffer is empty");
+            Log.e(TAG, "XML Buffer is empty. Nothing to parse.");
             return feed;
         }
-        XmlPullParser xpp = Xml.newPullParser();
 
+        // let's start to parse!
         xpp.setInput(new StringReader(xml));
         xpp.nextTag();
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "feed");
 
+        //Position in the entries list where the entry will be placed
+        //NOTE: That list is sorted by day.
+        int pos = 0;
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG)
                 continue;
 
             if (xpp.getName().equals("entry")) {
-                entries.add(parseAtomEntry(xpp, feed.id));
+                RSSEntry e = parseAtomEntry(xpp, feed.id);
+
+                // Stop parsing old news
+                if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
+                    break;
+
+                entries.add(pos, e);
+                ++pos;
             } else {
                 skip(xpp);
             }
         }
 
-        Log.d(TAG, "PARSED " + entries.size() + " ENTRIES");
-        feed.entries = entries;
+        if ( BuildConfig.DEBUG ) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
+            Log.d(TAG, "ATOM BUFFER PARSED:" + pos + "NEW ENTRIES NEWER THAN" + sdf.format(latestNewsPubDate.getTime()));
+        }
+
         return feed;
     }
 
     private RSSFeed parseRSSBuffer(RSSFeed feed) throws XmlPullParserException, IOException {
-        String xml = feed.xml;
-        List entries = new ArrayList();
+        final String xml = feed.xml;
+        final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
+        final List entries = feed.entries;
+        final XmlPullParser xpp = Xml.newPullParser();
+
         if (xml == null) {
             Log.e(TAG, "XML Buffer is empty");
             return feed;
         }
 
-        Log.d(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" + xml);
-        XmlPullParser xpp = Xml.newPullParser();
+        // Start parsing
         xpp.setInput(new StringReader(xml));
         xpp.nextTag();
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "rss");
         xpp.nextTag();
         String name = xpp.getName();
         Log.d(TAG, "NAME " + name);
-        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "channel"); // or feed
+        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "channel");
+
+        int pos = 0; // this is where the new entry will be inserted in the list
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG)
                 continue;
 
             if (xpp.getName().equals("item")) {
-                entries.add(parseRSSEntry(xpp, feed.id));
+                RSSEntry e = parseRSSEntry(xpp, feed.id);
+
+                // Stop parsing old news
+                if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
+                    break;
+
+                entries.add(pos, e);
+                ++pos;
             } else {
                 skip(xpp);
             }
         }
 
-        Log.d(TAG, "PARSED " + entries.size() + " ENTRIES");
-        feed.entries = entries;
+        if ( BuildConfig.DEBUG ) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
+            Log.d(TAG, "RSS BUFFER PARSED:" + pos + "NEW ENTRIES NEWER THAN" + sdf.format(latestNewsPubDate.getTime()));
+        }
         return feed;
     }
     @TargetApi(Build.VERSION_CODES.FROYO)
@@ -174,7 +208,7 @@ public class XMLFeedParser {
             }
 
             String name = xpp.getName();
-            Log.d(TAG, "NAME " + name);
+            Log.d(TAG, "ATOM NAME " + name);
 
             if (name.equals("title")) {
                 title = readTagText(xpp, "title");
@@ -184,7 +218,7 @@ public class XMLFeedParser {
                 description = readTagText(xpp, "summary");
             } else if (name.equals("link")) {
                 String maybeALike = readAtomLink(xpp);
-                if (!maybeALike.isEmpty())
+                if (!maybeALike.equals(""))
                     link = maybeALike;
             } else if (name.equals("updated")) {
                 String dateString = readTagText(xpp, "updated");
@@ -194,6 +228,10 @@ public class XMLFeedParser {
                     publishedData = new GregorianCalendar();
                 }
 
+                if ( BuildConfig.DEBUG ) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
+                    Log.d(TAG, "PUBDATE: " + sdf.format(publishedData.getTime()));
+                }
 
             } else {
                 skip(xpp);
@@ -237,7 +275,7 @@ public class XMLFeedParser {
                 continue;
             }
             String name = xpp.getName();
-            Log.d(TAG, "NAME " + name);
+            Log.d(TAG, "RSS NAME " + name);
 
             if (name.equals("title")) {
                 title = readTagText(xpp, "title");
@@ -267,7 +305,10 @@ public class XMLFeedParser {
                     DateFormat formatter= new SimpleDateFormat(formatString, Locale.ENGLISH);
                     try {
                         publishedData = parseRSSDate(dateString, formatter);
-                        Log.d(TAG, "PublishedDate=" + publishedData.toString());
+                        if ( BuildConfig.DEBUG ) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
+                            Log.d(TAG, "PUBDATE: " + sdf.format(publishedData.getTime()));
+                        }
                         break;
                     } catch (ParseException e) {
                         //e.printStackTrace();

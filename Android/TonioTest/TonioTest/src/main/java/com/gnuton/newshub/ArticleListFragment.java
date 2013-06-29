@@ -43,15 +43,18 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         if (v == null ||mListView == null)
             return;
 
-        if (feed == null){
+        if (feed == null || feed.entries.size() == 0){
             mListView.setAdapter(null);
             return;
         }
 
-        // Creates data controller (adapter) for listview abd set "entries" as  data
-        if (feed.adapter == null)
+
+        if (feed.adapter == null){
+            // Creates data controller (adapter) for listview abd set "entries" as  data
             feed.adapter = new ArticleListAdapter(context, R.id.entrylistView, feed.entries);
-        mListView.setAdapter(feed.adapter);
+            mListView.setAdapter(feed.adapter);
+        }
+
     }
 
     private void setBusyIndicatorStatus(Boolean busy){
@@ -151,14 +154,13 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
     public void setRSSFeed(RSSFeed feed) {
         this.mFeed= feed;
 
-        // reset
-        onEntryListFetched(null);
-
         // ask for data
         if (feed != null){
             setBusyIndicatorStatus(true);
             RSSFeedManager mgr = RSSFeedManager.getInstance();
             mgr.requestEntryList(feed, this);
+        } else {
+            onEntryListFetched(null);
         }
     }
 

@@ -31,5 +31,6 @@
     <string name="share_link">Share</string>
     <string name="sharing_url_string">Check out this site! (Shared with News Hub on Android)
     </string>
+    <string name="msg_entry_list_updated">Entry list updated</string>
 
 </resources>

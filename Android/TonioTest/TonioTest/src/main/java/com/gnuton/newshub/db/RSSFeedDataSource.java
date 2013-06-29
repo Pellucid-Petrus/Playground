@@ -43,7 +43,7 @@ public class RSSFeedDataSource extends GenericDataSource {
         List<RSSFeed> feeds = this.getAll(selection, null, null, null, null);
         if (feeds.size() != 0){
             Log.d(TAG, title + "is already in the DB");
-            Notifications.showWarning(R.string.warning_feed_already_in_db);
+            Notifications.showMsg(R.string.warning_feed_already_in_db);
             if (feeds.size() > 1)
                 Log.d(TAG, "WARNING: More than one feed has same url");
             return feeds.get(0);

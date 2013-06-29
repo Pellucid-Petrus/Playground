@@ -197,7 +197,7 @@ public class MainActivity extends FragmentActivity
                                 for (RSSEntry entry : entries) {
                                     mEntryDataSource.delete(entry);
                                 }
-                                Notifications.showWarning(R.string.info_article_cache_cleaned);
+                                Notifications.showMsg(R.string.info_article_cache_cleaned);
                                 feedSelected(-1);
                                 updateDrawerList();
                             }

@@ -1,18 +1,22 @@
 package com.gnuton.newshub.utils;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.gnuton.newshub.R;
+import com.gnuton.newshub.tasks.GetEntriesFromDB;
 import com.gnuton.newshub.tasks.RSSParseTask;
 import com.gnuton.newshub.types.RSSFeed;
+
+import java.util.Calendar;
 
 /**
  * Created by gnuton on 6/5/13.
  */
-public class RSSFeedManager extends Object implements RSSParseTask.OnParsingCompletedListener{
+public class RSSFeedManager extends Object implements RSSParseTask.OnParsingCompletedListener, GetEntriesFromDB.OnResultsGot{
     private final String TAG = getClass().toString();
     private OnEntryListFetchedListener mListener;
+    private static final int UPDATE_INTERVAL = 30;
+    private static final int MILLISECONDS_IN_A_MINUTE = 60000;
 
     // Singleton
     private static RSSFeedManager mInstance = null;
@@ -24,28 +28,54 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
     }
 
     private RSSFeedManager() {
-    }
 
+    }
 
     // Callback executed when parsing is completed
     @Override
     public void onParsingCompleted(final RSSFeed feed) {
         Log.d(TAG, "Parsing completed");
 
-        Context context = MyApp.getContext();
         if (feed != null && feed.entries == null) {
-            Notifications.showWarning(R.string.warning_no_entries_found);
+            Notifications.showMsg(R.string.warning_no_entries_found);
             return;
+        } else {
+            Notifications.showMsg(R.string.msg_entry_list_updated);
         }
+
         mListener.onEntryListFetched(feed);
     }
+
+    /** Callback executed when GetEntriesFromDB gets something from DB **/
+    @Override
+    public void onResultsGot(RSSFeed feed) {
+        if (feed != null)
+            mListener.onEntryListFetched(feed);
+
+        Calendar rightNow = Calendar.getInstance();
+        Calendar offset = Calendar.getInstance();
+        offset.add(Calendar.MINUTE, UPDATE_INTERVAL);
+
+        // Fetch data from the internet if this is the first time or if data is older than 30 mins
+        if (feed.lastUpdate == null || feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE){
+            // Update data
+            feed.lastUpdate = rightNow;
+            new RSSParseTask(this).execute(feed);
+        } else {
+            Log.d(TAG, "RSS that we have looks to be updated.");
+        }
+    }
+
     /**
      * This method is called when a client object asks for the list of entries associated on a feed
      * When the list is retrieved from DB and Internet, listener.onEntryListFetched callback is called.
      */
     public void requestEntryList(RSSFeed feed, OnEntryListFetchedListener listener){
         mListener = listener;
-        new RSSParseTask(this).execute(feed);
+
+        // Read data from DB
+        GetEntriesFromDB getEntryTask = new GetEntriesFromDB(this);
+        getEntryTask.execute(getEntryTask.createGetLatestEntriesRequest(feed));
     }
 
     public interface OnEntryListFetchedListener{
