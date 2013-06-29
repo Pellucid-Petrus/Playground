@@ -180,39 +180,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
     private void fetchFullArticle(RSSEntry entry) {
         this.mTask = new BoilerPipeTask(this).execute(entry);
-
-        /*
-        Context c = getActivity().getApplicationContext();
-        ConnectivityManager connMgr = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            // fetch data
-            //this.mTask = new BoilerPipeTask(this).execute(mEntry.link);
-        } else {
-            Log.w(TAG, "Device not connected");
-            //TODO display error (use notification API?)
-        }*/
     }
-    /*
-    @Override
-    public void onBoilerplateRemoved(String buffer) {
-        Log.d(TAG, "Page Downloaded");
-        View v = getView();
-        if (v == null)
-            return;
-        if (buffer == null || buffer == ""){
-            return;
-        }
-
-        TextView view = (TextView) v.findViewById(R.id.ContentTextView);
-        if (view != null){
-            Spanned myStringSpanned = Html.fromHtml(buffer, null, null);
-            view.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
-
-        }
-        this.mTask = null;
-    }*/
-
 
     @Override
     public void onBoilerplateRemoved(RSSEntry[] entries) {

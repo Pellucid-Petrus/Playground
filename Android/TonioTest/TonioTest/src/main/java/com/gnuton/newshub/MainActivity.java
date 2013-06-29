@@ -192,7 +192,7 @@ public class MainActivity extends FragmentActivity
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d(TAG, "Clear entry cache");
+                                //FIXME This should live in a separate thread and a progres dialog should be shown
                                 List<RSSEntry> entries = mEntryDataSource.getAll();
                                 for (RSSEntry entry : entries) {
                                     mEntryDataSource.delete(entry);
