@@ -31,7 +31,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
     private View mListViewHeader;
 
     @Override
-    public void onEntryListFetched(final RSSFeed feed) {
+    public synchronized void onEntryListFetched(final RSSFeed feed) {
         // No UI. We don't need to do anything here!!
         if (getView() == null ||mListView == null)
             return;
@@ -59,10 +59,8 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
 
     }
 
-
-
     @Override
-    public void setBusyIndicator(Boolean busy){
+    public synchronized void setBusyIndicator(Boolean busy){
         if (mListViewHeader == null)
             return;
 

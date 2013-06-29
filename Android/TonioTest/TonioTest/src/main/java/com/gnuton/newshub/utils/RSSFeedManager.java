@@ -1,5 +1,6 @@
 package com.gnuton.newshub.utils;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.gnuton.newshub.R;
@@ -17,6 +18,8 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
     private OnEntryListFetchedListener mListener;
     private static final int UPDATE_INTERVAL = 30;
     private static final int MILLISECONDS_IN_A_MINUTE = 60000;
+    private GetEntriesFromDB mGetEntryTask;
+    private RSSParseTask mParseTask;
 
     // Singleton
     private static RSSFeedManager mInstance = null;
@@ -63,7 +66,11 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
             // Update data
             feed.lastUpdate = rightNow;
             mListener.setBusyIndicator(true);
-            new RSSParseTask(this).execute(feed);
+
+            if (mParseTask != null)
+                mParseTask.cancel(false);
+            mParseTask = new RSSParseTask(this);
+            mParseTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, feed);
         } else {
             Log.d(TAG, "RSS that we have looks to be updated.");
         }
@@ -78,8 +85,10 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
 
         // Read data from DB
         mListener.setBusyIndicator(true);
-        GetEntriesFromDB getEntryTask = new GetEntriesFromDB(this);
-        getEntryTask.execute(getEntryTask.createGetLatestEntriesRequest(feed));
+        if (mGetEntryTask != null)
+            mGetEntryTask.cancel(false);
+        mGetEntryTask = new GetEntriesFromDB(this);
+        mGetEntryTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mGetEntryTask.createGetLatestEntriesRequest(feed));
     }
 
     public interface OnEntryListFetchedListener{
