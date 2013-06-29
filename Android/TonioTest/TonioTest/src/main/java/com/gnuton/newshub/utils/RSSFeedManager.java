@@ -49,8 +49,10 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
     /** Callback executed when GetEntriesFromDB gets something from DB **/
     @Override
     public void onResultsGot(RSSFeed feed) {
-        if (feed != null)
+        if (feed != null){
+            mListener.setBusyIndicator(false);
             mListener.onEntryListFetched(feed);
+        }
 
         Calendar rightNow = Calendar.getInstance();
         Calendar offset = Calendar.getInstance();
@@ -60,10 +62,10 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
         if (feed.lastUpdate == null || feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE){
             // Update data
             feed.lastUpdate = rightNow;
+            mListener.setBusyIndicator(true);
             new RSSParseTask(this).execute(feed);
         } else {
             Log.d(TAG, "RSS that we have looks to be updated.");
-            mListener.setBusyIndicator(false);
         }
     }
 
