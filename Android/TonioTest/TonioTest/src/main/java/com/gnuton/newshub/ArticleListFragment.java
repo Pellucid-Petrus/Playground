@@ -59,12 +59,10 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
 
     }
 
-    @Override
-    public void setBusyIndicator(Boolean on) {
-        setBusyIndicatorStatus(on);
-    }
 
-    private void setBusyIndicatorStatus(Boolean busy){
+
+    @Override
+    public void setBusyIndicator(Boolean busy){
         if (mListViewHeader == null)
             return;
 
@@ -104,7 +102,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         mListView = (ListView) view.findViewById(R.id.entrylistView);
         mListViewHeader = inflater.inflate(R.layout.articlelist_header, mListView, false);
         mListView.addHeaderView(mListViewHeader);
-        setBusyIndicatorStatus(false);
+        setBusyIndicator(false);
 
         // Define action (open activity) when a list item is selected
         // NOTE: setOnItemClickListener MUST act directly on the adapter to get notifyDataSetChanged
@@ -163,7 +161,6 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
 
         // ask for data
         if (feed != null){
-            setBusyIndicatorStatus(true);
             RSSFeedManager mgr = RSSFeedManager.getInstance();
             mgr.requestEntryList(feed, this);
         } else {
