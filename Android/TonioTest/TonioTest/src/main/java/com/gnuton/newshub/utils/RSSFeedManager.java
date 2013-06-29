@@ -1,6 +1,8 @@
 package com.gnuton.newshub.utils;
 
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 import com.gnuton.newshub.R;
@@ -50,6 +52,7 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
     }
 
     /** Callback executed when GetEntriesFromDB gets something from DB **/
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onResultsGot(RSSFeed feed) {
         if (feed != null){
@@ -70,7 +73,10 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
             if (mParseTask != null)
                 mParseTask.cancel(false);
             mParseTask = new RSSParseTask(this);
-            mParseTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, feed);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                mParseTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, feed);
+            else
+                mParseTask.execute(feed);
         } else {
             Log.d(TAG, "RSS that we have looks to be updated.");
         }
@@ -87,8 +93,12 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
         mListener.setBusyIndicator(true);
         if (mGetEntryTask != null)
             mGetEntryTask.cancel(false);
+
         mGetEntryTask = new GetEntriesFromDB(this);
-        mGetEntryTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mGetEntryTask.createGetLatestEntriesRequest(feed));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            mGetEntryTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mGetEntryTask.createGetLatestEntriesRequest(feed));
+        else
+           mGetEntryTask.execute(mGetEntryTask.createGetLatestEntriesRequest(feed));
     }
 
     public interface OnEntryListFetchedListener{

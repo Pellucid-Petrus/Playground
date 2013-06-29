@@ -36,27 +36,23 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         if (getView() == null ||mListView == null)
             return;
 
-        // User select same feed or content needs to be updated
-        if (feed != null && feed == mFeed && feed.adapter != null){
-            feed.adapter.notifyDataSetChanged();
-            if (mListView.getAdapter() == null)
-                mListView.setAdapter(feed.adapter);
-            return;
-        }
-
-        if (feed == null || feed.entries.size() == 0){
-            mFeed = feed;
-            mListView.setAdapter(null);
-            return;
-        }
-
         mFeed = feed;
-        if (feed.adapter == null){
-            // Creates data controller (adapter) for listview abd set "entries" as  data
-            feed.adapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, feed.entries);
-            mListView.setAdapter(feed.adapter);
-        }
 
+        if (feed == null){
+            mListView.setAdapter(null);
+        } else {
+            if (feed.adapter == null){
+                // Creates data controller (adapter) for listview abd set "entries" as  data
+                feed.adapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, feed.entries);
+                mListView.setAdapter(feed.adapter);
+            } else {
+                if (feed.adapter != mListView.getAdapter()) {
+                    mListView.setAdapter(feed.adapter);
+                } else {
+                    feed.adapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 
     @Override
