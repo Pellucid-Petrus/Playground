@@ -1,7 +1,6 @@
 package com.gnuton.newshub;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -33,25 +32,32 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
 
     @Override
     public void onEntryListFetched(final RSSFeed feed) {
-        Context context = getActivity();
-
-        this.mFeed = feed;
-        setBusyIndicatorStatus(false);
-
-        View v = getView();
-        // This should prevent a crash. The feed will be set in the list as soon as the fragment starts.
-        if (v == null ||mListView == null)
+        // No UI. We don't need to do anything here!!
+        if (getView() == null ||mListView == null)
             return;
 
-        if (feed == null || feed.entries.size() == 0){
-            mListView.setAdapter(null);
+        setBusyIndicatorStatus(false);
+
+
+        // User select same feed or content needs to be updated
+        if (feed != null && feed == mFeed && feed.adapter != null){
+            feed.adapter.notifyDataSetChanged();
+            if (mListView.getAdapter() == null)
+                mListView.setAdapter(feed.adapter);
             return;
         }
 
 
+        if (feed == null || feed.entries.size() == 0){
+            mFeed = feed;
+            mListView.setAdapter(null);
+            return;
+        }
+
+        mFeed = feed;
         if (feed.adapter == null){
             // Creates data controller (adapter) for listview abd set "entries" as  data
-            feed.adapter = new ArticleListAdapter(context, R.id.entrylistView, feed.entries);
+            feed.adapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, feed.entries);
             mListView.setAdapter(feed.adapter);
         }
 

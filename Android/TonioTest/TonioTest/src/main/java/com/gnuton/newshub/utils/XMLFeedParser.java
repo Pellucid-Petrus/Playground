@@ -139,8 +139,13 @@ public class XMLFeedParser {
         }
 
         if ( BuildConfig.DEBUG ) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
-            Log.d(TAG, "ATOM BUFFER PARSED:" + pos + "NEW ENTRIES NEWER THAN" + sdf.format(latestNewsPubDate.getTime()));
+            String latestNewsPubDateStr = new String("None");
+
+            if (latestNewsPubDate != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
+                latestNewsPubDateStr = sdf.format(latestNewsPubDate.getTime());
+            }
+            Log.d(TAG, "ATOM BUFFER PARSED:" + pos + "NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
         }
 
         return feed;
@@ -186,8 +191,13 @@ public class XMLFeedParser {
         }
 
         if ( BuildConfig.DEBUG ) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
-            Log.d(TAG, "RSS BUFFER PARSED:" + pos + "NEW ENTRIES NEWER THAN" + sdf.format(latestNewsPubDate.getTime()));
+            String latestNewsPubDateStr = new String("None");
+
+            if (latestNewsPubDate != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
+                latestNewsPubDateStr = sdf.format(latestNewsPubDate.getTime());
+            }
+            Log.d(TAG, "RSS BUFFER PARSED:" + pos + "NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
         }
         return feed;
     }

@@ -3,7 +3,6 @@ package com.gnuton.newshub.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
@@ -41,13 +40,7 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
 
             Log.d(TAG, "Downloading entries from provider...");
             feed.xml = DownloadWebTask.downloadUrl(feed.url);
-            new XMLFeedParser(eds).parseXML(feed);
-
-            String selection = DbHelper.ENTRIES_FEEDID + " = " + String.valueOf(feed.id);
-            String orderBy = DbHelper.ENTRIES_PUBLISHEDDATE +" DESC";
-            feed.entries = eds.getAll(selection,null, null, null, orderBy);
-
-            return feed;
+            return new XMLFeedParser(eds).parseXML(feed);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
