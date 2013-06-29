@@ -36,8 +36,6 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         if (getView() == null ||mListView == null)
             return;
 
-        setBusyIndicatorStatus(false);
-
         // User select same feed or content needs to be updated
         if (feed != null && feed == mFeed && feed.adapter != null){
             feed.adapter.notifyDataSetChanged();
@@ -59,6 +57,11 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
             mListView.setAdapter(feed.adapter);
         }
 
+    }
+
+    @Override
+    public void setBusyIndicator(Boolean on) {
+        setBusyIndicatorStatus(on);
     }
 
     private void setBusyIndicatorStatus(Boolean busy){

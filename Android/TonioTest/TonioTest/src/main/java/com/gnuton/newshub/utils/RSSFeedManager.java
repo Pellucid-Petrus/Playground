@@ -42,7 +42,7 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
         } else {
             Notifications.showMsg(R.string.msg_entry_list_updated);
         }
-
+        mListener.setBusyIndicator(false);
         mListener.onEntryListFetched(feed);
     }
 
@@ -63,6 +63,7 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
             new RSSParseTask(this).execute(feed);
         } else {
             Log.d(TAG, "RSS that we have looks to be updated.");
+            mListener.setBusyIndicator(false);
         }
     }
 
@@ -74,11 +75,13 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
         mListener = listener;
 
         // Read data from DB
+        mListener.setBusyIndicator(true);
         GetEntriesFromDB getEntryTask = new GetEntriesFromDB(this);
         getEntryTask.execute(getEntryTask.createGetLatestEntriesRequest(feed));
     }
 
     public interface OnEntryListFetchedListener{
         public void onEntryListFetched(RSSFeed feed);
+        public void setBusyIndicator(Boolean on);
     }
 }
