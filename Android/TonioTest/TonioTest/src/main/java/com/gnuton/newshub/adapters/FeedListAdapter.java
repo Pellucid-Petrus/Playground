@@ -13,8 +13,6 @@ import com.gnuton.newshub.R;
 import com.gnuton.newshub.types.RSSFeed;
 import com.gnuton.newshub.utils.NetworkUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 /**
