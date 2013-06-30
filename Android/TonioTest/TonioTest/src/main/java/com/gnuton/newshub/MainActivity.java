@@ -3,20 +3,25 @@ package com.gnuton.newshub;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.v4.app.DialogFragment;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -137,8 +142,13 @@ public class MainActivity extends FragmentActivity
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                LinearLayout l = (LinearLayout) findViewById(R.id.mainActivityLayout);
+
+                ViewGroup l;
+                l = (FrameLayout) findViewById(R.id.articlelist_container);
+                if (l == null)
+                   l = (LinearLayout) findViewById(R.id.mainActivityLayout);
                 LinearLayout d = (LinearLayout) findViewById(R.id.layout_panel_drawer);
+
 
                 float offset = slideOffset * d.getWidth();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -156,7 +166,7 @@ public class MainActivity extends FragmentActivity
     }
 
     protected void updateDrawerList() {
-        ArrayAdapter<RSSFeed> drawerListAdapter = new FeedListAdapter(this, R.layout.feedlist_item, mFeedDataSource.getAll());
+        ArrayAdapter<RSSFeed> drawerListAdapter = new FeedListAdapter(this, R.layout.feedlist_item, mFeedDataSource.getAll(), R.style.DrawerListItem);
         mDrawerList.setAdapter(drawerListAdapter);
     }
 

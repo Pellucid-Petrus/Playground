@@ -20,10 +20,18 @@ import java.util.List;
  */
 public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
     private final List<RSSFeed> feeds;
+    final int mStyle;
+
+    public FeedListAdapter(Context context, int textViewResourceId, List<RSSFeed> feeds, int style) {
+        super(context, textViewResourceId, feeds);
+        this.feeds = feeds;
+        this.mStyle = style;
+    }
 
     public FeedListAdapter(Context context, int textViewResourceId, List<RSSFeed> feeds) {
         super(context, textViewResourceId, feeds);
         this.feeds = feeds;
+        this.mStyle = -1;
     }
 
     public static class ViewHolder{
@@ -42,7 +50,10 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.feedlist_item, null);
             holder = new ViewHolder();
+
             holder.title = (TextView) v.findViewById(R.id.FeedListItemTitleTextView);
+            if (mStyle != -1 )
+                holder.title.setTextAppearance(v.getContext(), mStyle);
             holder.entriesCount = (TextView) v.findViewById(R.id.FeedListItemEntriesCountTextView);
             holder.desc = (TextView) v.findViewById(R.id.FeedListItemDescTextView);
             v.setTag(holder);

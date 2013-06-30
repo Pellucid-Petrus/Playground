@@ -34,6 +34,11 @@
     <style name="DrawerList" parent="AppBaseTheme">
         <item name="android:background">@android:color/transparent</item>
     </style>
+    <style name="DrawerListItem" parent="AppBaseTheme">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="DrawerButton" parent="AppBaseTheme">
         <item name="android:background">@drawable/drawer_button</item>
