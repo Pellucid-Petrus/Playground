@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gnuton.newshub.adapters.FeedListAdapter;
 import com.gnuton.newshub.adapters.MainPageFragmentAdapter;
@@ -32,6 +33,7 @@ import com.gnuton.newshub.db.RSSEntryDataSource;
 import com.gnuton.newshub.db.RSSFeedDataSource;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
+import com.gnuton.newshub.utils.FontsProvider;
 import com.gnuton.newshub.utils.FragmentUtils;
 import com.gnuton.newshub.utils.MyApp;
 import com.gnuton.newshub.utils.Notifications;
@@ -101,7 +103,8 @@ public class MainActivity extends FragmentActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
             getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             getActionBar().setCustomView(R.layout.actionbar);
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            final TextView actionBarTitle = (TextView) findViewById(R.id.actionBarTitle);
+            actionBarTitle.setTypeface(FontsProvider.getInstace().getTypeface("Daily News 1915"));
         }
 
         //Set up Navigation drawer

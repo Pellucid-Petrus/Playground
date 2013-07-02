@@ -16,10 +16,11 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.gnuton.newshub.adapters.ImageAdapter;
+import com.gnuton.newshub.tasks.BoilerPipeTask;
 import com.gnuton.newshub.tasks.ImageGetter;
 import com.gnuton.newshub.types.RSSEntry;
-import com.gnuton.newshub.tasks.BoilerPipeTask;
-import com.gnuton.newshub.adapters.ImageAdapter;
+import com.gnuton.newshub.utils.FontsProvider;
 
 /**
  * Created by gnuton on 5/18/13.
@@ -35,10 +36,17 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "Create view");
         //return super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.article_fragment, container, false);
+        final View view = inflater.inflate(R.layout.article_fragment, container, false);
+
+        //Content View
+        final TextView contentView = (TextView) view.findViewById(R.id.ContentTextView);
+        contentView.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
+
+        //Title
+        final TextView titleView = (TextView) view.findViewById(R.id.TitleTextView);
+        titleView.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
 
         // Instantiate imageGetter
-        final TextView contentView = (TextView) view.findViewById(R.id.ContentTextView);
         mImageGetter = new ImageGetter(contentView);
 
         // View Pager
@@ -162,6 +170,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         //Set page content
         TextView contentView = (TextView) getView().findViewById(R.id.ContentTextView);
+
         String content;
 
         if (entry.content != null) {
