@@ -275,7 +275,7 @@ public class XMLFeedParser {
     private RSSEntry parseRSSEntry(XmlPullParser xpp, int feedID) throws IOException, XmlPullParserException {
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "item");
         String title = null;
-        String description = null;
+        String description = new String();
         String content = null;
         String link = null;
         Calendar publishedData = GregorianCalendar.getInstance(); // Avoid crashes if data is not parsed correctly

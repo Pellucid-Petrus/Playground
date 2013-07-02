@@ -1,6 +1,7 @@
 package com.gnuton.newshub;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -95,6 +96,14 @@ public class MainActivity extends FragmentActivity
                     .commit();
 
         }
+
+        //Set up custom action bar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getActionBar().setCustomView(R.layout.actionbar);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         //Set up Navigation drawer
         mDrawerPanelLayout = (LinearLayout) findViewById(R.id.layout_panel_drawer);
         mDrawerList = (ListView) findViewById(R.id.list_drawer);
@@ -146,7 +155,7 @@ public class MainActivity extends FragmentActivity
                 ViewGroup l;
                 l = (FrameLayout) findViewById(R.id.articlelist_container);
                 if (l == null)
-                   l = (LinearLayout) findViewById(R.id.mainActivityLayout);
+                    l = (LinearLayout) findViewById(R.id.mainActivityLayout);
                 LinearLayout d = (LinearLayout) findViewById(R.id.layout_panel_drawer);
 
 

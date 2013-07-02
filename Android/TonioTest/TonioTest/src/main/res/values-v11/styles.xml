@@ -4,14 +4,27 @@
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
-        <!-- API 11 theme customizations can go here. -->
-        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowActionBarOverlay">false</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="ActionBar" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@android:color/white</item>
-        <item name="android:windowActionBarOverlay">true</item>
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+        <!-- API 11 theme customizations can go here. -->
+        <item name="android:actionBarStyle">@style/Tonio.ActionBar</item>
+    </style>
+
+    <style name="Tonio.ActionBar" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@android:color/transparent</item>
+
+        <item name="android:titleTextStyle">@style/Tonio.ActionBar.Text</item>
+    </style>
+
+    <style name="Tonio.ActionBar.Text" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">20dp</item>
     </style>
 
 
