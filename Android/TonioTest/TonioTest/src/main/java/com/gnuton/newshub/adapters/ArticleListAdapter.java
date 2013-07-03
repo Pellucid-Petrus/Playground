@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.gnuton.newshub.R;
 import com.gnuton.newshub.types.RSSEntry;
+import com.gnuton.newshub.utils.FontsProvider;
 import com.gnuton.newshub.utils.NetworkUtils;
 
 import java.text.SimpleDateFormat;
@@ -47,8 +48,13 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             v = vi.inflate(R.layout.articlelist_item, null);
             holder = new ViewHolder();
             holder.title = (TextView) v.findViewById(R.id.ListItemTitleTextView);
+            holder.title.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
+
             holder.url = (TextView) v.findViewById(R.id.ListItemProviderTextView);
+            holder.url.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
+
             holder.date = (TextView) v.findViewById(R.id.ListItemDateTextView);
+            holder.date.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
 
             v.setTag(holder);
         }
