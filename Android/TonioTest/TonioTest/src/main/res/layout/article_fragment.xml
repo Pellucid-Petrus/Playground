@@ -11,12 +11,15 @@
             android:layout_height="fill_parent"
             android:id="@+id/scrollView"
             android:layout_gravity="center"
-            style="@style/ArticleDetailFrame">
-
+            style="@style/ArticleDetailFrame"
+            android:fadingEdge="vertical">
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                >
 
             <com.gnuton.newshub.view.UninterceptableViewPager
                     android:id="@+id/view_pager"

@@ -105,6 +105,7 @@ public class MainActivity extends FragmentActivity
             getActionBar().setCustomView(R.layout.actionbar);
             final TextView actionBarTitle = (TextView) findViewById(R.id.actionBarTitle);
             actionBarTitle.setTypeface(FontsProvider.getInstace().getTypeface("Daily News 1915"));
+            actionBarTitle.setText(getString(R.string.app_name));
         }
 
         //Set up Navigation drawer

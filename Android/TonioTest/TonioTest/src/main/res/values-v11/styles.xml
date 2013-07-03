@@ -24,7 +24,7 @@
 
     <style name="Tonio.ActionBar.Text" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">36dp</item>
     </style>
 
 
