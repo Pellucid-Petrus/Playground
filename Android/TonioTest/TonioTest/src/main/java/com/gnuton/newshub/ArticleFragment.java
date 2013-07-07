@@ -58,6 +58,8 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         // Define action for button
         final Button readMoreButton = (Button) view.findViewById(R.id.ReadMoreButton);
+        readMoreButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
+
         readMoreButton.setVisibility(View.GONE);
         readMoreButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -82,6 +84,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         // Define action for button
         final Button openLinkButton = (Button) view.findViewById(R.id.OpenLinkButton);
+        openLinkButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
         openLinkButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mEntry != null) {
@@ -96,6 +99,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         // Define action for button
         final Button shareLinkButton = (Button) view.findViewById(R.id.ShareLinkButton);
+        shareLinkButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
         shareLinkButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mEntry != null) {

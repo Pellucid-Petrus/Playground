@@ -26,11 +26,14 @@
         error:
     </string>
     <string name="subscribe_dialog_title">Subscribe to a new news provider</string>
-    <string name="subscribe_dialog_nofeedstext">No providers</string><string name="read_more">...</string>
-    <string name="open_link">View original</string>
-    <string name="share_link">Share</string>
+    <string name="subscribe_dialog_nofeedstext">No providers</string>
     <string name="sharing_url_string">Check out this site! (Shared with News Hub on Android)
     </string>
     <string name="msg_entry_list_updated">Entry list updated</string>
 
+    <!-- Font Awesome icons http://fortawesome.github.io/Font-Awesome/cheatsheet/ -->
+    <string name="icon_heart">&#xf004;</string>
+    <string name="icon_share">&#xf045;</string>
+    <string name="icon_globe">&#xf0ac;</string>
+    <string name="icon_more">&#xf103;</string>
 </resources>

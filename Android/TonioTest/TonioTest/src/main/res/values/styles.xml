@@ -62,6 +62,7 @@
         <item name="android:background">@drawable/more_button</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:padding">20dp</item>
+        <item name="android:textSize">32sp</item>
     </style>
 
     <style name="ArticleDetailOpenLinkButton" parent="AppBaseTheme">
@@ -69,6 +70,7 @@
         <item name="android:textColor">#ffffff</item>
         <item name="android:padding">20dp</item>
         <item name="android:clickable">true</item>
+        <item name="android:textSize">32sp</item>
     </style>
 
     <style name="ArticleDetailShareLinkButton" parent="AppBaseTheme">
@@ -80,6 +82,7 @@
         <item name="android:paddingTop">0dp</item>
         <item name="android:clickable">true</item>
         <item name="android:gravity">right|center_vertical</item>
+        <item name="android:textSize">32sp</item>
     </style>
 
     <style name="ArticleDetailTitle" parent="AppBaseTheme">

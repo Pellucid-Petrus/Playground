@@ -53,7 +53,7 @@
             <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/read_more"
+                    android:text="@string/icon_more"
                     android:id="@+id/ReadMoreButton"
                     android:layout_gravity="center"
                     style="@style/ArticleDetailMoreButton"/>
@@ -64,7 +64,7 @@
                 <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/open_link"
+                        android:text="@string/icon_globe"
                         android:id="@+id/OpenLinkButton"
                         style="@style/ArticleDetailOpenLinkButton"
                         android:enabled="true"
@@ -75,7 +75,7 @@
                 <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/share_link"
+                        android:text="@string/icon_share"
                         android:id="@+id/ShareLinkButton"
                         style="@style/ArticleDetailShareLinkButton"
                         android:enabled="true"
