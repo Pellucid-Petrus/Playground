@@ -8,10 +8,11 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:id="@+id/linearLayout"
                     android:padding="5dp"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:minHeight="70dp">
 
         <ImageView
                 android:layout_width="20dp"
