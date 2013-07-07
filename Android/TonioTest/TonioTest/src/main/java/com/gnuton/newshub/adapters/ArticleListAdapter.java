@@ -48,7 +48,6 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             v = vi.inflate(R.layout.articlelist_item, null);
             holder = new ViewHolder();
             holder.title = (TextView) v.findViewById(R.id.ListItemTitleTextView);
-            holder.title.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
 
             holder.url = (TextView) v.findViewById(R.id.ListItemProviderTextView);
             holder.url.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
@@ -66,7 +65,7 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
         if (e != null) {
             Spanned titleSpanned = Html.fromHtml(e.title, null, null);
             holder.title.setText(titleSpanned, TextView.BufferType.SPANNABLE);
-            holder.title.setTypeface(null, e.isRead ? Typeface.NORMAL : Typeface.BOLD);
+            holder.title.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"), e.isRead ? Typeface.NORMAL : Typeface.BOLD);
             holder.url.setText(NetworkUtils.getDomainName(e.link));
             holder.date.setText(dateToString(e.date));
         }
