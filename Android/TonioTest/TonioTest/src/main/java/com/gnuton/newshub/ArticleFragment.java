@@ -82,7 +82,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             }
         });
 
-        // Define action for button
+        // Define action for open link button
         final Button openLinkButton = (Button) view.findViewById(R.id.OpenLinkButton);
         openLinkButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
         openLinkButton.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +97,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         });
 
-        // Define action for button
+        // Define action for share button
         final Button shareLinkButton = (Button) view.findViewById(R.id.ShareLinkButton);
         shareLinkButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
         shareLinkButton.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +109,30 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
                     intent.putExtra(Intent.EXTRA_TEXT, mEntry.link);
                     intent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.sharing_url_string);
                     startActivity(Intent.createChooser(intent, "Share"));
+                }
+            }
+
+        });
+
+        // Define action for share button
+        final Button prevArticleButton = (Button) view.findViewById(R.id.PreviousArticleButton);
+        prevArticleButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
+        prevArticleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (mEntry != null) {
+                    // Show content in a browser
+                }
+            }
+
+        });
+
+        // Define action for share button
+        final Button nextArticleButton = (Button) view.findViewById(R.id.NextArticleButton);
+        nextArticleButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
+        nextArticleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (mEntry != null) {
+                    // Show content in a browser
                 }
             }
 
