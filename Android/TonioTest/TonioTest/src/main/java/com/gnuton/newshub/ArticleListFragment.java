@@ -14,9 +14,6 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
 import com.gnuton.newshub.adapters.ArticleListAdapter;
-import com.gnuton.newshub.db.DbHelper;
-import com.gnuton.newshub.tasks.UpdateEntryInDB;
-import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.types.RSSFeed;
 import com.gnuton.newshub.utils.RSSFeedManager;
 
@@ -73,7 +70,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
 
     // Sends data to another fragment trough the activity using an internal interface.
     public interface OnItemSelectedListener {
-        public void onItemSelected(RSSEntry entry);
+        public void onItemSelected(ArticleListAdapter adapter, int entryPosition);
     }
 
     // onAttach checks that activity implements itemSelectedListener
@@ -106,18 +103,8 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 HeaderViewListAdapter hAdapter = (HeaderViewListAdapter) mListView.getAdapter();
                 ArticleListAdapter adapter = (ArticleListAdapter) hAdapter.getWrappedAdapter();
-
-                RSSEntry entry = (RSSEntry) adapter.getItem((int)l);
-
-                // Set item as read
-                if (!entry.isRead) {
-                    entry.isRead = true;
-                    entry.columnsToUpdate.add(DbHelper.ENTRIES_ISREAD);
-                    new UpdateEntryInDB().execute(entry);
-                    adapter.notifyDataSetChanged();
-                }
-
-                itemSelectedListener.onItemSelected(entry);
+                int entryPosition = (int) l;
+                itemSelectedListener.onItemSelected(adapter, entryPosition);
             }
         });
         return view;

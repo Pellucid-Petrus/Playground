@@ -16,9 +16,12 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.gnuton.newshub.adapters.ArticleListAdapter;
 import com.gnuton.newshub.adapters.ImageAdapter;
+import com.gnuton.newshub.db.DbHelper;
 import com.gnuton.newshub.tasks.BoilerPipeTask;
 import com.gnuton.newshub.tasks.ImageGetter;
+import com.gnuton.newshub.tasks.UpdateEntryInDB;
 import com.gnuton.newshub.types.RSSEntry;
 import com.gnuton.newshub.utils.FontsProvider;
 
@@ -27,7 +30,11 @@ import com.gnuton.newshub.utils.FontsProvider;
  */
 public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "ARTICLE_FRAGMENT";
+
     private RSSEntry mEntry = null;
+    private ArticleListAdapter mEntryAdapter = null;
+    private int mEntryPosition= -1;
+
     private AsyncTask mTask = null;
     private ImageAdapter mImageAdapter;
     private ImageGetter mImageGetter;
@@ -119,8 +126,12 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         prevArticleButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
         prevArticleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (mEntry != null) {
-                    // Show content in a browser
+                if (mEntryAdapter != null) {
+                    int previousEntryPos = mEntryPosition -1;
+                    if (previousEntryPos < 0)
+                        return;
+
+                    setEntry(mEntryAdapter, previousEntryPos);
                 }
             }
 
@@ -131,8 +142,12 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         nextArticleButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
         nextArticleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (mEntry != null) {
-                    // Show content in a browser
+                if (mEntryAdapter != null) {
+                    int nextEntryPos = mEntryPosition + 1;
+                    if (nextEntryPos > mEntryAdapter.getCount())
+                        return;
+
+                    setEntry(mEntryAdapter, nextEntryPos);
                 }
             }
 
@@ -147,7 +162,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         Log.d(TAG, "ACTIVITY CREATED");
         // called when fragment is visible
         if (mEntry != null) {
-            setEntry(mEntry);
+            //setEntry(mEntry);
         }
     }
 
@@ -171,11 +186,25 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         Log.d(TAG, "DETACH");
     }
 
-    public void setEntry(RSSEntry entry) {
+    public void setEntry(ArticleListAdapter adapter, int entryPosition) {
+        RSSEntry entry = adapter.getItem(entryPosition);
+
         Log.d(TAG,"Set mEntry");
         if (entry == mEntry)
             return;
-        this.mEntry = entry;
+
+        // Update internal attributes
+        mEntry = entry;
+        mEntryAdapter = adapter;
+        mEntryPosition = entryPosition;
+
+        // Set item as read
+        if (!entry.isRead) {
+            entry.isRead = true;
+            entry.columnsToUpdate.add(DbHelper.ENTRIES_ISREAD);
+            new UpdateEntryInDB().execute(entry);
+            adapter.notifyDataSetChanged();
+        }
 
         // reset imageAdapter
         if (mImageAdapter != null){

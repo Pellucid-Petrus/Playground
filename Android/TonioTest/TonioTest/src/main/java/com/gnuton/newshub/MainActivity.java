@@ -1,7 +1,6 @@
 package com.gnuton.newshub;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -27,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.gnuton.newshub.adapters.ArticleListAdapter;
 import com.gnuton.newshub.adapters.FeedListAdapter;
 import com.gnuton.newshub.adapters.MainPageFragmentAdapter;
 import com.gnuton.newshub.db.RSSEntryDataSource;
@@ -270,13 +270,13 @@ public class MainActivity extends FragmentActivity
     }
 
     @Override
-    public void onItemSelected(RSSEntry e) {
-        Log.d(TAG, "ON ITEM SELECTED"+ e.title);
+    public void onItemSelected(ArticleListAdapter adapter, int entryPosition) {
+        Log.d(TAG, "ON ITEM SELECTED");
         ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
         if (pager != null)
             pager.setCurrentItem(2);
         ArticleFragment df = (ArticleFragment) mArticleDetailFragment;
-        df.setEntry(e);
+        df.setEntry(adapter, entryPosition);
     }
 
     private class DrawerItemClickListener implements AdapterView.OnItemClickListener {
