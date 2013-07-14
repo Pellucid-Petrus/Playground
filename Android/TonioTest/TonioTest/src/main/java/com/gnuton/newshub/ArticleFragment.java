@@ -193,6 +193,10 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         if (entry == mEntry)
             return;
 
+        // Hide empty view if an article should be shown.
+        final View articleFragmentEmptyViewLayout = getView().findViewById(R.id.ArticleFragmentEmptyViewLayout);
+        articleFragmentEmptyViewLayout.setVisibility((entry == null) ? View.VISIBLE : View.GONE);
+
         // Update internal attributes
         mEntry = entry;
         mEntryAdapter = adapter;
