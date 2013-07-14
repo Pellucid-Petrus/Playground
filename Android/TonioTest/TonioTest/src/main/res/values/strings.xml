@@ -36,6 +36,6 @@
     <string name="icon_share">&#xf045;</string>
     <string name="icon_globe">&#xf0ac;</string>
     <string name="icon_more">&#xf103;</string>
-    <string name="icon_prev">&#xf0da;</string>
-    <string name="icon_next">&#xf0d9;</string>
+    <string name="icon_next">&#xf0da;</string>
+    <string name="icon_prev">&#xf0d9;</string>
 </resources>

@@ -83,9 +83,9 @@
                 android:layout_alignParentRight="true"/>
 
         <Button
-                android:id="@+id/NextArticleButton"
-                style="@style/NextArticleButton"
-                android:text="@string/icon_next"
+                android:id="@+id/PreviousArticleButton"
+                style="@style/PreviousArticleButton"
+                android:text="@string/icon_prev"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,9 +97,9 @@
                 android:layout_alignParentRight="true"/>
 
         <Button
-                android:id="@+id/PreviousArticleButton"
-                style="@style/PreviousArticleButton"
-                android:text="@string/icon_prev"
+                android:id="@+id/NextArticleButton"
+                style="@style/NextArticleButton"
+                android:text="@string/icon_next"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,8 +107,9 @@
                 android:clickable="true"
                 android:focusable="true"
 
-                android:layout_below="@+id/NextArticleButton"
+                android:layout_below="@+id/PreviousArticleButton"
                 android:layout_alignParentRight="true"/>
+
         <Button
                 android:id="@+id/ReadMoreButton"
                 android:text="@string/icon_more"
