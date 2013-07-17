@@ -118,7 +118,7 @@
                 style="@style/ArticleDetailMoreButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/PreviousArticleButton"
+                android:layout_below="@+id/NextArticleButton"
                 android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
