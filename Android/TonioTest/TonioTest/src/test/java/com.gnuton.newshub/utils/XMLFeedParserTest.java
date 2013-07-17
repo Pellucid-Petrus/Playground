@@ -1,4 +1,4 @@
-package com.gnuton.newshub.utils;
+package org.gnuton.newshub.utils;
 
 import junit.framework.TestCase;
 

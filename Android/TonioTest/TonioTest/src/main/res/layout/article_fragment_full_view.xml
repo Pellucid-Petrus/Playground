@@ -22,7 +22,7 @@
                 android:focusableInTouchMode="true"
                 >
 
-            <com.gnuton.newshub.view.UninterceptableViewPager
+            <org.gnuton.newshub.view.UninterceptableViewPager
                     android:id="@+id/view_pager"
                     android:layout_width="wrap_content"
                     android:layout_height="180dp"
