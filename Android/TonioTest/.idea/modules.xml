@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/TonioTest/NewsHub.iml" filepath="$PROJECT_DIR$/TonioTest/NewsHub.iml" />
       <module fileurl="file://$PROJECT_DIR$/TonioTest.iml" filepath="$PROJECT_DIR$/TonioTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TonioTest/TonioTest-TonioTest.iml" filepath="$PROJECT_DIR$/TonioTest/TonioTest-TonioTest.iml" />
     </modules>
   </component>
 </project>
