@@ -74,6 +74,8 @@ public class MainActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApp.getInstance().mMainActivity = this;
+
         setContentView(R.layout.activity_main);
 
         Log.i(TAG, "CREATEEEEEEEE");
@@ -258,6 +260,8 @@ public class MainActivity extends FragmentActivity
     // killed and restarted.
     public void onSaveInstanceState(Bundle savedInstanceState) {
         Log.d(TAG, "SAVE INSTANCE STATE");
+        MyApp.getInstance().mMainActivity = null;
+
         //savedInstanceState.putString("MyString", "Welcome back to Android");
 
         if (mOrientation != ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
@@ -333,7 +337,7 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "SUBSCRIBE TO A NEW FEED");
 
         // Shows subscribe to feed dialog
-        DialogFragment subscribe = new SubscribeDialog(this);
+        DialogFragment subscribe = new SubscribeDialog();
         subscribe.show(getSupportFragmentManager(), "SubscribeDialog dialog");
     }
 

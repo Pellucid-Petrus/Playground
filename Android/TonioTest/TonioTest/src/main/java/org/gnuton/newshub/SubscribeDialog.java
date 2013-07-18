@@ -52,9 +52,13 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     private View mListViewHeader;
     private ListView mListView;
 
-    SubscribeDialog(final MainActivity mainActivity){
+    SubscribeDialog(){
         super();
-        this.mMainActivity = mainActivity;
+        this.mMainActivity = MyApp.getInstance().mMainActivity;
+        if (mMainActivity == null){
+            this.mFeedDataSource = null;
+            return;
+        }
         this.mFeedDataSource = new RSSFeedDataSource(mMainActivity);
     }
 
