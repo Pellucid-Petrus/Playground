@@ -138,6 +138,10 @@ public class MainActivity extends FragmentActivity
                     getActionBar().setTitle(R.string.app_name);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
+                // hide empty Article list
+                View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
+                if (articleListEmptyView != null)
+                    articleListEmptyView.setVisibility(View.VISIBLE);
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -151,6 +155,10 @@ public class MainActivity extends FragmentActivity
                     getActionBar().setTitle(R.string.drawer_title);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
+                // show empty Article list
+                View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
+                if (articleListEmptyView != null)
+                    articleListEmptyView.setVisibility(View.INVISIBLE);
             }
 
             @Override
