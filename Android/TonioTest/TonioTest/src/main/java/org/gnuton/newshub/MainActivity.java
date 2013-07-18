@@ -73,8 +73,8 @@ public class MainActivity extends FragmentActivity
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         MyApp.getInstance().mMainActivity = this;
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 

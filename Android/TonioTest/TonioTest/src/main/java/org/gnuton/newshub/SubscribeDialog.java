@@ -52,7 +52,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     private View mListViewHeader;
     private ListView mListView;
 
-    SubscribeDialog(){
+    public SubscribeDialog(){
         super();
         this.mMainActivity = MyApp.getInstance().mMainActivity;
         if (mMainActivity == null){
