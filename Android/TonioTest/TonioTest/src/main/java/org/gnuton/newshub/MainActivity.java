@@ -71,6 +71,7 @@ public class MainActivity extends FragmentActivity
 
     //Pager position
     float prevOff = -1.0f;
+    int overscrollingFrameCount = 0;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -95,19 +96,22 @@ public class MainActivity extends FragmentActivity
                 public void onPageScrolled(int page, float offset, int pixOffset) {
                     Log.d(TAG,"page:" + page + " pos offset:" + offset+ " pixel pos off:" + pixOffset);
 
-                    if (page == 0 && offset == prevOff) {
-                        Log.d(TAG, "ECCOCI");
-                        mDrawerLayout.openDrawer(GravityCompat.START);
-                        prevOff = -1;
+                    if (page == 0 && offset == 0.0f) {
+                        overscrollingFrameCount +=1;
+                        if (overscrollingFrameCount > 10) {
+                            mDrawerLayout.openDrawer(GravityCompat.START);
+                            overscrollingFrameCount = 0;
+                            prevOff = -1.0f;
+                        }
                         return;
                     }
-
 
                     if (page == 1 && offset <= 0.0f) {
                         final View articleFragmentEmptyViewLayout = findViewById(R.id.ArticleFragmentEmptyViewLayout);
                         if (articleFragmentEmptyViewLayout != null && articleFragmentEmptyViewLayout.getVisibility() == View.VISIBLE)
                             pager.setCurrentItem(0);
                     }
+                    overscrollingFrameCount = 0;
                     prevOff = offset;
                 }
 
