@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -68,7 +69,8 @@ public class MainActivity extends FragmentActivity
     //Adapters
     private FragmentPagerAdapter mFragmentPagerAdapter;
 
-
+    //Pager position
+    float prevOff = -1.0f;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -83,11 +85,42 @@ public class MainActivity extends FragmentActivity
         mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
         mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
 
-        ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
+        final ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
         if (pager != null) {
             // run in most of cases
             mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
             pager.setAdapter(mFragmentPagerAdapter);
+            pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int page, float offset, int pixOffset) {
+                    Log.d(TAG,"page:" + page + " pos offset:" + offset+ " pixel pos off:" + pixOffset);
+
+                    if (page == 0 && offset == prevOff) {
+                        Log.d(TAG, "ECCOCI");
+                        mDrawerLayout.openDrawer(GravityCompat.START);
+                        prevOff = -1;
+                        return;
+                    }
+
+
+                    if (page == 1 && offset <= 0.0f) {
+                        final View articleFragmentEmptyViewLayout = findViewById(R.id.ArticleFragmentEmptyViewLayout);
+                        if (articleFragmentEmptyViewLayout != null && articleFragmentEmptyViewLayout.getVisibility() == View.VISIBLE)
+                            pager.setCurrentItem(0);
+                    }
+                    prevOff = offset;
+                }
+
+                @Override
+                public void onPageSelected(int i) {
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int i) {
+
+                }
+            });
         } else {
             // This is used for large portrait layouts
             if (savedInstanceState == null) {
