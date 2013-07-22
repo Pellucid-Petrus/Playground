@@ -51,42 +51,15 @@
         <item name="android:paddingBottom">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="android:paddingTop">0dp</item>
-
-
     </style>
+
     <style name="ArticleDetailHeadline" parent="AppBaseTheme">
         <item name="android:background">#ffffff</item>
         <item name="android:textColor">#ffffff</item>
     </style>
+
     <style name="ArticleDetailBody" parent="AppBaseTheme">
         <item name="android:background">#ffffff</item>
-    </style>
-
-    <style name="ArticleDetailMoreButton" parent="AppBaseTheme">
-        <item name="android:background">@drawable/more_button</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:padding">20dp</item>
-        <item name="android:textSize">32sp</item>
-    </style>
-
-    <style name="ArticleDetailOpenLinkButton" parent="AppBaseTheme">
-        <item name="android:background">@drawable/openlink_button</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:padding">20dp</item>
-        <item name="android:clickable">true</item>
-        <item name="android:textSize">32sp</item>
-    </style>
-
-    <style name="ArticleDetailShareLinkButton" parent="AppBaseTheme">
-        <item name="android:background">@drawable/sharelink_button</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">right|center_vertical</item>
-        <item name="android:textSize">32sp</item>
     </style>
 
     <style name="ArticleDetailTitle" parent="AppBaseTheme">
@@ -99,4 +72,63 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
+    <!-- ARTICLE BUTTONS -->
+    <style name="ArticleDetailOpenLinkButton" parent="AppBaseTheme">
+        <item name="android:background">@drawable/openlink_button</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="ArticleDetailShareLinkButton" parent="AppBaseTheme">
+        <item name="android:background">@drawable/sharelink_button</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="PreviousArticleButton" parent="AppBaseTheme">
+        <item name="android:background">@drawable/previousarticle_button</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="NextArticleButton" parent="AppBaseTheme">
+        <item name="android:background">@drawable/nextarticle_button</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+    <style name="ArticleDetailMoreButton" parent="AppBaseTheme">
+        <item name="android:background">@drawable/more_button</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">32sp</item>
+    </style>
 </resources>
