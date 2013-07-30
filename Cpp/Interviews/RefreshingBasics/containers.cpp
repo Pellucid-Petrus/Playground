@@ -6,6 +6,12 @@
 #include <forward_list>
 #include <list>
 
+#include <set>
+#include <map>
+
+#include <unordered_set>
+#include <unordered_map>
+
 #include <iostream>
 
 using namespace std;
@@ -60,7 +66,7 @@ void testForwardList(){
 
 
 // Doubly-linked list
-// constant time insertion
+// constant time insertion/deletion
 // as forward_list, iterator is not invalidated while adding/removing/moving happens
 // it's invalidate only when the corresponding element is deleted
 ostream& operator<<(ostream &str, const list<int>& l){
@@ -81,6 +87,71 @@ void testList(){
   cout << "LIST" << l << "\n";
 }
 
+// Sets are associative data structure
+// Stores sorted unique keys.
+// It's implemented as a red-black tree
+// which ensure logarithmic complexity for searching, adding, removing
+// Has iterators which go in both ways
+
+ostream& operator<<(ostream &str,set<int>&s){
+  for (auto& e : s)
+    str << ", " << e;
+  return str;
+}
+
+void testSet(){
+  set<int> s;
+  s.insert(1);
+  s.insert(2);
+  cout << "SET" << s << endl;
+  list<int> l;
+  copy(s.begin(), s.end(), back_inserter(l)); //back_inserter performes push_back
+  cout << "LIST copied from SET " << l << endl;
+  cout << "Finding " << *s.find(1) << endl;
+  cout << "Finding 55: found? " << (s.find(55) != s.end()) << endl; //Find returns end() interator if not found
+}
+
+// MAP
+// Associative container which contains Key-Value pairs
+// Sorted by key
+// Implemented using a red-black tree
+// Search, removal and insertion are logarithimic operations
+void testMap(){
+  map<string, int> m;
+  m["ciao"] = 4;
+  m.clear();
+  cout << "is map empty? " << m.empty() << endl;
+  m["figo"] = string("figo").size();
+  map<string, int> m2;
+  swap(m, m2);
+  cout << "M2 size=" << m2.size() << endl;
+  cout << "M size=" << m.size() << endl;
+
+}
+// Unordered set, implemented as hashmap 
+void testUnorderedSet() {
+  unordered_set<int> us = {1,2,3,1,1,1};
+  for (auto& i : us)
+    cout << "," << i;
+  cout << endl;
+  unordered_set<int>::hasher fn = us.hash_function(); 
+  us.insert(4);
+  cout << "initial value=" << 1  << "hashed value=" << fn(1) << "\n";
+  cout << "Set has " << us.size() << " elements\n";
+}
+
+// Unordered MAP, here is another hashmap 
+void testUnorderedMap(){
+  unordered_map<string,int> um{{"uno",1}, {"due",2}};
+  um["test"] = 3;
+  um["ciao"] = -12;
+  for (auto& pair : um)
+    cout << "(key=" <<pair.first << ",value= " << pair.second <<")";
+  cout << endl;
+  um.clear();
+  cout << "XX " << (um["xx"] ? "it's in the map" : "it's not in the map") << endl;
+}
+
 int main() {
   /** Sequence containers **/
   testArray(); // C++11
@@ -92,5 +163,10 @@ int main() {
   //testDeque();
 
   /** Associative containers **/
-  
+  testSet();  
+  testMap();
+
+  /** unordered associative containers **/
+  testUnorderedSet();
+  testUnorderedMap();  
 }
