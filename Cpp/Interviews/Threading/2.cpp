@@ -1,3 +1,7 @@
+/*
+ * To compile this example with g++ 4.7:
+ * g++ ./filename.cpp --std=c++11 -pthread
+ */
 #include <iostream>
 #include <thread>
 
