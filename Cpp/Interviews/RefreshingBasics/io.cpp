@@ -6,6 +6,7 @@
 using namespace std;
 
 int main(){
+  //NOTE ofstream is just a typedef for std::basic_ofstream<char>
   // Writing test file
   ofstream out(FILE_PATH);
   out << "CIAO";
