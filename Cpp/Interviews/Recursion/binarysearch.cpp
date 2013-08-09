@@ -57,6 +57,6 @@ int main(){
       case LIMIT_REVERSED: msg = "limit reversed"; break;
       case ARRAY_UNORDERED: msg= "array unordered"; break;
     }
-    cout << "Cought exception: " << msg << endl;
+    cout << "Caught exception: " << msg << endl;
   }
 }   
