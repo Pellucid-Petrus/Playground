@@ -7,7 +7,9 @@
  *          w              x           y        z
  *     x    y    z       y   z        z
  *    y z    z          z 
- *   z   
+ *   z  
+ *
+ *   the k-combinations of a set of n numbers = n!/k!(n-k)! 
 */
 #include <string>
 #include <iostream>
@@ -25,7 +27,6 @@ void findCombinations(const string& s, string p = "", int pos=0){
     findCombinations(s, p, i+1);
     p += s[i];
     cout << p << endl;
-    //findCombinations(s, p, i+1);    
   }
 }
 

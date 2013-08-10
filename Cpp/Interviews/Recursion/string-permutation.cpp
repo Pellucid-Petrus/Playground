@@ -6,6 +6,7 @@
  *    B    C    A   C      A   B        
  *    C    B    C   A      B   A
  *
+ * N of permutations = n!
  */
 using namespace std;
 
