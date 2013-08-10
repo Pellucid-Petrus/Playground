@@ -22,6 +22,9 @@ using namespace std;
 const int minCharAllowed = static_cast<int>('0'); 
 const int maxCharAllowed = static_cast<int>('9'); 
 
+int combinations = 0;
+int steps = 0;
+
 /*
  * first= int A + place[1-3] + offset
  */
@@ -38,9 +41,11 @@ char getLetter(int telephoneKey, int place){
 }
 
 void getWord(const string& s, string w=""){
+  ++steps;
   // base case
   if (s.size() == w.size()){
     cout << w << endl;
+    ++combinations;
     return;
   }
 
@@ -72,6 +77,6 @@ int main(){
   }
   cout << "Possible words for: " << s << " are:" << endl;
   getWord(s);
-
+  cout << "Found " << combinations << " combinations in " << steps << " steps." << endl;
   return 0;
 }  
