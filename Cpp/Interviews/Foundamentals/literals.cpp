@@ -1,3 +1,6 @@
+/*
+ * Have a look at http://c.comsci.us/etymology/literals.html
+ */
 #include <iostream>
 #include <string>
 
@@ -15,19 +18,22 @@ int main(){
   //char32_t c32 = 'ö';
   
   //integers
-  //  short(>=16bit), int(>=32bit), long(>=64), ...
+  //  short, long, long long
   // unsigned, signed 
   int i = 1;
-  cout << "sizeof int " << sizeof(int); //32bit
   unsigned ui = 1u;
   long l = 1l;
-  cout << "sizeof long " << sizeof(long); //32bit
  
   // floats
-  float f = 1.0f; //32bit
-  double d = 1.0l; //64bit
+  float f = 1.0f; //f or F
+  double d = 1.0; //64bit
   long double ld = 1.0L;//96bit
-  cout << "float=" << sizeof(float) << " double=" << sizeof(double) << " long double=" << sizeof(ld) << endl;
- 
+  cout << "float=" << sizeof(float) 
+       << " double=" << sizeof(double) 
+       << " long double=" << sizeof(ld)
+       << "short=" << sizeof(short) 
+       << "sizeof int " << sizeof(int) 
+       << "sizeof long " << sizeof(long) 
+       << "size of a ptr" << sizeof (void*);
   return 0;
 }
