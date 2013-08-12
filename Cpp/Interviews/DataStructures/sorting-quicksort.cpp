@@ -54,5 +54,6 @@ int main(){
   quicksort(a, 0, a.size()-1); 
   for (auto& i : a)
     cout << i << ",";
+  sort(
   return 0; 
 }
