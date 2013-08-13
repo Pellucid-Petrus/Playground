@@ -211,6 +211,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         Log.d(TAG, "Closing dialog");
-        mMainActivity.updateDrawerList();
+        if (mMainActivity != null)
+            mMainActivity.updateDrawerList();
     }
 }
