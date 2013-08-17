@@ -1,12 +1,12 @@
 package org.gnuton.newshub;
 
-import android.content.Context;
-import android.os.CountDownTimer;
-import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,7 +26,6 @@ import org.gnuton.newshub.db.RSSFeedDataSource;
 import org.gnuton.newshub.tasks.DownloadWebTask;
 import org.gnuton.newshub.types.RSSFeed;
 import org.gnuton.newshub.utils.MyApp;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +33,7 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by gnuton on 5/28/13.
@@ -48,8 +48,9 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
     private MainActivity mMainActivity;
     private ArrayAdapter<RSSFeed> adapter;
-    private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
-    private View mListViewHeader;
+    //private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
+    private final String mFindFeedsUrl = "http://rssfinder-gnuton.rhcloud.com/get?l=" + Locale.getDefault().getLanguage() +"?q=";
+    //private final String mFindFeedsUrl = "http://10.42.0.1/rssfinder.json?l=" + Locale.getDefault().getLanguage() +"?q=";
     private ListView mListView;
 
     public SubscribeDialog(){
@@ -148,20 +149,24 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                     Log.d(TAG, "Got new providers");
 
                     try {
-                        JSONArray jArray = new JSONObject(buffer).getJSONObject("responseData").getJSONArray("entries");
+                        // Scan google responses
+                        //jArray = new JSONObject(buffer).getJSONObject("responseData").getJSONArray("entries");
+                        JSONArray jArray = new JSONArray(buffer);
                         for (int i=0; i< jArray.length(); ++i) {
-                            JSONObject j = jArray.getJSONObject(i);
+                            JSONObject j = null;
+                            j = jArray.getJSONObject(i);
+
                             //FIXME title contains unencoded chars
                             String title = j.getString(DbHelper.FEEDS_TITLE).replaceAll("</*b>","");
                             String url = j.getString(DbHelper.FEEDS_URL);
+                            Log.d(TAG, title + " URL=" + url);
                             RSSFeed f = new RSSFeed(title, url);
                             mFeeds.add(f);
                         }
-
+                        adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    adapter.notifyDataSetChanged();
                 }
 
                 @Override
