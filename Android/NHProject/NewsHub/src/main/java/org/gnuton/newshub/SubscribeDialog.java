@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import org.gnuton.newshub.adapters.FeedListAdapter;
+import org.gnuton.newshub.adapters.LanguageSpinnerAdapter;
 import org.gnuton.newshub.db.DbHelper;
 import org.gnuton.newshub.db.RSSFeedDataSource;
 import org.gnuton.newshub.tasks.DownloadWebTask;
@@ -118,32 +119,34 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
         });*/
 
         // Set spinner
+        String[] langs = LanguageSpinnerAdapter.getFlagNamesArray();
         mLanguageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
-        ArrayAdapter<CharSequence> langAdapter = ArrayAdapter.createFromResource(MyApp.getContext(), R.array.languages, android.R.layout.simple_spinner_item);
+
+        LanguageSpinnerAdapter langAdapter = new LanguageSpinnerAdapter(MyApp.getContext(), R.layout.language_spinner_item, langs);
+
         // Specify the layout to use when the list of choices appears
-        langAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //langAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mLanguageSpinner.setAdapter(langAdapter);
-        String localeLang = Locale.getDefault().getLanguage();
-        String[] langs = getResources().getStringArray(R.array.languages);
+        String localeLang = Locale.getDefault().getLanguage() + ".png";
         for (int i = 0; i < langs.length; ++i){
           if (localeLang.equals(langs[i])){
               mLanguageSpinner.setSelection(i);
-
           }
         }
-
+/*
         mLanguageSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d(TAG, "ITEM SELECTED");
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 Log.d(TAG, "NOTHING SELECTED");
             }
-        });
+        });*/
 
         // Binds SQLite to list
         Context ctx = this.getActivity();
@@ -251,8 +254,12 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
             mMainActivity.updateDrawerList();
     }
 
-    public String createUrl(String language, String query){
+    public String createUrl(String language, final String query){
         StringBuilder sb = new StringBuilder(mFindFeedsUrl);
+        if (language.isEmpty())
+            language = "en";
+        else
+            language = language.replace(".png","");
         sb.append("?l=");
         sb.append(language);
         sb.append("?q=");

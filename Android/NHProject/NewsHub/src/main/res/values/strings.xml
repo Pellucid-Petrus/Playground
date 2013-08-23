@@ -39,42 +39,4 @@
     <string name="icon_next">&#xf0da;</string>
     <string name="icon_prev">&#xf0d9;</string><string name="swipe_hand_text">Swipe to start!</string>
 
-    <string-array name="languages">
-        <item>af</item>
-        <item>ar</item>
-        <item>cs</item>
-        <item>da</item>
-        <item>de</item>
-        <item>el</item>
-        <item>en</item>
-        <item>es</item>
-        <item>fa</item>
-        <item>fi</item>
-        <item>fr</item>
-        <item>global</item>
-        <item>hi</item>
-        <item>hr</item>
-        <item>hu</item>
-        <item>Id</item>
-        <item>it</item>
-        <item>ko</item>
-        <item>ml</item>
-        <item>nl</item>
-        <item>no</item>
-        <item>pl</item>
-        <item>pt</item>
-        <item>ro</item>
-        <item>ru</item>
-        <item>so</item>
-        <item>sq</item>
-        <item>sv</item>
-        <item>ta</item>
-        <item>th</item>
-        <item>tl</item>
-        <item>tr</item>
-        <item>uk</item>
-        <item>vi</item>
-        <item>zh</item>
-    </string-array>
-
 </resources>
