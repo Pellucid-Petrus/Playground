@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import org.gnuton.newshub.adapters.FeedListAdapter;
 import org.gnuton.newshub.db.DbHelper;
@@ -49,9 +50,10 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     private MainActivity mMainActivity;
     private ArrayAdapter<RSSFeed> adapter;
     //private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
-    private final String mFindFeedsUrl = "http://rssfinder-gnuton.rhcloud.com/get?l=" + Locale.getDefault().getLanguage() +"?q=";
-    //private final String mFindFeedsUrl = "http://10.42.0.1/rssfinder.json?l=" + Locale.getDefault().getLanguage() +"?q=";
+    private final String mFindFeedsUrl = "http://rssfinder-gnuton.rhcloud.com/get";
+
     private ListView mListView;
+    private Spinner mLanguageSpinner;
 
     public SubscribeDialog(){
         super();
@@ -115,8 +117,37 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
             }
         });*/
 
+        // Set spinner
+        mLanguageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
+        ArrayAdapter<CharSequence> langAdapter = ArrayAdapter.createFromResource(MyApp.getContext(), R.array.languages, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        langAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        mLanguageSpinner.setAdapter(langAdapter);
+        String localeLang = Locale.getDefault().getLanguage();
+        String[] langs = getResources().getStringArray(R.array.languages);
+        for (int i = 0; i < langs.length; ++i){
+          if (localeLang.equals(langs[i])){
+              mLanguageSpinner.setSelection(i);
+
+          }
+        }
+
+        mLanguageSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG, "ITEM SELECTED");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Log.d(TAG, "NOTHING SELECTED");
+            }
+        });
+
         // Binds SQLite to list
         Context ctx = this.getActivity();
+
 
         // Initlialize list
         mFeeds = new ArrayList<RSSFeed>();
@@ -176,16 +207,16 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                 public void onFinish() {
                     Log.d(TAG," Start searching");
                     setBusyIndicatorStatus(true);
-                    EditText e = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
+                    Spinner languageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
+                    EditText queryEditText = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
 
                     mFeeds.clear();
 
                     // CLOSE SOFT KEYBOARD
                     InputMethodManager imm = (InputMethodManager) MyApp.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(e.getWindowToken(), 0);
+                    imm.hideSoftInputFromWindow(queryEditText.getWindowToken(), 0);
 
-                    String url = mFindFeedsUrl + URLEncoder.encode(e.getText().toString());
-
+                    String url = createUrl(languageSpinner.getSelectedItem().toString(), queryEditText.getText().toString());
 
                     new DownloadWebTask(this).execute(url);
                 }
@@ -218,5 +249,14 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
         Log.d(TAG, "Closing dialog");
         if (mMainActivity != null)
             mMainActivity.updateDrawerList();
+    }
+
+    public String createUrl(String language, String query){
+        StringBuilder sb = new StringBuilder(mFindFeedsUrl);
+        sb.append("?l=");
+        sb.append(language);
+        sb.append("?q=");
+        sb.append(URLEncoder.encode(query));
+        return sb.toString();
     }
 }
