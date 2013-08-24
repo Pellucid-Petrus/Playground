@@ -2,10 +2,12 @@ package org.gnuton.newshub.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
+import org.gnuton.newshub.utils.Notifications;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
@@ -75,7 +77,8 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
             }
 
             return readText(is);
-        } catch(SocketTimeoutException e) {
+        } catch(Exception e) {
+            Notifications.showMsg(e.getMessage());
             return null;
         }
         finally {
