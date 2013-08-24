@@ -11,17 +11,18 @@
                   android:padding="20dp">
         <Spinner
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:id="@+id/language_spinner"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="10"/>
         <EditText
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:id="@+id/subscribe_editText"
                 android:layout_gravity="center_horizontal"
                 android:maxLines="1"
-                android:layout_weight="90"/>
+                android:layout_weight="90"
+                android:singleLine="true"/>
     </LinearLayout>
     <include layout="@layout/articlelist_header"/>
     <TextView android:id="@+id/subscribe_emptyView"

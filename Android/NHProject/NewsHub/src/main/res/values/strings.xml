@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" >News Hub
-    </string>
-    <string name="action_settings" >Settings
-    </string>
-    <string name="hello_world" >Hello world!
-    </string>
-    <string name="item_str">MITE</string>
+    // General
+    <string name="app_name" >News Hub</string>
+    <string name="action_settings" >Settings</string>
+
+    // Errors
     <string name="networkConnectionError">No network connection available.</string>
-    <string name="drawer_open">Show subscription List</string>
-    <string name="drawer_close">Hide subscription list</string>
-    <string name="drawer_title">Subscriptions</string>
+
+    // Warnings
     <string name="warning_no_entries_found">No entries found for the given feed</string>
+    <string name="warning_feed_already_in_db">You are already following news from this provider</string>
+
+    // Info
     <string name="unsubscribeConfermation">Do you wanna stop to follow this provider?</string>
-    <string name="warning_feed_already_in_db">You are already following news from this provider
-    </string>
     <string name="action_clear_entry_cache">Clear articles cache</string>
-    <string name="info_article_cache_cleaned">All articles have been removed from the device.
-    </string>
-    <string name="action_dlg_msg_clear_entry_cache">Do you really want to remove all the articles
-        stored on your device?
-    </string>
+    <string name="info_article_cache_cleaned">All articles have been removed from the device.</string>
+    <string name="action_dlg_msg_clear_entry_cache">Do you really want to remove all the articles stored on your device?</string>
     <string name="warning_unable_to_download_content">Unable to download content from the server,
         error:
     </string>
-    <string name="subscribe_dialog_title">Subscribe to a new news provider</string>
-    <string name="subscribe_dialog_nofeedstext">No providers</string>
-    <string name="sharing_url_string">Check out this site! (Shared with News Hub on Android)
-    </string>
     <string name="msg_entry_list_updated">Entry list updated</string>
 
-    <!-- Font Awesome icons http://fortawesome.github.io/Font-Awesome/cheatsheet/ -->
+    // Drawer strings
+    <string name="drawer_open">Show subscription List</string>
+    <string name="drawer_close">Hide subscription list</string>
+    <string name="drawer_title">Subscriptions</string>
+
+    // Subscribe dialog
+    <string name="subscribe_dialog_title">Subscribe to a new news provider</string>
+    <string name="subscribe_dialog_nofeedstext">No providers found</string>
+    <string name="sharing_url_string">Check out this site! (Shared with News Hub on Android)
+    </string>
+
+    // Font Awesome icons http://fortawesome.github.io/Font-Awesome/cheatsheet/
     <string name="icon_heart">&#xf004;</string>
     <string name="icon_share">&#xf045;</string>
     <string name="icon_globe">&#xf0ac;</string>
