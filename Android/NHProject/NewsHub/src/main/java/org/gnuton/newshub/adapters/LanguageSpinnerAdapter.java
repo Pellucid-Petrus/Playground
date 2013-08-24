@@ -6,7 +6,6 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +61,6 @@ public class LanguageSpinnerAdapter extends ArrayAdapter<String> {
 
         // Update the delegate setting data stored in the holder
         final String lang = this.langs[position];
-        Log.d("TAG", "Loading image:" + lang);
         if (!lang.isEmpty()) {
             // load image
             try {
@@ -90,14 +88,6 @@ public class LanguageSpinnerAdapter extends ArrayAdapter<String> {
             e.printStackTrace();
         }
 
-        /* debugging
-        if (fileList != null)
-        {
-            for ( int i = 0;i<fileList.length;i++)
-            {
-                Log.d("XXX", fileList[i]);
-            }
-        }*/
         return fileList;
     }
 }
