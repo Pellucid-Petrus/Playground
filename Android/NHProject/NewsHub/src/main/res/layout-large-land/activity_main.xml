@@ -4,30 +4,54 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <!-- The main content view -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  tools:context=".MainActivity" android:orientation="horizontal"
-                  android:id="@+id/mainActivityLayout"
-                  style="@style/MainFragmentBackground"
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/MainFragmentBackground"
+            android:id="@+id/mainActivityLayout"
             >
-
-        <FrameLayout
-                android:id="@+id/articlelist_container"
-                android:layout_width="0dp"
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".35" >
-        </FrameLayout>
-        <FrameLayout
-                android:id="@+id/articledetail_container"
-                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                >
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".35"
+                    />
+            <FrameLayout
+                    android:id="@+id/articledetail_container"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".65"
+                    />
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".65"
-                />
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                >
 
+            <FrameLayout
+                    android:id="@+id/articlelist_container"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".35" >
+            </FrameLayout>
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".65"
+                    />
+        </LinearLayout>
+    </RelativeLayout>
 
-    </LinearLayout>
     <!-- The navigation drawer -->
     <!---android:layout_gravity="start" tells DrawerLayout to treat
          this as a sliding drawer on the left side for left-to-right

@@ -82,6 +82,7 @@ public class MainActivity extends FragmentActivity
         setContentView(R.layout.activity_main);
 
         Log.i(TAG, "CREATEEEEEEEE");
+
         mOrientation = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
         mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
@@ -127,8 +128,8 @@ public class MainActivity extends FragmentActivity
             });
         } else {
             // This is used for large portrait layouts
-            if (savedInstanceState == null) {
-            }
+            //if (savedInstanceState == null) {
+            //}
             getSupportFragmentManager()
                     .beginTransaction()
                             //.setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
@@ -144,6 +145,10 @@ public class MainActivity extends FragmentActivity
             final TextView actionBarTitle = (TextView) findViewById(R.id.actionBarTitle);
             actionBarTitle.setTypeface(FontsProvider.getInstace().getTypeface("Daily News 1915"));
             actionBarTitle.setText(getString(R.string.app_name));
+
+            // enable ActionBar app icon to behave as action to toggle nav drawer
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setHomeButtonEnabled(true);
         }
 
         //Set up Navigation drawer
@@ -156,12 +161,6 @@ public class MainActivity extends FragmentActivity
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setScrimColor(android.R.color.transparent);
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            // enable ActionBar app icon to behave as action to toggle nav drawer
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-            getActionBar().setHomeButtonEnabled(true);
-        }
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
