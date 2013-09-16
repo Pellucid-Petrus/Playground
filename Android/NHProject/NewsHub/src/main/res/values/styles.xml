@@ -45,11 +45,12 @@
     </style>
 
     <!--- ARTICLE DETAIL -->
-    <style name="ArticleDetailFrame" parent="AppBaseTheme">
+
+    <style name="ArticleListFrame" parent="AppBaseTheme">
         <item name="android:background">@drawable/frame</item>
-        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingBottom">0dp</item>
-        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingRight">10dp</item>
         <item name="android:paddingTop">0dp</item>
     </style>
 

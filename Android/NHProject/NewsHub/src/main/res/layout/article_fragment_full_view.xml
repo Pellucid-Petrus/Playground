@@ -10,7 +10,6 @@
             android:layout_height="fill_parent"
             android:id="@+id/scrollView"
             android:layout_gravity="center"
-            style="@style/ArticleDetailFrame"
             android:fadingEdge="vertical"
             android:layout_weight="1">
 
