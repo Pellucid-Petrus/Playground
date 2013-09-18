@@ -176,8 +176,8 @@ public class MainActivity extends FragmentActivity
                 }
                 // hide empty Article list
                 View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
-                if (articleListEmptyView != null)
-                    articleListEmptyView.setVisibility(View.VISIBLE);
+                /*if (articleListEmptyView != null)
+                    articleListEmptyView.setVisibility(View.VISIBLE);*/
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -192,9 +192,9 @@ public class MainActivity extends FragmentActivity
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
                 // show empty Article list
-                View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
+                /*View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
                 if (articleListEmptyView != null)
-                    articleListEmptyView.setVisibility(View.INVISIBLE);
+                    articleListEmptyView.setVisibility(View.INVISIBLE);*/
             }
 
             @Override
