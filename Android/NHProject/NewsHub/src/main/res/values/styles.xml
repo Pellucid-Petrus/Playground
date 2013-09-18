@@ -53,7 +53,12 @@
         <item name="android:paddingRight">10dp</item>
         <item name="android:paddingTop">0dp</item>
     </style>
-
+    <style name="ArticleDetailFrame" parent="AppBaseTheme">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+    </style>
     <style name="ArticleDetailHeadline" parent="AppBaseTheme">
         <item name="android:background">#ffffff</item>
         <item name="android:textColor">#ffffff</item>
