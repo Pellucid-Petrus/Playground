@@ -89,13 +89,14 @@ public class MainActivity extends FragmentActivity
 
         final ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
         if (pager != null) {
-            // run in most of cases
+            // This works the main layout is the "small one"
             mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
             pager.setAdapter(mFragmentPagerAdapter);
+
             pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int page, float offset, int pixOffset) {
-                    Log.d(TAG,"page:" + page + " pos offset:" + offset+ " pixel pos off:" + pixOffset);
+                    //Log.d(TAG,"page:" + page + " pos offset:" + offset+ " pixel pos off:" + pixOffset);
 
                     if (page == 0 && offset == 0.0f) {
                         overscrollingFrameCount +=1;
@@ -107,11 +108,13 @@ public class MainActivity extends FragmentActivity
                         return;
                     }
 
+                    // When the device is in portrait mode, it scrolls back to the article view page (0) if article is not loaded
                     if (page == 1 && offset <= 0.0f) {
                         final View articleFragmentEmptyViewLayout = findViewById(R.id.ArticleFragmentEmptyViewLayout);
                         if (articleFragmentEmptyViewLayout != null && articleFragmentEmptyViewLayout.getVisibility() == View.VISIBLE)
                             pager.setCurrentItem(0);
                     }
+
                     overscrollingFrameCount = 0;
                     prevOff = offset;
                 }

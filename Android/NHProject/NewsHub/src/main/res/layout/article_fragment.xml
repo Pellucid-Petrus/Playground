@@ -6,6 +6,7 @@
               style="@style/ArticleDetailFrame">
     <!-- Article view -->
     <include layout="@layout/article_fragment_full_view"/>
+
     <!-- Empty Article view -->
     <include layout="@layout/article_fragment_empty_view"/>
 

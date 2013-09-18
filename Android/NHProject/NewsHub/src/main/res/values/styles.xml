@@ -59,6 +59,9 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:paddingTop">0dp</item>
     </style>
+    <style name="ArticleDetailFrameEmpty" parent="AppBaseTheme">
+        <item name="android:background">#ffffff</item>
+    </style>
     <style name="ArticleDetailHeadline" parent="AppBaseTheme">
         <item name="android:background">#ffffff</item>
         <item name="android:textColor">#ffffff</item>
