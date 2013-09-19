@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-        >
+              style="@style/ArticleDetailFrame">
+    <!-- Article view -->
+    <include layout="@layout/article_fragment_full_view"/>
+
     <!-- Empty Article view -->
     <include layout="@layout/article_fragment_empty_view"/>
 
-    <!-- Article view -->
-    <include layout="@layout/article_fragment_full_view"/>
-</LinearLayout>
+</RelativeLayout>

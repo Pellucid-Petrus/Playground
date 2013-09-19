@@ -83,17 +83,20 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
     }
 
     /**
-     * This method is called when a client object asks for the list of entries associated on a feed
-     * When the list is retrieved from DB and Internet, listener.onEntryListFetched callback is called.
+     * This method is called when a client object asks for entries of a feed
+     * When the list is retrieved from DB or Internet, listener.onEntryListFetched callback is called.
      */
     public void requestEntryList(RSSFeed feed, OnEntryListFetchedListener listener){
         mListener = listener;
 
-        // Read data from DB
+        // UI shows busy indicator
         mListener.setBusyIndicator(true);
+
+        // Terminate any previous tasks
         if (mGetEntryTask != null)
             mGetEntryTask.cancel(false);
 
+        // Created new tasks to read data from DB in a different thread
         mGetEntryTask = new GetEntriesFromDB(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             mGetEntryTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mGetEntryTask.createGetLatestEntriesRequest(feed));

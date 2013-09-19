@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
+<module external.linked.project.path="$MODULE_DIR$" external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="Debug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleTest" />
+        <option name="SOURCE_GEN_TASK_NAME" value="generateDebugSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -67,11 +68,11 @@
     </content>
     <orderEntry type="jdk" jdkName="Android 4.2.2" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="android-support-v4" level="project" />
-    <orderEntry type="library" name="boilerpipe-1.2.0-android" level="project" />
-    <orderEntry type="library" name="nekohtml-1.9.13" level="project" />
-    <orderEntry type="library" name="xerces-2.9.1" level="project" />
-    <orderEntry type="library" name="disklrucache-2.0.1" level="project" />
+    <orderEntry type="library" exported="" name="android-support-v4" level="project" />
+    <orderEntry type="library" exported="" name="boilerpipe-1.2.0-android" level="project" />
+    <orderEntry type="library" exported="" name="nekohtml-1.9.13" level="project" />
+    <orderEntry type="library" exported="" name="xerces-2.9.1" level="project" />
+    <orderEntry type="library" exported="" name="disklrucache-2.0.1" level="project" />
   </component>
 </module>
 

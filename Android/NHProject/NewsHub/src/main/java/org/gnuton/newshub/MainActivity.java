@@ -82,19 +82,21 @@ public class MainActivity extends FragmentActivity
         setContentView(R.layout.activity_main);
 
         Log.i(TAG, "CREATEEEEEEEE");
+
         mOrientation = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
         mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
 
         final ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
         if (pager != null) {
-            // run in most of cases
+            // This works the main layout is the "small one"
             mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
             pager.setAdapter(mFragmentPagerAdapter);
+
             pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int page, float offset, int pixOffset) {
-                    Log.d(TAG,"page:" + page + " pos offset:" + offset+ " pixel pos off:" + pixOffset);
+                    //Log.d(TAG,"page:" + page + " pos offset:" + offset+ " pixel pos off:" + pixOffset);
 
                     if (page == 0 && offset == 0.0f) {
                         overscrollingFrameCount +=1;
@@ -106,11 +108,13 @@ public class MainActivity extends FragmentActivity
                         return;
                     }
 
+                    // When the device is in portrait mode, it scrolls back to the article view page (0) if article is not loaded
                     if (page == 1 && offset <= 0.0f) {
                         final View articleFragmentEmptyViewLayout = findViewById(R.id.ArticleFragmentEmptyViewLayout);
                         if (articleFragmentEmptyViewLayout != null && articleFragmentEmptyViewLayout.getVisibility() == View.VISIBLE)
                             pager.setCurrentItem(0);
                     }
+
                     overscrollingFrameCount = 0;
                     prevOff = offset;
                 }
@@ -127,8 +131,8 @@ public class MainActivity extends FragmentActivity
             });
         } else {
             // This is used for large portrait layouts
-            if (savedInstanceState == null) {
-            }
+            //if (savedInstanceState == null) {
+            //}
             getSupportFragmentManager()
                     .beginTransaction()
                             //.setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
@@ -144,6 +148,10 @@ public class MainActivity extends FragmentActivity
             final TextView actionBarTitle = (TextView) findViewById(R.id.actionBarTitle);
             actionBarTitle.setTypeface(FontsProvider.getInstace().getTypeface("Daily News 1915"));
             actionBarTitle.setText(getString(R.string.app_name));
+
+            // enable ActionBar app icon to behave as action to toggle nav drawer
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setHomeButtonEnabled(true);
         }
 
         //Set up Navigation drawer
@@ -156,12 +164,6 @@ public class MainActivity extends FragmentActivity
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setScrimColor(android.R.color.transparent);
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            // enable ActionBar app icon to behave as action to toggle nav drawer
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-            getActionBar().setHomeButtonEnabled(true);
-        }
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -177,8 +179,8 @@ public class MainActivity extends FragmentActivity
                 }
                 // hide empty Article list
                 View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
-                if (articleListEmptyView != null)
-                    articleListEmptyView.setVisibility(View.VISIBLE);
+                /*if (articleListEmptyView != null)
+                    articleListEmptyView.setVisibility(View.VISIBLE);*/
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -193,9 +195,9 @@ public class MainActivity extends FragmentActivity
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
                 // show empty Article list
-                View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
+                /*View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
                 if (articleListEmptyView != null)
-                    articleListEmptyView.setVisibility(View.INVISIBLE);
+                    articleListEmptyView.setVisibility(View.INVISIBLE);*/
             }
 
             @Override
