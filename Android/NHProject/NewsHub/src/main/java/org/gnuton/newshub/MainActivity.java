@@ -404,11 +404,16 @@ public class MainActivity extends FragmentActivity
 
         // This code pass the articlelistSpacer pointer ref to ArticleListEmptyView
         // ArticleListEmptyView can hide the spacer when needed
-        final ArticleListEmptyView articleListEmptyView =
-                (ArticleListEmptyView) this.mArticleListFragment.getActivity()
-                        .findViewById(ArticleListEmptyView.ID);
-        final View articlelistSpacer = findViewById(R.id.articlelist_spacer);
-        articleListEmptyView.setViewToHide(articlelistSpacer);
+        if (mArticleListFragment != null){
+            final android.support.v4.app.FragmentActivity activity =
+                    this.mArticleListFragment.getActivity();
+            if (activity != null) {
+                final ArticleListEmptyView articleListEmptyView =
+                        (ArticleListEmptyView) activity.findViewById(ArticleListEmptyView.ID);
+                final View articlelistSpacer = findViewById(R.id.articlelist_spacer);
+                articleListEmptyView.setViewToHide(articlelistSpacer);
+            }
+        }
         Log.d(TAG, "ON STARTed");
     }
 
