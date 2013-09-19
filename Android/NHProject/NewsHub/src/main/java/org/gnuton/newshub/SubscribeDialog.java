@@ -1,12 +1,12 @@
 package org.gnuton.newshub;
 
-import android.content.Context;
-import android.os.CountDownTimer;
-import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,14 +19,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import org.gnuton.newshub.adapters.FeedListAdapter;
+import org.gnuton.newshub.adapters.LanguageSpinnerAdapter;
 import org.gnuton.newshub.db.DbHelper;
 import org.gnuton.newshub.db.RSSFeedDataSource;
 import org.gnuton.newshub.tasks.DownloadWebTask;
 import org.gnuton.newshub.types.RSSFeed;
 import org.gnuton.newshub.utils.MyApp;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by gnuton on 5/28/13.
@@ -48,9 +50,11 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
     private MainActivity mMainActivity;
     private ArrayAdapter<RSSFeed> adapter;
-    private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
-    private View mListViewHeader;
+    //private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
+    private final String mFindFeedsUrl = "http://rssfinder-gnuton.rhcloud.com/get";
+
     private ListView mListView;
+    private Spinner mLanguageSpinner;
 
     public SubscribeDialog(){
         super();
@@ -114,8 +118,39 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
             }
         });*/
 
+        // Set spinner
+        String[] langs = LanguageSpinnerAdapter.getFlagNamesArray();
+        mLanguageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
+
+        LanguageSpinnerAdapter langAdapter = new LanguageSpinnerAdapter(MyApp.getContext(), R.layout.language_spinner_item, langs);
+
+        // Specify the layout to use when the list of choices appears
+        //langAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        mLanguageSpinner.setAdapter(langAdapter);
+        String localeLang = Locale.getDefault().getLanguage() + ".png";
+        for (int i = 0; i < langs.length; ++i){
+          if (localeLang.equals(langs[i])){
+              mLanguageSpinner.setSelection(i);
+          }
+        }
+/*
+        mLanguageSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG, "ITEM SELECTED");
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Log.d(TAG, "NOTHING SELECTED");
+            }
+        });*/
+
         // Binds SQLite to list
         Context ctx = this.getActivity();
+
 
         // Initlialize list
         mFeeds = new ArrayList<RSSFeed>();
@@ -148,20 +183,24 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                     Log.d(TAG, "Got new providers");
 
                     try {
-                        JSONArray jArray = new JSONObject(buffer).getJSONObject("responseData").getJSONArray("entries");
+                        // Scan google responses
+                        //jArray = new JSONObject(buffer).getJSONObject("responseData").getJSONArray("entries");
+                        JSONArray jArray = new JSONArray(buffer);
                         for (int i=0; i< jArray.length(); ++i) {
-                            JSONObject j = jArray.getJSONObject(i);
+                            JSONObject j = null;
+                            j = jArray.getJSONObject(i);
+
                             //FIXME title contains unencoded chars
                             String title = j.getString(DbHelper.FEEDS_TITLE).replaceAll("</*b>","");
                             String url = j.getString(DbHelper.FEEDS_URL);
+                            Log.d(TAG, title + " URL=" + url);
                             RSSFeed f = new RSSFeed(title, url);
                             mFeeds.add(f);
                         }
-
+                        adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    adapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -171,16 +210,16 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                 public void onFinish() {
                     Log.d(TAG," Start searching");
                     setBusyIndicatorStatus(true);
-                    EditText e = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
+                    Spinner languageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
+                    EditText queryEditText = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
 
                     mFeeds.clear();
 
                     // CLOSE SOFT KEYBOARD
                     InputMethodManager imm = (InputMethodManager) MyApp.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(e.getWindowToken(), 0);
+                    imm.hideSoftInputFromWindow(queryEditText.getWindowToken(), 0);
 
-                    String url = mFindFeedsUrl + URLEncoder.encode(e.getText().toString());
-
+                    String url = createUrl(languageSpinner.getSelectedItem().toString(), queryEditText.getText().toString());
 
                     new DownloadWebTask(this).execute(url);
                 }
@@ -211,6 +250,20 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         Log.d(TAG, "Closing dialog");
-        mMainActivity.updateDrawerList();
+        if (mMainActivity != null)
+            mMainActivity.updateDrawerList();
+    }
+
+    public String createUrl(String language, final String query){
+        StringBuilder sb = new StringBuilder(mFindFeedsUrl);
+        if (language.isEmpty())
+            language = "en";
+        else
+            language = language.replace(".png","");
+        sb.append("?l=");
+        sb.append(language);
+        sb.append("?q=");
+        sb.append(URLEncoder.encode(query));
+        return sb.toString();
     }
 }
