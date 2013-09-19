@@ -4,9 +4,14 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               style="@style/ArticleListFrame">
-    <include layout="@layout/articlelist_empty"/>
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/entrylistView"/>
+
+    <org.gnuton.newshub.view.ArticleListEmptyView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    </org.gnuton.newshub.view.ArticleListEmptyView>
+
 </RelativeLayout>

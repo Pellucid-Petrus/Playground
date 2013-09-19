@@ -38,6 +38,7 @@ import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.FragmentUtils;
 import org.gnuton.newshub.utils.MyApp;
 import org.gnuton.newshub.utils.Notifications;
+import org.gnuton.newshub.view.ArticleListEmptyView;
 
 import java.util.List;
 
@@ -179,8 +180,8 @@ public class MainActivity extends FragmentActivity
                 }
                 // hide empty Article list
                 View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
-                /*if (articleListEmptyView != null)
-                    articleListEmptyView.setVisibility(View.VISIBLE);*/
+                /*if (ArticleListEmptyView != null)
+                    ArticleListEmptyView.setVisibility(View.VISIBLE);*/
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -195,9 +196,9 @@ public class MainActivity extends FragmentActivity
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
                 // show empty Article list
-                /*View articleListEmptyView = findViewById(R.id.ArticleListEmpty);
-                if (articleListEmptyView != null)
-                    articleListEmptyView.setVisibility(View.INVISIBLE);*/
+                /*View ArticleListEmptyView = findViewById(R.id.ArticleListEmpty);
+                if (ArticleListEmptyView != null)
+                    ArticleListEmptyView.setVisibility(View.INVISIBLE);*/
             }
 
             @Override
@@ -224,6 +225,7 @@ public class MainActivity extends FragmentActivity
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         updateDrawerList();
+        Log.d(TAG, "CREATED");
     }
 
     protected void updateDrawerList() {
@@ -397,7 +399,17 @@ public class MainActivity extends FragmentActivity
     @Override
     protected void onStart() {
         Log.d(TAG, "ON START");
+        // at this point fragments are attached and created
         super.onStart();
+
+        // This code pass the articlelistSpacer pointer ref to ArticleListEmptyView
+        // ArticleListEmptyView can hide the spacer when needed
+        final ArticleListEmptyView articleListEmptyView =
+                (ArticleListEmptyView) this.mArticleListFragment.getActivity()
+                        .findViewById(ArticleListEmptyView.ID);
+        final View articlelistSpacer = findViewById(R.id.articlelist_spacer);
+        articleListEmptyView.setViewToHide(articlelistSpacer);
+        Log.d(TAG, "ON STARTed");
     }
 
     @Override

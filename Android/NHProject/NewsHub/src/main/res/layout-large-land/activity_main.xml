@@ -10,6 +10,7 @@
             android:layout_height="match_parent"
             style="@style/MainFragmentBackground"
             android:id="@+id/mainActivityLayout"
+
             >
         <LinearLayout
                 android:layout_width="match_parent"
@@ -37,6 +38,7 @@
                 android:orientation="horizontal"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:animateLayoutChanges="true"
                 >
 
             <FrameLayout
@@ -47,6 +49,7 @@
                     >
             </FrameLayout>
             <RelativeLayout
+                    android:id="@+id/articlelist_spacer"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight=".65"

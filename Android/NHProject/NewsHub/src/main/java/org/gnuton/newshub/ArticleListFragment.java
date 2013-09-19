@@ -92,6 +92,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "CREATEVIEW");
         View view = inflater.inflate(R.layout.articlelist_fragment, container, false);
+
         // Add header to list
         mListView = (ListView) view.findViewById(R.id.entrylistView);
         mListViewHeader = inflater.inflate(R.layout.articlelist_header, mListView, false);
@@ -101,6 +102,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         // Add Empty List view
         View articleListEmptyView = view.findViewById(R.id.ArticleListEmpty);
         mListView.setEmptyView(articleListEmptyView);
+
         RelativeLayout articleListEmptyMovingLayout = (RelativeLayout) view.findViewById(R.id.ArticleListEmptyMovingLayout);
         Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.animator.swipe);
         articleListEmptyMovingLayout.startAnimation(animation);
