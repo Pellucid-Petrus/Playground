@@ -17,6 +17,9 @@ public class Notifications {
         showMsg(msg);
     }
     static public void showMsg(final String msg){
+        if (MyApp.mMainActivity == null)
+            return;
+
         MyApp.mMainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
