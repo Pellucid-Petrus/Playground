@@ -103,6 +103,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         // Add Empty List view
         //View articleListEmptyView = view.findViewById(R.id.ArticleListEmpty);
         View articleListEmptyView = new ArticleListEmptyView(getActivity());
+        ((ViewGroup)mListView.getParent()).addView(articleListEmptyView);
         mListView.setEmptyView(articleListEmptyView);
 
         RelativeLayout articleListEmptyMovingLayout = (RelativeLayout) articleListEmptyView.findViewById(R.id.ArticleListEmptyMovingLayout);

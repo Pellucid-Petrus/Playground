@@ -17,6 +17,7 @@ public class ArticleListEmptyView extends LinearLayout {
 
     private View mView;
     private View mViewToHide ;
+    LayoutInflater mLayoutInflate;
 
     private final String TAG = "ArticleListEmptyView";
 
@@ -33,10 +34,15 @@ public class ArticleListEmptyView extends LinearLayout {
     private void initialize(){
         this.setId(this.ID);
 
-        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (layoutInflater != null) {
+        this.mLayoutInflate = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (this.mLayoutInflate != null) {
             // Inflate into this mView
-            this.mView = layoutInflater.inflate(R.layout.articlelist_empty, this, true);
+            this.mView = this.mLayoutInflate.inflate(R.layout.articlelist_empty, this, true);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT);
+            this.setLayoutParams(lp);
         }
     }
 
@@ -61,7 +67,7 @@ public class ArticleListEmptyView extends LinearLayout {
         Log.d(TAG, String.valueOf(getVisibility()) + " ->" + String.valueOf(visibility));
         super.setVisibility(visibility);
         if (this.mViewToHide == null)
-          return;
+            return;
 
         if (visibility == View.VISIBLE) {
             this.mViewToHide.setVisibility(View.GONE);
