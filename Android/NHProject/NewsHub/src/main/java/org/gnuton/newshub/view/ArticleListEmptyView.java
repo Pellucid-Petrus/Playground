@@ -52,20 +52,22 @@ public class ArticleListEmptyView extends LinearLayout {
         Log.d(TAG, "VISIBILITY ->" + String.valueOf(visibility));
         super.onVisibilityChanged(changedView, visibility);
 
-        if (this.mViewToHide == null || changedView != this)
-            return;
-
-        if (visibility == View.VISIBLE) {
-            this.mViewToHide.setVisibility(View.GONE);
-        } else {
-            this.mViewToHide.setVisibility(View.VISIBLE);
-        }
+        //if (this.mViewToHide == null || changedView != this)
+        //    return;
     }
 
     @Override
     public void setVisibility(int visibility) {
         Log.d(TAG, String.valueOf(getVisibility()) + " ->" + String.valueOf(visibility));
         super.setVisibility(visibility);
+        if (this.mViewToHide == null)
+          return;
+
+        if (visibility == View.VISIBLE) {
+            this.mViewToHide.setVisibility(View.GONE);
+        } else {
+            this.mViewToHide.setVisibility(View.VISIBLE);
+        }
     }
 
     /***

@@ -417,11 +417,30 @@ public class MainActivity extends FragmentActivity
                         (ArticleListEmptyView) articleListView.getEmptyView();
 
                 final View articlelistSpacer = findViewById(R.id.articlelist_spacer);
+
                 articleListEmptyView.setViewToHide(articlelistSpacer);
             }
         }
 
         Log.d(TAG, "ON STARTed");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "ON RESUME");
+        final android.support.v4.app.FragmentActivity activity =
+                    this.mArticleListFragment.getActivity();
+        if (activity != null) {
+
+                final ListView articleListView = (ListView) activity.findViewById(R.id.entrylistView);
+
+                final ArticleListEmptyView articleListEmptyView =
+                        (ArticleListEmptyView) articleListView.getEmptyView();
+                Log.d(TAG, "XXXX" + String.valueOf(articleListEmptyView.getVisibility()));
+                articleListEmptyView.setVisibility(articleListEmptyView.getVisibility());
+        }
+        Log.d(TAG, "ON RESUMed");
     }
 
     @Override
