@@ -1,6 +1,5 @@
 package org.gnuton.newshub;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -74,7 +73,6 @@ public class MainActivity extends FragmentActivity
     float prevOff = -1.0f;
     int overscrollingFrameCount = 0;
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         MyApp.getInstance().mMainActivity = this;
@@ -430,15 +428,15 @@ public class MainActivity extends FragmentActivity
         super.onResume();
         Log.d(TAG, "ON RESUME");
         final android.support.v4.app.FragmentActivity activity =
-                    this.mArticleListFragment.getActivity();
+                this.mArticleListFragment.getActivity();
         if (activity != null) {
 
-                final ListView articleListView = (ListView) activity.findViewById(R.id.entrylistView);
+            final ListView articleListView = (ListView) activity.findViewById(R.id.entrylistView);
 
-                final ArticleListEmptyView articleListEmptyView =
-                        (ArticleListEmptyView) articleListView.getEmptyView();
-                Log.d(TAG, "XXXX" + String.valueOf(articleListEmptyView.getVisibility()));
-                articleListEmptyView.setVisibility(articleListEmptyView.getVisibility());
+            final ArticleListEmptyView articleListEmptyView =
+                    (ArticleListEmptyView) articleListView.getEmptyView();
+            Log.d(TAG, "XXXX" + String.valueOf(articleListEmptyView.getVisibility()));
+            articleListEmptyView.setVisibility(articleListEmptyView.getVisibility());
         }
         Log.d(TAG, "ON RESUMed");
     }
