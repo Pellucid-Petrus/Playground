@@ -19,6 +19,7 @@ import org.gnuton.newshub.adapters.ArticleListAdapter;
 import org.gnuton.newshub.types.RSSFeed;
 import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.RSSFeedManager;
+import org.gnuton.newshub.view.ArticleListEmptyView;
 
 /**
  * Created by gnuton on 5/18/13.
@@ -100,13 +101,14 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         setBusyIndicator(false);
 
         // Add Empty List view
-        View articleListEmptyView = view.findViewById(R.id.ArticleListEmpty);
+        //View articleListEmptyView = view.findViewById(R.id.ArticleListEmpty);
+        View articleListEmptyView = new ArticleListEmptyView(getActivity());
         mListView.setEmptyView(articleListEmptyView);
 
-        RelativeLayout articleListEmptyMovingLayout = (RelativeLayout) view.findViewById(R.id.ArticleListEmptyMovingLayout);
-        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.animator.swipe);
+        RelativeLayout articleListEmptyMovingLayout = (RelativeLayout) articleListEmptyView.findViewById(R.id.ArticleListEmptyMovingLayout);
+        Animation animation = AnimationUtils.loadAnimation(articleListEmptyView.getContext(), R.animator.swipe);
         articleListEmptyMovingLayout.startAnimation(animation);
-        TextView articleListEmptyText = (TextView) view.findViewById(R.id.ArticleListEmptyText);
+        TextView articleListEmptyText = (TextView) articleListEmptyView.findViewById(R.id.ArticleListEmptyText);
         articleListEmptyText.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
 
         // Define action (open activity) when a list item is selected

@@ -9,9 +9,5 @@
             android:layout_height="wrap_content"
             android:id="@+id/entrylistView"/>
 
-    <org.gnuton.newshub.view.ArticleListEmptyView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    </org.gnuton.newshub.view.ArticleListEmptyView>
 
 </RelativeLayout>
