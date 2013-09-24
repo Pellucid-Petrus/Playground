@@ -2,6 +2,7 @@ package org.gnuton.newshub.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -21,13 +22,18 @@ public class ArticleListEmptyView extends LinearLayout {
 
     public ArticleListEmptyView(Context context) {
         super(context);
+        initialize();
     }
 
     public ArticleListEmptyView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initialize();
+    }
+
+    private void initialize(){
         this.setId(this.ID);
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (layoutInflater != null) {
             // Inflate into this mView
             this.mView = layoutInflater.inflate(R.layout.articlelist_empty, this, true);
@@ -41,16 +47,25 @@ public class ArticleListEmptyView extends LinearLayout {
 
     @Override
     protected void onVisibilityChanged(View changedView, int visibility) {
+        Log.d(TAG, changedView.toString());
+
+        Log.d(TAG, "VISIBILITY ->" + String.valueOf(visibility));
         super.onVisibilityChanged(changedView, visibility);
 
-        if (this.mViewToHide == null )
+        if (this.mViewToHide == null || changedView != this)
             return;
 
         if (visibility == View.VISIBLE) {
             this.mViewToHide.setVisibility(View.GONE);
-        } else if (visibility == View.GONE) {
+        } else {
             this.mViewToHide.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        Log.d(TAG, String.valueOf(getVisibility()) + " ->" + String.valueOf(visibility));
+        super.setVisibility(visibility);
     }
 
     /***
