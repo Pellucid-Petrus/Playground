@@ -1,9 +1,11 @@
 package org.gnuton.newshub;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.DialogFragment;
@@ -180,6 +182,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                             searchFeedLayout.setVisibility(View.VISIBLE);
                             View categoriesLayout = mDlgLayout.findViewById(R.id.categories_layout);
                             categoriesLayout.setVisibility(View.GONE);
+                            mFeeds.clear();
                         }
                     }
                 });
@@ -213,11 +216,9 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                 @Override
                 public void onFinish() {
                     Log.d(TAG," Start searching");
-                    setBusyIndicatorStatus(true);
+
                     final Spinner languageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
                     final EditText queryEditText = (EditText) mDlgLayout.findViewById(R.id.subscribe_editText);
-
-                    mFeeds.clear();
 
                     // CLOSE SOFT KEYBOARD
                     InputMethodManager imm = (InputMethodManager) MyApp.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -256,7 +257,11 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
             mMainActivity.updateDrawerList();
     }
 
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     private void searchFeeds(String language, final String query){
+        setBusyIndicatorStatus(true);
+        mFeeds.clear();
+
         StringBuilder sb = new StringBuilder(mFindFeedsUrl);
         if (language.isEmpty())
             language = "en";
