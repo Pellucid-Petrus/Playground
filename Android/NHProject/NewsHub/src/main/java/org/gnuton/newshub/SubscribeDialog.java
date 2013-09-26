@@ -171,8 +171,16 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                     public void onClick(View view) {
                         Button b = (Button) view;
                         String text = (String) b.getText();
-                        final Spinner languageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
-                        searchFeeds(languageSpinner.getSelectedItem().toString(), text);
+                        if (! text.equals(getResources().getString(R.string.category_search))){
+                            final Spinner languageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
+                            searchFeeds(languageSpinner.getSelectedItem().toString(), text);
+                        } else {
+                            // layout in the dialog that holds spinner and textedit for searching feeds
+                            View searchFeedLayout = mDlgLayout.findViewById(R.id.search_feed_layout);
+                            searchFeedLayout.setVisibility(View.VISIBLE);
+                            View categoriesLayout = mDlgLayout.findViewById(R.id.categories_layout);
+                            categoriesLayout.setVisibility(View.GONE);
+                        }
                     }
                 });
             }
