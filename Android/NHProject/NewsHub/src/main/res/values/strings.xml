@@ -39,6 +39,17 @@
     <string name="icon_globe">&#xf0ac;</string>
     <string name="icon_more">&#xf103;</string>
     <string name="icon_next">&#xf0da;</string>
-    <string name="icon_prev">&#xf0d9;</string><string name="swipe_hand_text">Swipe to start!</string><string name="category_technology">tech</string><string name="category_news">news</string><string name="categories_money">money</string><string name="category_games">games</string><string name="categories_photography">photographies</string><string name="categories_fashion">fashion</string><string name="category_cooking">cooking</string><string name="category_build">build</string><string name="category_cinema">cinema</string><string name="category_sport">sport</string><string name="categoty_search">Look up</string>
+    <string name="icon_prev">&#xf0d9;</string><string name="swipe_hand_text">Swipe to start!</string>
+    <string name="category_technology">tech</string>
+    <string name="category_news">news</string>
+    <string name="categories_money">money</string>
+    <string name="category_games">games</string>
+    <string name="categories_photography">photographies</string>
+    <string name="categories_fashion">fashion</string>
+    <string name="category_cooking">cooking</string>
+    <string name="category_build">build</string>
+    <string name="category_cinema">cinema</string>
+    <string name="category_sport">sport</string>
+    <string name="category_search">Look up</string>
 
 </resources>
