@@ -50,6 +50,6 @@
     <string name="category_build">build</string>
     <string name="category_cinema">cinema</string>
     <string name="category_sport">sport</string>
-    <string name="category_search">&#xf002;</string>
+    <string name="category_search">&#xf002;</string><string name="subscribe_editText_hint">What are you looking for?</string>
 
 </resources>

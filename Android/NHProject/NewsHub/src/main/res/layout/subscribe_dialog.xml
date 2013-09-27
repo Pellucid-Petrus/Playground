@@ -30,7 +30,8 @@
                 android:layout_gravity="center_horizontal"
                 android:maxLines="1"
                 android:layout_weight="90"
-                android:singleLine="true"/>
+                android:singleLine="true"
+            android:hint="@string/subscribe_editText_hint" />
     </LinearLayout>
     <include layout="@layout/articlelist_header"/>
     <TextView android:id="@+id/subscribe_emptyView"
