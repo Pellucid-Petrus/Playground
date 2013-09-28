@@ -361,20 +361,25 @@ public class MainActivity extends FragmentActivity
         }
     }
     protected void feedSelected(int position) {
-        ArticleListFragment elf = (ArticleListFragment) mArticleListFragment;
-        if (elf == null){
-            Log.d(TAG, "ArticleListFragment instance is null");
+        ArticleListFragment alf = (ArticleListFragment) mArticleListFragment;
+        ArticleFragment af = (ArticleFragment) mArticleDetailFragment;
+
+        if (alf == null || af == null){
+            Log.d(TAG, "ArticleListFragment or ArticleFragment instance is null");
             return;
         }
 
+        // Get the empty article detail fragment every time we change feed
+        af.setEntry(null, -1);
+
         // update selected item and title, then close the drawer
         if (position == -1){
-            elf.setRSSFeed(null);
+            alf.setRSSFeed(null);
             return;
         }
         RSSFeed feed = (RSSFeed)mDrawerList.getAdapter().getItem(position);
         Log.d(TAG, "Feed: " + feed.title + " clicked!");
-        elf.setRSSFeed(feed);
+        alf.setRSSFeed(feed);
 
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerPanelLayout);

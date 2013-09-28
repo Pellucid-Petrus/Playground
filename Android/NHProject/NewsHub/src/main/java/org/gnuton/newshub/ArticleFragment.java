@@ -187,20 +187,30 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
     }
 
     public void setEntry(ArticleListAdapter adapter, int entryPosition) {
-        RSSEntry entry = adapter.getItem(entryPosition);
-
         Log.d(TAG,"Set mEntry");
+
+        RSSEntry entry = null;
+        final View articleFragmentEmptyViewLayout = getView().findViewById(R.id.ArticleFragmentEmptyViewLayout);
+
+        if (adapter != null){
+            entry = adapter.getItem(entryPosition);
+        }
+
+        // we do not need to set the same entry into the UI
         if (entry == mEntry)
             return;
 
         // Hide empty view if an article should be shown.
-        final View articleFragmentEmptyViewLayout = getView().findViewById(R.id.ArticleFragmentEmptyViewLayout);
         articleFragmentEmptyViewLayout.setVisibility((entry == null) ? View.VISIBLE : View.GONE);
 
         // Update internal attributes
         mEntry = entry;
         mEntryAdapter = adapter;
         mEntryPosition = entryPosition;
+
+        // We don't want to run the next code if entry is null.
+        if (entry == null)
+            return;
 
         // Set item as read
         if (!entry.isRead) {
