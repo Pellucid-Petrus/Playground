@@ -65,7 +65,8 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
         offset.add(Calendar.MINUTE, UPDATE_INTERVAL);
 
         // Fetch data from the internet if this is the first time or if data is older than 30 mins
-        if (feed.lastUpdate == null || feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE){
+        if (feed.lastUpdate == null || feed.entries.size() == 0 ||
+                feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE){
             // Update data
             feed.lastUpdate = rightNow;
             mListener.setBusyIndicator(true);
