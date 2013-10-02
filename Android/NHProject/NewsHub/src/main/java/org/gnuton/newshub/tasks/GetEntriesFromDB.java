@@ -73,4 +73,3 @@ public class GetEntriesFromDB extends AsyncTask<GetEntriesFromDB.GetEntriesReque
         return new GetEntriesRequest(feed, selection, orderBy);
     }
 }
-
