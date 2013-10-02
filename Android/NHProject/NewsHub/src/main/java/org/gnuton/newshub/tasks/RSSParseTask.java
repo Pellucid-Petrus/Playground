@@ -3,10 +3,12 @@ package org.gnuton.newshub.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.gnuton.newshub.R;
 import org.gnuton.newshub.db.RSSEntryDataSource;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.types.RSSFeed;
 import org.gnuton.newshub.utils.MyApp;
+import org.gnuton.newshub.utils.Notifications;
 import org.gnuton.newshub.utils.XMLFeedParser;
 
 import java.io.IOException;
@@ -55,7 +57,8 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
         List<RSSEntry> entries = feed.entries;
         if (entries.size() == 0) {
             Log.d(TAG, "ERROR: onPostExecute - no entries.");
-            return;
+            Notifications.showErrorMsg(R.string.rssParseTaskNoEntries);
+
         }
 
         //new BoilerPipeTask().execute(entries.toArray(new RSSEntry[entries.size()]));
