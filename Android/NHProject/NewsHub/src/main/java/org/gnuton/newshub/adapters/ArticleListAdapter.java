@@ -76,6 +76,9 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
 
     String dateToString(Calendar cal) {
         String strdate = null;
+        if (cal == null)
+            return "";
+
         SimpleDateFormat sdf;
 
         if (dayOfTheMonth == cal.get(Calendar.DAY_OF_MONTH))
