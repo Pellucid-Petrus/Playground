@@ -55,7 +55,7 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onResultsGot(RSSFeed feed) {
-        if (feed != null){
+        if (feed != null && feed.entries.size() != 0){
             mListener.setBusyIndicator(false);
             mListener.onEntryListFetched(feed);
         }
@@ -83,7 +83,7 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
     }
 
     /**
-     * This method is called when a client object asks for entries of a feed
+     * This method is called when a client object asks for entries
      * When the list is retrieved from DB or Internet, listener.onEntryListFetched callback is called.
      */
     public void requestEntryList(RSSFeed feed, OnEntryListFetchedListener listener){

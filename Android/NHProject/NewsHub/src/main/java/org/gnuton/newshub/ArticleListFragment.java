@@ -16,10 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.gnuton.newshub.adapters.ArticleListAdapter;
+import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.types.RSSFeed;
 import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.RSSFeedManager;
 import org.gnuton.newshub.view.ArticleListEmptyView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gnuton on 5/18/13.
@@ -46,13 +50,11 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
                 // Creates data controller (adapter) for listview abd set "entries" as  data
                 feed.adapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, feed.entries);
                 mListView.setAdapter(feed.adapter);
-            } else {
-                if (feed.adapter != mListView.getAdapter()) {
-                    mListView.setAdapter(feed.adapter);
-                } else {
-                    feed.adapter.notifyDataSetChanged();
-                }
+            } else if (feed.adapter != mListView.getAdapter()) {
+                mListView.setAdapter(feed.adapter);
+
             }
+            feed.adapter.notifyDataSetChanged();
         }
     }
 
@@ -160,6 +162,16 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         // ask for data
         if (feed != null){
             RSSFeedManager mgr = RSSFeedManager.getInstance();
+            // Create dummy adapter with one element
+            List<RSSEntry> entries = new ArrayList<RSSEntry>();
+            //entries.add(new RSSEntry(-1,-1,"",null,null,null));
+            entries.add(new RSSEntry(-1,-1,"","","",null)); //FIXME quite ugly code!!
+
+            ArticleListAdapter dummyAdapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, entries);
+            if (mListView !=null)
+                mListView.setAdapter(dummyAdapter);
+            dummyAdapter.notifyDataSetChanged();
+
             mgr.requestEntryList(feed, this);
         } else {
             onEntryListFetched(null);
