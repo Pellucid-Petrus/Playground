@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import org.gnuton.newshub.adapters.ArticleListAdapter;
 import org.gnuton.newshub.adapters.FeedListAdapter;
 import org.gnuton.newshub.adapters.MainPageFragmentAdapter;
@@ -397,6 +399,7 @@ public class MainActivity extends FragmentActivity
     protected void onStop() {
         Log.d(TAG, "ON STOP");
         super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);
     }
 
     @Override
@@ -426,6 +429,7 @@ public class MainActivity extends FragmentActivity
         }
 
         Log.d(TAG, "ON STARTed");
+        EasyTracker.getInstance(this).activityStart(this);
     }
 
     @Override
