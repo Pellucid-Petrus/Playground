@@ -165,7 +165,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
             // Create dummy adapter with one element
             List<RSSEntry> entries = new ArrayList<RSSEntry>();
             //entries.add(new RSSEntry(-1,-1,"",null,null,null));
-            entries.add(new RSSEntry(-1,-1,"","","",null)); //FIXME quite ugly code!!
+            entries.add(new RSSEntry()); //FIXME quite ugly code!!
 
             ArticleListAdapter dummyAdapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, entries);
             if (mListView !=null)

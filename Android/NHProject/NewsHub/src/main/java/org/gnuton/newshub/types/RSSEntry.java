@@ -32,4 +32,14 @@ public class RSSEntry implements Serializable{
         this.id = id;
         this.date = date;
     }
+
+    // This creates an empty entry which is not editable.
+    public RSSEntry(){
+        this.title = "";
+        this.feedId = -1;
+        this.summary = "";
+        this.link = "";
+        this.id = -1;
+        this.date = null;
+    }
 }
