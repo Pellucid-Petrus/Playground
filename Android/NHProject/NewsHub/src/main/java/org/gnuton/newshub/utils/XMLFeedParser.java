@@ -100,7 +100,7 @@ public class XMLFeedParser {
         }
         return feed;
     }
-    private RSSFeed parseAtomBuffer(RSSFeed feed) throws XmlPullParserException, IOException {
+    private RSSFeed parseAtomBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
@@ -117,22 +117,32 @@ public class XMLFeedParser {
         xpp.nextTag();
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "feed");
 
-        //Position in the entries list where the entry will be placed
         //NOTE: That list is sorted by day.
-        int pos = 0;
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG)
                 continue;
 
             if (xpp.getName().equals("entry")) {
-                RSSEntry e = parseAtomEntry(xpp, feed.id);
+                final RSSEntry e = parseAtomEntry(xpp, feed.id);
 
                 // Stop parsing old news
                 if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
                     break;
 
-                entries.add(pos, e);
-                ++pos;
+                final int pos = entries.size();
+                if (MyApp.mMainActivity != null) {
+                    MyApp.mMainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            entries.add(pos, e);
+                            if (feed.adapter != null)
+                                feed.adapter.notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    entries.add(pos, e);
+                }
+
             } else {
                 skip(xpp);
             }
@@ -145,13 +155,13 @@ public class XMLFeedParser {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
                 latestNewsPubDateStr = sdf.format(latestNewsPubDate.getTime());
             }
-            Log.d(TAG, "ATOM BUFFER PARSED:" + pos + "NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
+            Log.d(TAG, "ATOM BUFFER PARSED: NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
         }
 
         return feed;
     }
 
-    private RSSFeed parseRSSBuffer(RSSFeed feed) throws XmlPullParserException, IOException {
+    private RSSFeed parseRSSBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
@@ -171,20 +181,31 @@ public class XMLFeedParser {
         Log.d(TAG, "NAME " + name);
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "channel");
 
-        int pos = 0; // this is where the new entry will be inserted in the list
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG)
                 continue;
 
             if (xpp.getName().equals("item")) {
-                RSSEntry e = parseRSSEntry(xpp, feed.id);
+                final RSSEntry e = parseRSSEntry(xpp, feed.id);
 
                 // Stop parsing old news
                 if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
                     break;
 
-                entries.add(pos, e);
-                ++pos;
+                final int pos = entries.size();
+                if (MyApp.mMainActivity != null) {
+                    MyApp.mMainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            entries.add(pos, e);
+                            if (feed.adapter != null)
+                                feed.adapter.notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    entries.add(pos, e);
+                }
+
             } else {
                 skip(xpp);
             }
@@ -197,7 +218,7 @@ public class XMLFeedParser {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
                 latestNewsPubDateStr = sdf.format(latestNewsPubDate.getTime());
             }
-            Log.d(TAG, "RSS BUFFER PARSED:" + pos + "NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
+            Log.d(TAG, "RSS BUFFER PARSED: NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
         }
         return feed;
     }
