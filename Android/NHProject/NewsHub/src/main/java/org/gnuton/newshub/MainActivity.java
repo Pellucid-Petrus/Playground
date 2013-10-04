@@ -121,14 +121,10 @@ public class MainActivity extends FragmentActivity
                 }
 
                 @Override
-                public void onPageSelected(int i) {
-
-                }
+                public void onPageSelected(int i) {}
 
                 @Override
-                public void onPageScrollStateChanged(int i) {
-
-                }
+                public void onPageScrollStateChanged(int i) {}
             });
         } else {
             // This is used for large portrait layouts
@@ -311,8 +307,6 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "SAVE INSTANCE STATE");
         MyApp.getInstance().mMainActivity = null;
 
-        //savedInstanceState.putString("MyString", "Welcome back to Android");
-
         if (mOrientation != ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
             getSupportFragmentManager().beginTransaction()
                     .remove(mArticleListFragment)
@@ -430,6 +424,15 @@ public class MainActivity extends FragmentActivity
 
         Log.d(TAG, "ON STARTed");
         EasyTracker.getInstance(this).activityStart(this);
+    }
+
+    // Runs after onStart if there is a bundle
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        //HACK Commenting out the line below do fix a bug.
+        //If the drawer is open and the view is rotated the drawer is shown again
+        //but the article list is not moved to the correct offset
+        //super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
