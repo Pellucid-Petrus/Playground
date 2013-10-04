@@ -57,7 +57,6 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
             holder.title = (TextView) v.findViewById(R.id.FeedListItemTitleTextView);
             if (mStyle != -1 )
                 holder.title.setTextAppearance(v.getContext(), mStyle);
-            holder.entriesCount = (TextView) v.findViewById(R.id.FeedListItemEntriesCountTextView);
             holder.desc = (TextView) v.findViewById(R.id.FeedListItemDescTextView);
             holder.sidebar = (ImageView) v.findViewById(R.id.sidebar);
 
@@ -72,7 +71,6 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
             Spanned myStringSpanned = Html.fromHtml(f.title, null, null);
             holder.title.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
 
-            holder.entriesCount.setText("");//f.entries.size());
             String urlDomain = NetworkUtils.getDomainName(f.url);
             holder.desc.setText(NetworkUtils.getDomainName(urlDomain));
             holder.sidebar.setBackgroundColor(Utils.generateColor(urlDomain));
