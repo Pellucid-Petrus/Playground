@@ -267,7 +267,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         Log.d("TAG", "BOILER PLATE REMOVED");
         RSSEntry e =entries[0];
 
-        if (!this.mEntry.link.equals(e.link))
+        if (this.mEntry == null || !this.mEntry.link.equals(e.link))
             return;
 
         this.mEntry = e;
