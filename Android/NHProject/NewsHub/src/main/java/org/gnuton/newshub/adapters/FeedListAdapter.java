@@ -71,8 +71,8 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
             Spanned myStringSpanned = Html.fromHtml(f.title, null, null);
             holder.title.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
 
-            String urlDomain = NetworkUtils.getDomainName(f.url);
-            holder.desc.setText(NetworkUtils.getDomainName(urlDomain));
+            final String urlDomain = NetworkUtils.getDomainName(f.url);
+            holder.desc.setText(urlDomain);
             holder.sidebar.setBackgroundColor(Utils.generateColor(urlDomain));
         }
 
