@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.gnuton.newshub.R;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.NetworkUtils;
+import org.gnuton.newshub.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +37,7 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
         public TextView title;
         public TextView date;
         public TextView url;
+        public ImageView sideBar;
     }
 
     @Override
@@ -55,6 +58,8 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             holder.date = (TextView) v.findViewById(R.id.ListItemDateTextView);
             holder.date.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
 
+            holder.sideBar = (ImageView) v.findViewById(R.id.sidebar);
+
             v.setTag(holder);
         }
         else
@@ -68,6 +73,7 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             holder.title.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"), e.isRead ? Typeface.NORMAL : Typeface.BOLD);
             holder.url.setText(NetworkUtils.getDomainName(e.link));
             holder.date.setText(dateToString(e.date));
+            holder.sideBar.setBackgroundColor(Utils.generateColor(e.link));
         }
 
         // returns the updated delegate

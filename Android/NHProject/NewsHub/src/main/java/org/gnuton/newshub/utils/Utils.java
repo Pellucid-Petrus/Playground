@@ -37,4 +37,11 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
     }
 
+    // Generates color in the range 0xff000000 (BLACK) -> 0xffffffff (WHITE)
+    public static int generateColor(final String link) {
+        if (link == null || link == "")
+            return 0xFFFFFFFF;
+        else
+            return 0xFFFF4444;
+    }
 }
