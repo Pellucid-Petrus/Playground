@@ -78,9 +78,10 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
         RSSFeed f = (RSSFeed) adapterView.getItemAtPosition(i);
         Log.d(TAG, "Added feed:" + f.title);
 
-        if (f == null)
-            return;
-        mFeedDataSource.create(f);
+        if (f == null || this.mFeedDataSource == null)
+            this.dismiss();
+
+        this.mFeedDataSource.create(f);
         this.dismiss();
     }
 
