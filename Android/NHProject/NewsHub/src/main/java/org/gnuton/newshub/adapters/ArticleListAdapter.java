@@ -71,9 +71,10 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             Spanned titleSpanned = Html.fromHtml(e.title, null, null);
             holder.title.setText(titleSpanned, TextView.BufferType.SPANNABLE);
             holder.title.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"), e.isRead ? Typeface.NORMAL : Typeface.BOLD);
-            holder.url.setText(NetworkUtils.getDomainName(e.link));
+            String urlDomain = NetworkUtils.getDomainName(e.link);
+            holder.url.setText(urlDomain);
             holder.date.setText(dateToString(e.date));
-            holder.sideBar.setBackgroundColor(Utils.generateColor(e.link));
+            holder.sideBar.setBackgroundColor(Utils.generateColor(urlDomain));
         }
 
         // returns the updated delegate

@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.gnuton.newshub.R;
 import org.gnuton.newshub.types.RSSFeed;
 import org.gnuton.newshub.utils.NetworkUtils;
+import org.gnuton.newshub.utils.Utils;
 
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
         public TextView title;
         public TextView desc;
         public TextView entriesCount;
+        public ImageView sidebar;
     }
 
     @Override
@@ -56,6 +59,8 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
                 holder.title.setTextAppearance(v.getContext(), mStyle);
             holder.entriesCount = (TextView) v.findViewById(R.id.FeedListItemEntriesCountTextView);
             holder.desc = (TextView) v.findViewById(R.id.FeedListItemDescTextView);
+            holder.sidebar = (ImageView) v.findViewById(R.id.sidebar);
+
             v.setTag(holder);
         }
         else
@@ -68,7 +73,9 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
             holder.title.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
 
             holder.entriesCount.setText("");//f.entries.size());
-            holder.desc.setText(NetworkUtils.getDomainName(f.url));
+            String urlDomain = NetworkUtils.getDomainName(f.url);
+            holder.desc.setText(NetworkUtils.getDomainName(urlDomain));
+            holder.sidebar.setBackgroundColor(Utils.generateColor(urlDomain));
         }
 
         // returns the updated delegate
