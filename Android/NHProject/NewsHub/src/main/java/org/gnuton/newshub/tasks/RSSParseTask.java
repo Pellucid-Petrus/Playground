@@ -9,6 +9,7 @@ import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.types.RSSFeed;
 import org.gnuton.newshub.utils.MyApp;
 import org.gnuton.newshub.utils.Notifications;
+import org.gnuton.newshub.utils.TextUtils;
 import org.gnuton.newshub.utils.XMLFeedParser;
 
 import java.io.IOException;
@@ -41,7 +42,12 @@ public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
                 return feed;
 
             Log.d(TAG, "Downloading entries from provider...");
-            feed.xml = DownloadWebTask.downloadUrl(feed.url);
+
+            //TODO This is code is bad designed!!! downloadwebtask should be return an encoded str
+            byte[] xmlBuffer = DownloadWebTask.downloadUrl(feed.url);
+            String encoding = TextUtils.getXMLEncoding(xmlBuffer);
+            feed.xml = TextUtils.getXMLasString(xmlBuffer, encoding);
+
             return new XMLFeedParser(eds).parseXML(feed);
         } catch (IOException e) {
             e.printStackTrace();

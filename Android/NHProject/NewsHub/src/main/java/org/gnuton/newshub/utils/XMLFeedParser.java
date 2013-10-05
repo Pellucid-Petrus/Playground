@@ -81,8 +81,7 @@ public class XMLFeedParser {
      * @return
      */
     private RSSFeed parseUnknownBuffer(RSSFeed feed) throws IOException {
-        String xml = new String(feed.xml, "ISO-8859-1");
-
+        final String xml = feed.xml;
         try {
             XmlPullParser xpp = Xml.newPullParser();
             xpp.setInput(new StringReader(xml));
@@ -108,7 +107,7 @@ public class XMLFeedParser {
     }
 
     private RSSFeed parseAtomBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
-        String xml = new String(feed.xml, "ISO-8859-1");
+        final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
@@ -169,8 +168,7 @@ public class XMLFeedParser {
     }
 
     private RSSFeed parseRSSBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
-        String xml = new String(feed.xml, "ISO-8859-1");
-
+        final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
@@ -232,7 +230,7 @@ public class XMLFeedParser {
     }
 
     private RSSFeed parseRDFBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
-        String xml = new String(feed.xml, "ISO-8859-1");
+        final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();

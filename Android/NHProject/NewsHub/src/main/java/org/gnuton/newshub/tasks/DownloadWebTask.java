@@ -88,13 +88,10 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
     }
 
 
-
-    private static byte[] getBytesFromInputStream(InputStream is)
-            throws IOException {
-
-
+    //FIXME this could return an encoded string! USe XMLPullParser with the first part
+    //of the data, then get the encoding and and concatenate the data to make the string
+    private static byte[] getBytesFromInputStream(InputStream is) throws IOException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
         int nRead;
         byte[] data = new byte[16384];
 
@@ -103,10 +100,8 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
         }
 
         buffer.flush();
-
         return buffer.toByteArray();
     }
-
 
     public interface OnRequestCompletedListener {
         public void onRequestCompleted(final byte[] buffer);
