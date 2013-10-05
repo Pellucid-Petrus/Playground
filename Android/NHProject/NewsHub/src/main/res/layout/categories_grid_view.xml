@@ -102,7 +102,7 @@
             android:id="@+id/button31"
             android:layout_gravity="center"
             android:background="#3732fb"
-            android:textColor="#bcff36"
+            android:textColor="#fff"
             android:textSize="30dp"
             android:layout_weight="0.4"
             android:ellipsize="marquee"
