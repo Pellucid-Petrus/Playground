@@ -159,7 +159,7 @@ public class MainActivity extends FragmentActivity
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setScrimColor(android.R.color.transparent);
+        mDrawerLayout.setScrimColor(0);
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         mDrawerToggle = new ActionBarDrawerToggle(
