@@ -13,16 +13,15 @@ import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
 /**
- * Created by gnuton on 5/19/13.
- * listener must implement OnRequestCompleted.
+ * mListener must implement OnRequestCompleted.
  */
 public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
     private static final String TAG = "DOWNLOAD_WEB_TASK";
 
-    private static OnRequestCompletedListener listener;
+    private static OnRequestCompletedListener mListener;
     public DownloadWebTask(Object o) {
         if (o instanceof OnRequestCompletedListener) {
-            this.listener = (OnRequestCompletedListener) o;
+            mListener = (OnRequestCompletedListener) o;
         } else {
             throw new ClassCastException(o.toString() + " must implement DownloadWebTask.OnRequestCompletedListener");
         }
@@ -40,7 +39,7 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
 
     @Override
     protected void onPostExecute(byte[] s) {
-        listener.onRequestCompleted(s);
+        mListener.onRequestCompleted(s);
     }
 
     static public byte[] downloadUrl(String url) throws IOException {

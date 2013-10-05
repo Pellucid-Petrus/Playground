@@ -15,10 +15,6 @@ import org.gnuton.newshub.utils.XMLFeedParser;
 import java.io.IOException;
 import java.util.List;
 
-
-/**
- * Created by gnuton on 5/19/13.
- */
 public class RSSParseTask extends AsyncTask<RSSFeed, Void, RSSFeed> {
     private static final String TAG = "RSS_PARSE_TASK" ;
     private static final RSSEntryDataSource eds = new RSSEntryDataSource(MyApp.getContext());
