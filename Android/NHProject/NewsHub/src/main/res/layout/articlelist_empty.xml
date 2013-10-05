@@ -4,38 +4,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingBottom="30dp"
+                android:animateLayoutChanges="true"
         >
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/swipeHandImageViewBg"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/swipe_hand_bg"/>
+
     <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/ArticleListEmptyMovingLayout"
-            >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/article_list_empty_anim1">
 
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/swipeHandImageView"
+                android:id="@+id/swipeHandImageViewBg"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:src="@drawable/swipe_hand"/>
+                android:src="@drawable/swipe_hand_bg"/>
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/ArticleListEmptyMovingLayout"
+                >
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/swipeHandImageView"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/swipe_hand"/>
+
+        </RelativeLayout>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/swipe_hand_text"
+                android:id="@+id/ArticleListEmptyText"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/ArticleListEmptyMovingLayout"
+                android:textColor="#f30007"/>
     </RelativeLayout>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/swipe_hand_text"
-            android:id="@+id/ArticleListEmptyText"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/ArticleListEmptyMovingLayout"
-            android:textColor="#f30007"/>
 
 </RelativeLayout>
