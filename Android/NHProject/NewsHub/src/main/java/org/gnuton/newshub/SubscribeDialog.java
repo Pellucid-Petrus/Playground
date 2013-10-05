@@ -42,18 +42,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by gnuton on 5/28/13.
- */
 public class SubscribeDialog extends DialogFragment implements ListView.OnItemClickListener, DownloadWebTask.OnRequestCompletedListener {
     private final String TAG = SubscribeDialog.class.getName();
     private CountDownTimer mSearchTiimer;
     private View mDlgLayout;
 
-    private final RSSFeedDataSource mFeedDataSource;
+    private final RSSFeedDataSource mFeedDataSource = new RSSFeedDataSource(MyApp.mMainActivity);
     private List<RSSFeed> mFeeds;
 
-    private MainActivity mMainActivity;
     private ArrayAdapter<RSSFeed> adapter;
     //private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
     private final String mFindFeedsUrl = "http://rssfinder-gnuton.rhcloud.com/get";
@@ -63,12 +59,6 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
     public SubscribeDialog(){
         super();
-        this.mMainActivity = MyApp.getInstance().mMainActivity;
-        if (mMainActivity == null){
-            this.mFeedDataSource = null;
-            return;
-        }
-        this.mFeedDataSource = new RSSFeedDataSource(mMainActivity);
     }
 
     // ListView.OnClickListener
@@ -76,10 +66,11 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         //TextView v = (TextView) view;
         RSSFeed f = (RSSFeed) adapterView.getItemAtPosition(i);
-        Log.d(TAG, "Added feed:" + f.title);
+        if (f == null){
+            return;
+        }
 
-        if (f == null || this.mFeedDataSource == null)
-            this.dismiss();
+        Log.d(TAG, "Added feed:" + f.title);
 
         this.mFeedDataSource.create(f);
         this.dismiss();
@@ -94,7 +85,8 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
         if (busy){
             Animation animation = AnimationUtils.loadAnimation(MyApp.getContext(), R.animator.fadeout);
-            spinner.startAnimation(animation);
+            if (animation != null)
+                spinner.startAnimation(animation);
         } else {
             spinner.clearAnimation();
         }
@@ -102,10 +94,6 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final SubscribeDialog t = this;
-
-        String[] providers = new String[] {};
-
         //Create dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -162,31 +150,37 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
         final ViewGroup categoriesLayout = (ViewGroup) mDlgLayout.findViewById(R.id.categories_layout);
         for (int i=0; i < categoriesLayout.getChildCount(); ++i){
             ViewGroup rowLayout = (ViewGroup) categoriesLayout.getChildAt(i);
+            if (rowLayout == null)
+                continue;
             for (int j=0; j < rowLayout.getChildCount(); ++j){
-                Button b = null;
+                Button b;
                 try {
                     b = (Button) rowLayout.getChildAt(j);
                 } catch (ClassCastException e){
                     continue;
                 }
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Button b = (Button) view;
-                        String text = (String) b.getText();
-                        if (! text.equals(getResources().getString(R.string.category_search))){
-                            final Spinner languageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
-                            searchFeeds(languageSpinner.getSelectedItem().toString(), text);
-                        } else {
-                            // layout in the dialog that holds spinner and textedit for searching feeds
-                            View searchFeedLayout = mDlgLayout.findViewById(R.id.search_feed_layout);
-                            searchFeedLayout.setVisibility(View.VISIBLE);
-                            View categoriesLayout = mDlgLayout.findViewById(R.id.categories_layout);
-                            categoriesLayout.setVisibility(View.GONE);
-                            mFeeds.clear();
+                if (b!= null)
+                    b.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Button b = (Button) view;
+                            String text = (String) b.getText();
+                            if (text == null)
+                                return;
+                            String catSearchStr = getResources().getString(R.string.category_search);
+                            if (! text.equals(catSearchStr)){
+                                final Spinner languageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
+                                searchFeeds(languageSpinner.getSelectedItem().toString(), text);
+                            } else {
+                                // layout in the dialog that holds spinner and textedit for searching feeds
+                                View searchFeedLayout = mDlgLayout.findViewById(R.id.search_feed_layout);
+                                searchFeedLayout.setVisibility(View.VISIBLE);
+                                View categoriesLayout = mDlgLayout.findViewById(R.id.categories_layout);
+                                categoriesLayout.setVisibility(View.GONE);
+                                mFeeds.clear();
+                            }
                         }
-                    }
-                });
+                    });
             }
         }
         // Binds SQLite to list
@@ -254,6 +248,8 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         Log.d(TAG, "Closing dialog");
+        final MainActivity mMainActivity = MyApp.getInstance().mMainActivity;
+
         if (mMainActivity != null)
             mMainActivity.updateDrawerList();
     }
