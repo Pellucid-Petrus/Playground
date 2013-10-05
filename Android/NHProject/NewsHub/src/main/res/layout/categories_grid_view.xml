@@ -124,7 +124,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:text="@string/category_build"
+            android:text="@string/category_travels"
             android:id="@+id/button33"
             android:layout_gravity="center"
             android:background="#e030d3"
