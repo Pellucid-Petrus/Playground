@@ -54,8 +54,13 @@ public class XMLFeedParser {
                 try {
                     return parseAtomBuffer(feed);
                 } catch (XmlPullParserException e1) {
-                    parseUnknownBuffer(feed);
-                    e1.printStackTrace();
+                    try {
+                        return parseRDFBuffer(feed);
+                    } catch (XmlPullParserException e2) {
+                        parseUnknownBuffer(feed);
+                        e2.printStackTrace();
+                    }
+
                 }
                 e.printStackTrace();
             }
@@ -100,6 +105,7 @@ public class XMLFeedParser {
         }
         return feed;
     }
+
     private RSSFeed parseAtomBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
@@ -222,6 +228,68 @@ public class XMLFeedParser {
         }
         return feed;
     }
+
+    private RSSFeed parseRDFBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
+        final String xml = feed.xml;
+        final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
+        final List entries = feed.entries;
+        final XmlPullParser xpp = Xml.newPullParser();
+
+        // Some checking
+        if (xml == null) {
+            Log.e(TAG, "XML Buffer is empty. Nothing to parse.");
+            return feed;
+        }
+
+        // let's start to parse!
+        xpp.setInput(new StringReader(xml));
+        xpp.nextTag();
+        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "RDF");
+
+        //NOTE: That list is sorted by day.
+        while (xpp.next() != XmlPullParser.END_TAG) {
+            if (xpp.getEventType() != XmlPullParser.START_TAG)
+                continue;
+
+            if (xpp.getName().equals("item")) {
+                final RSSEntry e = parseRDFEntry(xpp, feed.id);
+
+                // Stop parsing old news
+                if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
+                    break;
+
+                final int pos = entries.size();
+                if (MyApp.mMainActivity != null) {
+                    MyApp.mMainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            entries.add(pos, e);
+                            if (feed.adapter != null)
+                                feed.adapter.notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    entries.add(pos, e);
+                }
+
+            } else {
+                skip(xpp);
+            }
+        }
+
+        if ( BuildConfig.DEBUG ) {
+            String latestNewsPubDateStr = new String("None");
+
+            if (latestNewsPubDate != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
+                latestNewsPubDateStr = sdf.format(latestNewsPubDate.getTime());
+            }
+            Log.d(TAG, "RDF BUFFER PARSED: NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
+        }
+
+        return feed;
+    }
+
     @TargetApi(Build.VERSION_CODES.FROYO)
     private RSSEntry parseAtomEntry(XmlPullParser xpp, int feedID) throws IOException, XmlPullParserException {
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "entry");
@@ -362,6 +430,10 @@ public class XMLFeedParser {
                         String.valueOf(publishedData.getTimeInMillis()),
                         String.valueOf(0) // Not read
                 });
+    }
+
+    private RSSEntry parseRDFEntry(XmlPullParser xpp, int feedID) throws IOException, XmlPullParserException {
+        return this.parseRSSEntry(xpp, feedID);
     }
 
     private String readAtomLink(XmlPullParser xpp) throws IOException, XmlPullParserException {
