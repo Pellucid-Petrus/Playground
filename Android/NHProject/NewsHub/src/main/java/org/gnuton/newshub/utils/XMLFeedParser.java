@@ -9,11 +9,12 @@ import org.gnuton.newshub.BuildConfig;
 import org.gnuton.newshub.db.RSSEntryDataSource;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.types.RSSFeed;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -80,7 +81,7 @@ public class XMLFeedParser {
      * @return
      */
     private RSSFeed parseUnknownBuffer(RSSFeed feed) throws IOException {
-        String xml = feed.xml;
+        String xml = new String(feed.xml, "ISO-8859-1");
 
         try {
             XmlPullParser xpp = Xml.newPullParser();
@@ -107,7 +108,7 @@ public class XMLFeedParser {
     }
 
     private RSSFeed parseAtomBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
-        final String xml = feed.xml;
+        String xml = new String(feed.xml, "ISO-8859-1");
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
@@ -168,7 +169,8 @@ public class XMLFeedParser {
     }
 
     private RSSFeed parseRSSBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
-        final String xml = feed.xml;
+        String xml = new String(feed.xml, "ISO-8859-1");
+
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
@@ -230,7 +232,7 @@ public class XMLFeedParser {
     }
 
     private RSSFeed parseRDFBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
-        final String xml = feed.xml;
+        String xml = new String(feed.xml, "ISO-8859-1");
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
@@ -241,8 +243,11 @@ public class XMLFeedParser {
             return feed;
         }
 
+        //byte[] utf8 = new String(xml, "ISO-8859-1").getBytes("UTF-8");
+
         // let's start to parse!
-        xpp.setInput(new StringReader(xml));
+        InputStream is = new ByteArrayInputStream(xml.getBytes("ISO-8859-1"));
+        xpp.setInput(is, "ISO-8859-1");
         xpp.nextTag();
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "RDF");
 
@@ -253,7 +258,7 @@ public class XMLFeedParser {
 
             if (xpp.getName().equals("item")) {
                 final RSSEntry e = parseRDFEntry(xpp, feed.id);
-
+                Log.d(TAG, "==========>" + e.title);
                 // Stop parsing old news
                 if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
                     break;
@@ -271,6 +276,8 @@ public class XMLFeedParser {
                 } else {
                     entries.add(pos, e);
                 }
+
+
 
             } else {
                 skip(xpp);

@@ -17,7 +17,7 @@ public class RSSFeed implements Serializable {
 
     // temporary vars: not saved into DB
     public ArticleListAdapter adapter;
-    public String xml;
+    public byte[] xml;
     public List entries;
     public Calendar lastUpdate;
 

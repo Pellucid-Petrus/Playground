@@ -5,18 +5,18 @@ import android.util.Log;
 
 import org.gnuton.newshub.utils.Notifications;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
 
 /**
  * Created by gnuton on 5/19/13.
  * listener must implement OnRequestCompleted.
  */
-public class DownloadWebTask extends AsyncTask<String, Void, String>{
+public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
     private static final String TAG = "DOWNLOAD_WEB_TASK";
 
     private static OnRequestCompletedListener listener;
@@ -29,7 +29,7 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected byte[] doInBackground(String... urls) {
         try {
             return downloadUrl(urls[0]);
         } catch (IOException e) {
@@ -39,11 +39,11 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(byte[] s) {
         listener.onRequestCompleted(s);
     }
 
-    static public String downloadUrl(String url) throws IOException {
+    static public byte[] downloadUrl(String url) throws IOException {
         InputStream is = null;
         Log.d(TAG, "Downloading: " + url);
         try {
@@ -76,7 +76,7 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
                 is = new GZIPInputStream(is);
             }
 
-            return readText(is);
+            return getBytesFromInputStream(is);
         } catch(Exception e) {
             Notifications.showMsg(e.getMessage());
             return null;
@@ -87,14 +87,28 @@ public class DownloadWebTask extends AsyncTask<String, Void, String>{
         }
     }
 
-    static private String readText(InputStream is) {
-        Scanner scanner = new Scanner(is, "UTF-8").useDelimiter("\\A");
-        if (scanner.hasNext())
-            return scanner.next();
-        return "";
+
+
+    private static byte[] getBytesFromInputStream(InputStream is)
+            throws IOException {
+
+
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        int nRead;
+        byte[] data = new byte[16384];
+
+        while ((nRead = is.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
+        }
+
+        buffer.flush();
+
+        return buffer.toByteArray();
     }
 
+
     public interface OnRequestCompletedListener {
-        public void onRequestCompleted(final String buffer);
+        public void onRequestCompleted(final byte[] buffer);
     }
 }

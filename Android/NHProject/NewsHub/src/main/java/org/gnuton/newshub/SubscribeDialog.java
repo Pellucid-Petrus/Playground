@@ -37,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -273,7 +274,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     }
 
     @Override
-    public void onRequestCompleted(String buffer) {
+    public void onRequestCompleted(byte[] buffer) {
         mFeeds.clear();
         setBusyIndicatorStatus(false);
 
@@ -283,11 +284,18 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
         }
 
         Log.d(TAG, "Got new providers");
+        String xml;
+        try {
+            xml = new String(buffer, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return;
+        }
 
         try {
             // Scan google responses
             //jArray = new JSONObject(buffer).getJSONObject("responseData").getJSONArray("entries");
-            JSONArray jArray = new JSONArray(buffer);
+            JSONArray jArray = new JSONArray(xml);
             for (int i=0; i< jArray.length(); ++i) {
                 JSONObject j = null;
                 j = jArray.getJSONObject(i);
