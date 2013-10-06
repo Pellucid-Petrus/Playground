@@ -40,6 +40,9 @@ public class TextUtils {
 
     //TODO This class should be removed and part of its code should be in DowlooadTask
     public static String getXMLasString(byte[] xmlBuffer, String encoding){
+        if (xmlBuffer == null || encoding == null)
+            return null;
+
         try {
             String xml = new String(xmlBuffer, encoding);
             return xml;
