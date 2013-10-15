@@ -323,7 +323,7 @@ public class MainActivity extends FragmentActivity
         if (pager != null)
             pager.setCurrentItem(2);
         ArticleFragment df = (ArticleFragment) mArticleDetailFragment;
-        df.setEntry(adapter, entryPosition);
+        df.setEntryAndWait(adapter, entryPosition);
     }
 
     private class DrawerItemClickListener implements AdapterView.OnItemClickListener {
@@ -366,7 +366,7 @@ public class MainActivity extends FragmentActivity
         }
 
         // Get the empty article detail fragment every time we change feed
-        af.setEntry(null, -1);
+        af.setEntryAndWait(null, -1);
 
         // update selected item and title, then close the drawer
         if (position == -1){

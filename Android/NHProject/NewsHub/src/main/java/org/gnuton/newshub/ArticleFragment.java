@@ -24,6 +24,7 @@ import org.gnuton.newshub.tasks.ImageGetter;
 import org.gnuton.newshub.tasks.UpdateEntryInDB;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.utils.FontsProvider;
+import org.gnuton.newshub.utils.MyApp;
 
 /**
  * Created by gnuton on 5/18/13.
@@ -186,22 +187,40 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         Log.d(TAG, "DETACH");
     }
 
-    public void setEntry(ArticleListAdapter adapter, int entryPosition) {
-        Log.d(TAG,"Set mEntry");
+    public void setEntryAndWait(final ArticleListAdapter adapter, final int entryPosition) {
+        android.os.Handler h = MyApp.mMainActivity.getWindow().getDecorView().getHandler();
 
-        RSSEntry entry = null;
-        final View articleFragmentEmptyViewLayout = getView().findViewById(R.id.ArticleFragmentEmptyViewLayout);
-
-        if (adapter != null){
-            entry = adapter.getItem(entryPosition);
-        }
-
+        if (adapter == null)
+            return;
+        final RSSEntry entry = adapter.getItem(entryPosition);
         // we do not need to set the same entry into the UI
         if (entry == mEntry)
             return;
 
         // Hide empty view if an article should be shown.
+        final View articleFragmentEmptyViewLayout = getView().findViewById(R.id.ArticleFragmentEmptyViewLayout);
         articleFragmentEmptyViewLayout.setVisibility((entry == null) ? View.VISIBLE : View.GONE);
+
+        // Clear view
+        mImageAdapter.mImages.clear();
+        mImageAdapter.notifyDataSetChanged();
+        final TextView titleView = (TextView) getView().findViewById(R.id.TitleTextView);
+        titleView.setText("Loading...");
+        final TextView contentView = (TextView) getView().findViewById(R.id.ContentTextView);
+        contentView.setText("");
+
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setEntry(adapter, entryPosition);
+            }
+        }, 100);
+    }
+    private void setEntry(ArticleListAdapter adapter, int entryPosition) {
+        Log.d(TAG,"Set mEntry");
+
+        if (adapter == null) return;
+        final RSSEntry entry = adapter.getItem(entryPosition);
 
         // Update internal attributes
         mEntry = entry;
@@ -231,11 +250,11 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         }
 
         // Hide Read more button
-        Button readMoreButton = (Button) getView().findViewById(R.id.ReadMoreButton);
+        final Button readMoreButton = (Button) getView().findViewById(R.id.ReadMoreButton);
         readMoreButton.setVisibility(View.GONE);
 
         //Set Title
-        TextView titleView = (TextView) getView().findViewById(R.id.TitleTextView);
+        final TextView titleView = (TextView) getView().findViewById(R.id.TitleTextView);
         Spanned titleSpanned = Html.fromHtml(entry.title, mImageGetter, null);
         titleView.setText(titleSpanned);
 
