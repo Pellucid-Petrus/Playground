@@ -26,9 +26,6 @@ import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.MyApp;
 
-/**
- * Created by gnuton on 5/18/13.
- */
 public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "ARTICLE_FRAGMENT";
 
@@ -161,10 +158,6 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
     public void onActivityCreated(android.os.Bundle savedInstanceState) {
         super.onStart();
         Log.d(TAG, "ACTIVITY CREATED");
-        // called when fragment is visible
-        if (mEntry != null) {
-            //setEntry(mEntry);
-        }
     }
 
     @Override
