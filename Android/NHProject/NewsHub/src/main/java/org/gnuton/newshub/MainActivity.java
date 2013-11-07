@@ -77,7 +77,7 @@ public class MainActivity extends FragmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MyApp.getInstance().mMainActivity = this;
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -438,6 +438,8 @@ public class MainActivity extends FragmentActivity
     @Override
     protected void onResume() {
         super.onResume();
+        MyApp.mMainActivity = this;
+
         Log.d(TAG, "ON RESUME");
         final android.support.v4.app.FragmentActivity activity =
                 this.mArticleListFragment.getActivity();
