@@ -18,8 +18,8 @@ import org.gnuton.newshub.utils.Utils;
 import java.util.List;
 
 /**
- * Created by gnuton on 6/9/13.
- */
+  * Feed list adapter
+  */
 public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
     private final List<RSSFeed> feeds;
     final int mStyle;
@@ -42,7 +42,6 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
     public static class ViewHolder{
         public TextView title;
         public TextView desc;
-        public TextView entriesCount;
         public ImageView sidebar;
     }
 
