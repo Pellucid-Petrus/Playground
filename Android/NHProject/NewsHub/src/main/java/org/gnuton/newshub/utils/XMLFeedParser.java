@@ -30,6 +30,7 @@ import javax.xml.datatype.DatatypeFactory;
 
 /**
  * Created by gnuton on 6/6/13.
+ * Class that parses XML data
  */
 public class XMLFeedParser {
     private static final String TAG=XMLFeedParser.class.getName();
@@ -70,15 +71,14 @@ public class XMLFeedParser {
         }
 
         // Clean
+        assert feed != null;
         feed.xml= null;
 
         return feed;
     }
 
     /**
-     * Useful for debuggin'.
-     * @param feed
-     * @return
+     * Useful for debuggin'
      */
     private RSSFeed parseUnknownBuffer(RSSFeed feed) throws IOException {
         final String xml = feed.xml;
@@ -88,14 +88,11 @@ public class XMLFeedParser {
 
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
-                if(eventType == XmlPullParser.START_DOCUMENT) {
-                    System.out.println("Start document");
-                } else if(eventType == XmlPullParser.START_TAG) {
-                    System.out.println("Start tag "+xpp.getName());
-                } else if(eventType == XmlPullParser.END_TAG) {
-                    System.out.println("End tag "+xpp.getName());
-                } else if(eventType == XmlPullParser.TEXT) {
-                    //System.out.println("Text "+xpp.getText());
+                switch(eventType){
+                    case XmlPullParser.START_DOCUMENT: System.out.println("Start document"); break;
+                    case XmlPullParser.START_TAG: System.out.println("Start tag "+xpp.getName()); break;
+                    case XmlPullParser.END_TAG: System.out.println("End tag "+xpp.getName()); break;
+                    case XmlPullParser.TEXT: System.out.println("Text "+xpp.getText()); break;
                 }
                 eventType = xpp.next();
             }
@@ -106,6 +103,7 @@ public class XMLFeedParser {
         return feed;
     }
 
+    @SuppressWarnings("unchecked")
     private RSSFeed parseAtomBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
@@ -155,7 +153,7 @@ public class XMLFeedParser {
         }
 
         if ( BuildConfig.DEBUG ) {
-            String latestNewsPubDateStr = new String("None");
+            String latestNewsPubDateStr = "None";
 
             if (latestNewsPubDate != null) {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
@@ -167,6 +165,7 @@ public class XMLFeedParser {
         return feed;
     }
 
+    @SuppressWarnings("unchecked")
     private RSSFeed parseRSSBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
@@ -218,7 +217,7 @@ public class XMLFeedParser {
         }
 
         if ( BuildConfig.DEBUG ) {
-            String latestNewsPubDateStr = new String("None");
+            String latestNewsPubDateStr = "None";
 
             if (latestNewsPubDate != null) {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
@@ -229,6 +228,7 @@ public class XMLFeedParser {
         return feed;
     }
 
+    @SuppressWarnings("unchecked")
     private RSSFeed parseRDFBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
@@ -283,7 +283,7 @@ public class XMLFeedParser {
         }
 
         if ( BuildConfig.DEBUG ) {
-            String latestNewsPubDateStr = new String("None");
+            String latestNewsPubDateStr = "None";
 
             if (latestNewsPubDate != null) {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
@@ -307,7 +307,7 @@ public class XMLFeedParser {
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
-            } else if (xpp.getEventType() != XmlPullParser.END_TAG && xpp.getName() == "document") {
+            } else if (xpp.getEventType() != XmlPullParser.END_TAG && xpp.getName().equals("document")) {
                 break;
             }
 
@@ -352,25 +352,16 @@ public class XMLFeedParser {
                         description,
                         link,
                         content,
-                        String.valueOf(publishedData.getTimeInMillis()),
+                        String.valueOf(publishedData != null ? publishedData.getTimeInMillis() : 0),
                         String.valueOf(0) // Not read
                 });
     }
 
-    /**
-     *
-     * @param xpp
-     * @param feedID
-     * @return RSSEntry pointing to the entry into the DB
-     * @throws IOException
-     * @throws XmlPullParserException
-     */
     @TargetApi(Build.VERSION_CODES.FROYO)
     private RSSEntry parseRSSEntry(XmlPullParser xpp, int feedID) throws IOException, XmlPullParserException {
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "item");
         String title = null;
-        String description = new String();
-        String content = null;
+        String description = "";
         String link = null;
         Calendar publishedData = GregorianCalendar.getInstance(); // Avoid crashes if data is not parsed correctly
 
@@ -388,7 +379,7 @@ public class XMLFeedParser {
             } else if (name.equals("link")) {
                 link = readTagText(xpp, "link");
             } else if (name.toLowerCase().equals("pubdate")) {
-                String dateString = null;
+                String dateString;
                 try {
                     dateString = readTagText(xpp, "pubDate");
                 } catch (XmlPullParserException e) {
@@ -431,7 +422,7 @@ public class XMLFeedParser {
                         title,
                         description,
                         link,
-                        content,
+                        null,  //content
                         String.valueOf(publishedData.getTimeInMillis()),
                         String.valueOf(0) // Not read
                 });
@@ -450,8 +441,6 @@ public class XMLFeedParser {
             if (relType.equals("alternate")){
                 link = xpp.getAttributeValue(null, "href");
                 Log.d(TAG, "Read url:"+ link);
-            } else if (relType.equals("replies")) {
-                // not used yet
             }
             xpp.nextTag();
         }
