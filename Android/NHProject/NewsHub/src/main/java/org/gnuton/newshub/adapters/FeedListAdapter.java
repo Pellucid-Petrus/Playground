@@ -23,17 +23,20 @@ import java.util.List;
 public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
     private final List<RSSFeed> feeds;
     final int mStyle;
+    final boolean mShortUrl;
 
-    public FeedListAdapter(Context context, int textViewResourceId, List<RSSFeed> feeds, int style) {
+    public FeedListAdapter(Context context, int textViewResourceId, List<RSSFeed> feeds, boolean shortUrl, int style) {
         super(context, textViewResourceId, feeds);
         this.feeds = feeds;
         this.mStyle = style;
+        this.mShortUrl = shortUrl;
     }
 
-    public FeedListAdapter(Context context, int textViewResourceId, List<RSSFeed> feeds) {
+    public FeedListAdapter(Context context, int textViewResourceId, List<RSSFeed> feeds, boolean shortUrl) {
         super(context, textViewResourceId, feeds);
         this.feeds = feeds;
         this.mStyle = -1;
+        this.mShortUrl = shortUrl;
     }
 
     public static class ViewHolder{
@@ -71,7 +74,13 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
             Spanned myStringSpanned = Html.fromHtml(f.title, null, null);
             holder.title.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
 
-            final String urlDomain = NetworkUtils.getDomainName(f.url);
+            String urlDomain;
+            if (!mShortUrl)
+                urlDomain= NetworkUtils.getMoreDetailedDomainName(f.url);
+            else
+                urlDomain= NetworkUtils.getDomainName(f.url);
+
+
             holder.desc.setText(urlDomain);
             holder.sidebar.setBackgroundColor(Utils.generateColor(urlDomain));
         }

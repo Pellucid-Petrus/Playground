@@ -23,4 +23,20 @@ public class NetworkUtils {
             return "";
         return domain.startsWith("www.") ? domain.substring(4) : domain;
     }
+
+    public static String getMoreDetailedDomainName(String url) {
+        URI uri = null;
+        url = url.replaceFirst("\\?.*","");
+        try {
+            uri = new URI(url);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        String domain = uri.getHost() + uri.getPath();
+        if (domain == null || domain == "")
+            return "";
+        return domain.startsWith("www.") ? domain.substring(4) : domain;
+    }
 }

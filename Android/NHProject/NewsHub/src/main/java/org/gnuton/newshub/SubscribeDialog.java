@@ -190,7 +190,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
         // Initlialize list
         mFeeds = new ArrayList<RSSFeed>();
-        adapter = new FeedListAdapter(ctx, R.layout.feedlist_item, mFeeds);
+        adapter = new FeedListAdapter(ctx, R.layout.feedlist_item, mFeeds, false);
         mListView = (ListView) mDlgLayout.findViewById(R.id.subscribe_listView);
         mListView. setEmptyView(mDlgLayout.findViewById(R.id.subscribe_emptyView));
         mListView.setAdapter(adapter);
