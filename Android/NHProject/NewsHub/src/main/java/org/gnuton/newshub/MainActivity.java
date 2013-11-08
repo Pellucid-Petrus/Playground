@@ -195,6 +195,12 @@ public class MainActivity extends FragmentActivity
                 View ArticleListEmptyViewAnim1 = findViewById(R.id.article_list_empty_anim1);
                 if (ArticleListEmptyViewAnim1 != null)
                     ArticleListEmptyViewAnim1.setVisibility(View.INVISIBLE);
+
+                // In portrait shows first page
+                ViewPager vp = (ViewPager) findViewById(R.id.mainPager);
+                if (vp != null){
+                    vp.setCurrentItem(0, true);
+                }
             }
 
             @Override
