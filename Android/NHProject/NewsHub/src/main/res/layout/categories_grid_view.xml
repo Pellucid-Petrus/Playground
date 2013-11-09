@@ -42,7 +42,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:text="@string/categories_money"
+            android:text="@string/categories_finance"
             android:id="@+id/button13"
             android:layout_gravity="center"
             android:background="#81e047"
@@ -63,7 +63,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:text="@string/categories_photography"
+            android:text="@string/categories_health"
             android:id="@+id/button21"
             android:layout_gravity="center"
             android:background="#ffc900"
@@ -98,7 +98,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:text="@string/categories_fashion"
+            android:text="@string/categories_politics"
             android:id="@+id/button31"
             android:layout_gravity="center"
             android:background="#3732fb"
