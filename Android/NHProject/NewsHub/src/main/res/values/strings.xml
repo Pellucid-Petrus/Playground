@@ -2,7 +2,7 @@
 <resources>
 
     // General
-    <string name="app_name" >News Hub</string>
+    <string name="app_name" >Newsline</string>
     <string name="action_settings" >Settings</string>
 
     // Errors
@@ -42,14 +42,16 @@
     <string name="icon_prev">&#xf0d9;</string><string name="swipe_hand_text">Swipe to start!</string>
     <string name="category_technology">tech</string>
     <string name="category_news">news</string>
-    <string name="categories_money">money</string>
+    <string name="categories_finance">finance</string>
     <string name="category_games">games</string>
-    <string name="categories_photography">photographies</string>
-    <string name="categories_fashion">fashion</string>
+    <string name="categories_health">health</string>
+    <string name="categories_politics">politics</string>
     <string name="category_cooking">cooking</string>
-    <string name="category_build">build</string>
-    <string name="category_cinema">cinema</string>
+    <string name="category_travels">travels</string>
+    <string name="category_gossip">gossip</string>
     <string name="category_sport">sport</string>
-    <string name="category_search">&#xf002;</string><string name="subscribe_editText_hint">What are you looking for?</string>
+    <string name="category_search">&#xf002;</string>
+    <string name="subscribe_editText_hint">What are you looking for?</string>
+    <string name="rssParseTaskNoEntries">Unfortunately the application is not able to fetch the content for the selected feed. The error has been reported to the author.</string>
 
 </resources>
