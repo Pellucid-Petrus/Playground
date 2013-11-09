@@ -1,5 +1,6 @@
 package org.gnuton.newshub;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -75,6 +76,7 @@ public class MainActivity extends FragmentActivity
     float prevOff = -1.0f;
     int overscrollingFrameCount = 0;
 
+    @TargetApi(Build.VERSION_CODES.FROYO)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -82,7 +84,7 @@ public class MainActivity extends FragmentActivity
 
         setContentView(R.layout.activity_main);
 
-        Log.i(TAG, "CREATEEEEEEEE");
+        Log.d(TAG, "CREATEEEEEEEE");
 
         mOrientation = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
@@ -90,10 +92,9 @@ public class MainActivity extends FragmentActivity
 
         final ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
         if (pager != null) {
-            // This works the main layout is the "small one"
+            //  Portrait layout
             mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
             pager.setAdapter(mFragmentPagerAdapter);
-
             pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int page, float offset, int pixOffset) {
@@ -160,7 +161,8 @@ public class MainActivity extends FragmentActivity
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setScrimColor(0);
-        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+        //mDrawerLayout.setDrawerShadow(R.drawable.d, GravityCompat.START);
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -191,6 +193,7 @@ public class MainActivity extends FragmentActivity
                     getActionBar().setTitle(R.string.drawer_title);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
+                // show empty Article list
                 // show empty Article list
                 View ArticleListEmptyViewAnim1 = findViewById(R.id.article_list_empty_anim1);
                 if (ArticleListEmptyViewAnim1 != null)
