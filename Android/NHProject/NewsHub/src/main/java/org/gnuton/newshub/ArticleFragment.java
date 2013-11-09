@@ -25,6 +25,8 @@ import org.gnuton.newshub.tasks.UpdateEntryInDB;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.MyApp;
+import org.gnuton.newshub.view.ObservableScrollView;
+import org.gnuton.newshub.view.UninterceptableViewPager;
 
 public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "ARTICLE_FRAGMENT";
@@ -54,7 +56,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         // Instantiate imageGetter
         mImageGetter = new ImageGetter(contentView);
 
-        // View Pager
+        // Image view Pager
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager);
         viewPager.setOffscreenPageLimit(1);
         mImageAdapter = new ImageAdapter(view.getContext());
@@ -153,6 +155,21 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         });
 
+        // Scrolling parallax
+        final ObservableScrollView scrollView = (ObservableScrollView) view.findViewById(R.id.scrollView);
+        final UninterceptableViewPager imageViewPager = (UninterceptableViewPager) view.findViewById(R.id.view_pager);
+        scrollView.setCallbacks(new ObservableScrollView.ScrollCallbacks() {
+
+            @Override
+            public void onScrollChanged(int l, int t, int oldl, int oldt) {
+                int totalHeight = scrollView.getChildAt(0).getHeight();
+                int iwPagerHeight = imageViewPager.getChildAt(0).getHeight();
+                //Log.d("TAG", "T=" + String.valueOf(t) + " HEIGHT=" + String.valueOf(totalHeight) + " H2=" + String.valueOf(iwPagerHeight));
+
+                int o = t * iwPagerHeight * 2 / totalHeight;
+                imageViewPager.setScrollY(o);
+            }
+        });
 
         return view;
     }

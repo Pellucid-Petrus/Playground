@@ -10,12 +10,14 @@
     <org.gnuton.newshub.view.UninterceptableViewPager
         android:id="@+id/view_pager"
         android:layout_width="fill_parent"
-        android:layout_height="400dp"
+        android:layout_height="600dp"
         android:layout_gravity="left|center_vertical"
-        android:src="#b4d4ff"/>
+        android:src="#b4d4ff"
+        android:scrollY="200dp"
+        />
 
 
-    <ScrollView
+    <org.gnuton.newshub.view.ObservableScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/scrollView"
@@ -46,7 +48,8 @@
                 android:textAlignment="center"
                 android:textSize="30sp"
                 style="@style/ArticleDetailTitle"
-                android:layout_marginTop="-50dp" />
+                android:layout_marginTop="-50dp"
+                />
 
             <TextView
                 android:layout_width="fill_parent"
@@ -62,7 +65,7 @@
                 android:text=" " />
 
         </LinearLayout>
-    </ScrollView>
+    </org.gnuton.newshub.view.ObservableScrollView>
 
     <RelativeLayout
         android:orientation="horizontal"
