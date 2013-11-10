@@ -3,6 +3,7 @@ package org.gnuton.newshub;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -313,8 +314,12 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         // scroll up
         ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
-        //scrollview.pageScroll(View.FOCUS_UP);
-        scrollview.setScrollY(0);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            scrollview.setScrollY(0);
+        }else {
+            scrollview.pageScroll(View.FOCUS_UP);
+        }
 
         // Remove layouts on top of the article
         final View articleFragmentEmptyView = getView().findViewById(R.id.ArticleFragmentEmptyViewLayout);
