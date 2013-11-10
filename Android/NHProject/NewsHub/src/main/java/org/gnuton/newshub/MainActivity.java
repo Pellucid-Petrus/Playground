@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -75,7 +76,7 @@ public class MainActivity extends FragmentActivity
     float prevOff = -1.0f;
     int overscrollingFrameCount = 0;
 
-    @TargetApi(Build.VERSION_CODES.FROYO)
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -209,6 +210,13 @@ public class MainActivity extends FragmentActivity
                 if (vp != null){
                     vp.setCurrentItem(0, true);
                 }
+
+                // Check if it's first time
+                ListAdapter feedAdapter = mDrawerList.getAdapter();
+                if (feedAdapter != null && feedAdapter.getCount() == 0){
+                    SubscribeToFeed(null);
+                }
+
             }
 
             @Override
