@@ -32,6 +32,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import org.gnuton.newshub.adapters.ArticleListAdapter;
 import org.gnuton.newshub.adapters.FeedListAdapter;
 import org.gnuton.newshub.adapters.MainPageFragmentAdapter;
+import org.gnuton.newshub.db.DbHelper;
 import org.gnuton.newshub.db.RSSEntryDataSource;
 import org.gnuton.newshub.db.RSSFeedDataSource;
 import org.gnuton.newshub.types.RSSEntry;
@@ -234,7 +235,11 @@ public class MainActivity extends FragmentActivity
     }
 
     protected void updateDrawerList() {
-        ArrayAdapter<RSSFeed> drawerListAdapter = new FeedListAdapter(this, R.layout.feedlist_item, mFeedDataSource.getAll(), true, R.style.DrawerListItem);
+        ArrayAdapter<RSSFeed> drawerListAdapter = new FeedListAdapter(this,
+                R.layout.feedlist_item,
+                mFeedDataSource.getAll(null, null, null, null, DbHelper.FEEDS_TITLE),
+                true,
+                R.style.DrawerListItem);
         mDrawerList.setAdapter(drawerListAdapter);
     }
 
