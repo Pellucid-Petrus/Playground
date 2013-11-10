@@ -62,7 +62,8 @@
                 android:textSize="18sp"
                 style="@style/ArticleContentText"
                 android:padding="30dp"
-                android:text=" " />
+                android:text=" "
+                android:minHeight="300dp" />
 
         </LinearLayout>
     </org.gnuton.newshub.view.ObservableScrollView>
