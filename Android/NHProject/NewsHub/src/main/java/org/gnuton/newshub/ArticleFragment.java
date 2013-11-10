@@ -166,6 +166,13 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
             @Override
             public void onScrollChanged(int l, int t, int oldl, int oldt) {
+                if (scrollView == null ||
+                    imageViewPager == null ||
+                    scrollView.getChildCount() == 0 ||
+                    imageViewPager.getChildCount() == 0
+                   )
+                    return;
+
                 int totalHeight = scrollView.getChildAt(0).getHeight();
                 int iwPagerHeight = imageViewPager.getChildAt(0).getHeight();
                 //Log.d("TAG", "T=" + String.valueOf(t) + " HEIGHT=" + String.valueOf(totalHeight) + " H2=" + String.valueOf(iwPagerHeight));
