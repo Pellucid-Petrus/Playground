@@ -174,22 +174,6 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             }
         });
 
-        // Adding ads
-        /*
-        AttributeSet ads_id;
-        mAdView = new AdView(AdSize.BANNER, ads_id);
-
-        final LinearLayout contentLayout = (LinearLayout) view.findViewById(R.id.articleContentLayout);
-        contentLayout.addView(mAdView);
-
-        // Create an ad request. Check logcat output for the hashed device ID to
-        // get test ads on a physical device.
-        AdRequest adRequest = new AdRequest();
-        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-
-        // Start loading the ad in the background.
-        mAdView.loadAd(adRequest);*/
-
         return view;
     }
 

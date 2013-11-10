@@ -66,19 +66,40 @@
                 android:textSize="18sp"
                 style="@style/ArticleContentText"
                 android:padding="30dp"
-                android:text=" "
-                android:minHeight="300dp" />
+                android:text=" " />
 
-            <com.google.ads.AdView
-                android:id="@+id/adView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                ads:adUnitId=""
-                ads:adSize="BANNER"
-                ads:testDevices="TEST_EMULATOR, TEST_DEVICE_ID"
-                ads:loadAdOnCreate="true"
-                android:layout_gravity="center"
-                android:padding="20px" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:background="#ddd9d6"
+                android:layout_gravity="center">
+                <com.google.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    ads:adUnitId=""
+                    ads:adSize="BANNER"
+                    ads:testDevices="TEST_EMULATOR, TEST_DEVICE_ID"
+                    ads:loadAdOnCreate="true"
+                    android:padding="20px"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editText"
+                    android:textSize="8sp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/adView"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/page_disclaimer"
+                    android:textColor="#b9b5b2"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_marginTop="10dp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
     </org.gnuton.newshub.view.ObservableScrollView>
