@@ -12,10 +12,11 @@
     <org.gnuton.newshub.view.UninterceptableViewPager
         android:id="@+id/view_pager"
         android:layout_width="fill_parent"
-        android:layout_height="600dp"
+        android:layout_height="380dp"
         android:layout_gravity="left|center_vertical"
         android:src="#b4d4ff"
         android:scrollY="200dp"
+        android:background="@drawable/placeholder"
         />
 
 
@@ -40,7 +41,7 @@
 
             <ImageView
                 android:layout_width="fill_parent"
-                android:layout_height="400dp"
+                android:layout_height="300dp"
                 android:background="@android:color/transparent"
                 />
             <TextView
@@ -83,7 +84,8 @@
                     ads:loadAdOnCreate="true"
                     android:padding="20px"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"

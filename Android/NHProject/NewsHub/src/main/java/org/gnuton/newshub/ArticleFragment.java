@@ -81,6 +81,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
                         Spanned myStringSpanned = Html.fromHtml(content, mImageGetter, null);
                         contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
                         readMoreButton.setVisibility(View.GONE);
+
                     } else {
                         // Show content in a browser
                         Intent i = new Intent(Intent.ACTION_VIEW);
@@ -90,7 +91,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
                 }
                 // scroll up
                 ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
-                scrollview.pageScroll(View.FOCUS_UP);
+                scrollview.setScrollY(0);
             }
         });
 
@@ -288,7 +289,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         // reset imageAdapter
         if (mImageAdapter != null){
             mImageAdapter.mImages.clear();
-            mImageAdapter.mImages.add(getResources().getDrawable(R.drawable.placeholder));
+            //mImageAdapter.mImages.add(getResources().getDrawable(R.drawable.placeholder));
             mImageAdapter.notifyDataSetChanged();
         }
 

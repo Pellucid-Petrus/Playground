@@ -5,10 +5,7 @@ import android.os.CountDownTimer;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
-import org.gnuton.newshub.R;
 import org.gnuton.newshub.utils.MyApp;
 
 /**
@@ -16,19 +13,19 @@ import org.gnuton.newshub.utils.MyApp;
  */
 
 public class UninterceptableViewPager extends ViewPager {
-    private final Animation mScaleUpAnimation;
-    private final Animation mScaleDownAnimation;
+    //private final Animation mScaleUpAnimation;
+    //private final Animation mScaleDownAnimation;
     private final CountDownTimer mTimer;
 
     public UninterceptableViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode()) {
+        /*if (!isInEditMode()) {
             mScaleUpAnimation = AnimationUtils.loadAnimation(MyApp.getContext(), R.animator.scaleup);
             mScaleDownAnimation = AnimationUtils.loadAnimation(MyApp.getContext(), R.animator.scaledown);
         } else {
             mScaleUpAnimation = null;
             mScaleDownAnimation = null;
-        }
+        }*/
         mTimer = new CountDownTimer(5000, 3000) {
 
             public void onTick(long millisUntilFinished) {
@@ -39,7 +36,7 @@ public class UninterceptableViewPager extends ViewPager {
                     int next = getCurrentItem()+1;
                     int count = getAdapter().getCount();
                     if ( count <= next)
-                        next = 1; // Skip Placeholder
+                        next = 0; // Skip Placeholder
                     setCurrentItem(next, true);
                 }
                 start();
@@ -64,11 +61,11 @@ public class UninterceptableViewPager extends ViewPager {
         {
             if (visibility == VISIBLE)
             {
-                startAnimation(mScaleUpAnimation);
+                //startAnimation(mScaleUpAnimation);
             }
             else if ((visibility == INVISIBLE) || (visibility == GONE))
             {
-                startAnimation(mScaleUpAnimation); //FIXME It doesn't really work!!!
+                //startAnimation(mScaleUpAnimation); //FIXME It doesn't really work!!!
             }
         }
         super.setVisibility(visibility);

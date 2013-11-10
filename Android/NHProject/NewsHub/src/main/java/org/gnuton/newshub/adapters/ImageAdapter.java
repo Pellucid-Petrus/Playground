@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import org.gnuton.newshub.view.UninterceptableViewPager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +24,13 @@ public class ImageAdapter extends PagerAdapter {
 
     public ImageAdapter(Context context){
         this.mContext=context;
+
+        // Initialize the 4 delegates which will host images
         while (mImageViews.size() < 4) {
             ImageView imageView = new ImageView(mContext);
             imageView.setMinimumHeight(240);
             imageView.setBackgroundColor(Color.parseColor("#000000"));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);//FIT_CENTER
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);//FIT_CENTER
             this.mImageViews.add(imageView);
         }
     }
@@ -50,7 +50,7 @@ public class ImageAdapter extends PagerAdapter {
         ImageView imageView = mImageViews.get(position % 3);
         imageView.setImageDrawable(mImages.get(position));
         ((ViewPager) container).addView(imageView, 0);
-        ((UninterceptableViewPager) container).setVisibility(View.VISIBLE);
+        //((UninterceptableViewPager) container).setVisibility(View.VISIBLE);
         return imageView;
     }
 
@@ -58,8 +58,8 @@ public class ImageAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         ImageView imageView = (ImageView) object;
         ((ViewPager) container).removeView(imageView);
-        if (getCount() == 0)
-            ((UninterceptableViewPager) container).setVisibility(View.GONE);
+        //if (getCount() == 0)
+        //    ((UninterceptableViewPager) container).setVisibility(View.GONE);
     }
 
     @Override
