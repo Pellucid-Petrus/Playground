@@ -52,7 +52,6 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
                 mListView.setAdapter(feed.adapter);
             } else if (feed.adapter != mListView.getAdapter()) {
                 mListView.setAdapter(feed.adapter);
-
             }
             feed.adapter.notifyDataSetChanged();
         }
@@ -97,6 +96,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         View view = inflater.inflate(R.layout.articlelist_fragment, container, false);
 
         // Add header to list
+        assert view != null;
         mListView = (ListView) view.findViewById(R.id.entrylistView);
         mListViewHeader = inflater.inflate(R.layout.articlelist_header, mListView, false);
         mListView.addHeaderView(mListViewHeader);
@@ -105,6 +105,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         // Add Empty List view
         //View articleListEmptyView = view.findViewById(R.id.ArticleListEmpty);
         View articleListEmptyView = new ArticleListEmptyView(getActivity());
+        assert ((ViewGroup)mListView.getParent()) != null;
         ((ViewGroup)mListView.getParent()).addView(articleListEmptyView);
         mListView.setEmptyView(articleListEmptyView);
 
