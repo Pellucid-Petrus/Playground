@@ -1,6 +1,7 @@
 package org.gnuton.newshub;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -70,9 +71,6 @@ public class MainActivity extends FragmentActivity
     private Fragment mArticleListFragment;
     private Fragment mArticleDetailFragment;
 
-    //Adapters
-    private FragmentPagerAdapter mFragmentPagerAdapter;
-
     //Pager position
     float prevOff = -1.0f;
     int overscrollingFrameCount = 0;
@@ -90,11 +88,13 @@ public class MainActivity extends FragmentActivity
         mOrientation = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
         mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
+        final ActionBar actionBar = getActionBar();
+        assert actionBar == null;
 
         final ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
         if (pager != null) {
             //  Portrait layout
-            mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
+            FragmentPagerAdapter mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
             pager.setAdapter(mFragmentPagerAdapter);
             pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
@@ -143,14 +143,14 @@ public class MainActivity extends FragmentActivity
 
         //Set up custom action bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            getActionBar().setCustomView(R.layout.actionbar);
+            actionBar.setCustomView(R.layout.actionbar);
             final TextView actionBarTitle = (TextView) findViewById(R.id.actionBarTitle);
             actionBarTitle.setTypeface(FontsProvider.getInstace().getTypeface("Daily News 1915"));
             actionBarTitle.setText(getString(R.string.app_name));
 
             // enable ActionBar app icon to behave as action to toggle nav drawer
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-            getActionBar().setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
         }
 
         //Set up Navigation drawer
@@ -174,7 +174,7 @@ public class MainActivity extends FragmentActivity
         ) {
             public void onDrawerClosed(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    getActionBar().setTitle(R.string.app_name);
+                    actionBar.setTitle(R.string.app_name);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
                 // hide empty Article list
@@ -191,7 +191,7 @@ public class MainActivity extends FragmentActivity
                     onBackPressed();
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    getActionBar().setTitle(R.string.drawer_title);
+                    actionBar.setTitle(R.string.drawer_title);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
                 // show empty Article list
@@ -276,7 +276,6 @@ public class MainActivity extends FragmentActivity
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //FIXME This should live in a separate thread and a progres dialog should be shown
                                 List<RSSEntry> entries = mEntryDataSource.getAll();
                                 for (RSSEntry entry : entries) {
                                     mEntryDataSource.delete(entry);
