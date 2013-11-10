@@ -313,7 +313,8 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         // scroll up
         ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
-        scrollview.pageScroll(View.FOCUS_UP);
+        //scrollview.pageScroll(View.FOCUS_UP);
+        scrollview.setScrollY(0);
 
         // Remove layouts on top of the article
         final View articleFragmentEmptyView = getView().findViewById(R.id.ArticleFragmentEmptyViewLayout);
