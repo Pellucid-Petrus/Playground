@@ -132,12 +132,16 @@ public class MainActivity extends FragmentActivity
             // This is used for large portrait layouts
             //if (savedInstanceState == null) {
             //}
+            try {
             getSupportFragmentManager()
                     .beginTransaction()
                             //.setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
                     .replace(R.id.articlelist_container, mArticleListFragment)
                     .replace(R.id.articledetail_container, mArticleDetailFragment)
                     .commit();
+            } catch (IllegalStateException e ){
+                Log.e(TAG, "Caught IllegalStateException");
+            }
 
         }
 
