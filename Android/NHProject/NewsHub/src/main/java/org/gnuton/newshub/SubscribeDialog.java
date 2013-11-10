@@ -178,6 +178,10 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                                 searchFeedLayout.setVisibility(View.VISIBLE);
                                 View categoriesLayout = mDlgLayout.findViewById(R.id.categories_layout);
                                 categoriesLayout.setVisibility(View.GONE);
+
+                                // Update title
+                                getDialog().setTitle(R.string.subscribe_dialog_title2);
+
                                 mFeeds.clear();
                             }
                         }

@@ -29,7 +29,9 @@
     <string name="drawer_title">Subscriptions</string>
 
     // Subscribe dialog
-    <string name="subscribe_dialog_title">Subscribe to a new news provider</string>
+    <string name="subscribe_dialog_title">Chose your favorite topic or search for a news provider</string>
+    <string name="subscribe_dialog_title2">Search for a news provider</string>
+
     <string name="subscribe_dialog_nofeedstext"></string>
     <string name="sharing_url_string">Check out this site! (Shared with News Hub on Android)
     </string>
