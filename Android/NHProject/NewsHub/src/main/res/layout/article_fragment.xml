@@ -3,6 +3,7 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:animateLayoutChanges="true"
               style="@style/ArticleDetailFrame">
     <!-- Article view -->
     <include layout="@layout/article_fragment_full_view"/>
@@ -10,4 +11,6 @@
     <!-- Empty Article view -->
     <include layout="@layout/article_fragment_empty_view"/>
 
+    <!-- Loading Article view -->
+    <include layout="@layout/article_fragment_loading_view"/>
 </RelativeLayout>
