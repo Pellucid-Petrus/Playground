@@ -25,15 +25,15 @@
                   android:layout_weight="100"
                   style="@style/DrawerList"
                 />
-        <ImageButton
+        <Button
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:text="Update"
+                android:text="&#xf067;"
                 android:id="@+id/add_feed_button"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:layout_margin="0dp"
-                android:src="@drawable/add_feed_light" android:onClick="SubscribeToFeed"
+                android:onClick="SubscribeToFeed"
                 style="@style/DrawerButton"/>
     </LinearLayout>
 </LinearLayout>

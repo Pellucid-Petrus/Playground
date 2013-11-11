@@ -21,8 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -186,6 +189,9 @@ public class MainActivity extends FragmentActivity
                 View ArticleListEmptyViewAnim1 = findViewById(R.id.article_list_empty_anim1);
                 if (ArticleListEmptyViewAnim1 != null)
                     ArticleListEmptyViewAnim1.setVisibility(View.VISIBLE);
+
+                // Schedule new anim for add feed button
+                addFeedButtonAnimation();
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -241,8 +247,12 @@ public class MainActivity extends FragmentActivity
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
         updateDrawerList();
+
+        Button addFeedButton = (Button) findViewById(R.id.add_feed_button);
+        addFeedButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
+        addFeedButtonAnimation();
+
         Log.d(TAG, "CREATED");
     }
 
@@ -253,6 +263,12 @@ public class MainActivity extends FragmentActivity
                 true,
                 R.style.DrawerListItem);
         mDrawerList.setAdapter(drawerListAdapter);
+    }
+
+    private void addFeedButtonAnimation(){
+        Button addFeedButton = (Button) findViewById(R.id.add_feed_button);
+        Animation anim = AnimationUtils.loadAnimation(this, R.animator.slidein);
+        addFeedButton.setAnimation(anim);
     }
 
     @Override
