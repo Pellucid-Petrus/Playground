@@ -7,7 +7,11 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import org.gnuton.newshub.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +34,9 @@ public class ImageAdapter extends PagerAdapter {
             ImageView imageView = new ImageView(mContext);
             imageView.setMinimumHeight(240);
             imageView.setBackgroundColor(Color.parseColor("#000000"));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);//FIT_CENTER
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);//FIT_CENTER
+            scheduleAnimationForView(imageView);
+
             this.mImageViews.add(imageView);
         }
     }
@@ -50,6 +56,7 @@ public class ImageAdapter extends PagerAdapter {
         ImageView imageView = mImageViews.get(position % 3);
         imageView.setImageDrawable(mImages.get(position));
         ((ViewPager) container).addView(imageView, 0);
+        scheduleAnimationForView(imageView);
         //((UninterceptableViewPager) container).setVisibility(View.VISIBLE);
         return imageView;
     }
@@ -65,5 +72,10 @@ public class ImageAdapter extends PagerAdapter {
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;
+    }
+
+    public void scheduleAnimationForView(ImageView imageView){
+        Animation fadeInAnimation = AnimationUtils.loadAnimation(mContext, R.animator.fadein);
+        imageView.setAnimation(fadeInAnimation);
     }
 }

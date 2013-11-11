@@ -54,7 +54,7 @@ public class UninterceptableViewPager extends ViewPager {
         return ret;
     }
 
-    @Override
+    /*@Override
     public void setVisibility(int visibility)
     {
         if (!isInEditMode() && getVisibility() != visibility)
@@ -69,6 +69,6 @@ public class UninterceptableViewPager extends ViewPager {
             }
         }
         super.setVisibility(visibility);
-    }
+    }*/
 
 }

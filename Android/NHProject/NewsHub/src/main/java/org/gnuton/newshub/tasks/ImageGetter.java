@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.Html;
 import android.view.View;
-import android.widget.TextView;
 
 import org.gnuton.newshub.adapters.ImageAdapter;
 import org.gnuton.newshub.utils.DiskLruImageCache;
@@ -49,7 +48,6 @@ public class ImageGetter implements Html.ImageGetter {
         } else {
            asyncTask.execute(source);
         }
-
 
         // return reference to URLDrawable where I will change with actual image from
         // the src tag
@@ -91,12 +89,12 @@ public class ImageGetter implements Html.ImageGetter {
             int intHeight = result.getIntrinsicHeight();
             int intWidth = result.getIntrinsicWidth();
 
-            if (intHeight >= mPageView.getHeight()/4 && mImageAdapter != null){
+            if (intHeight >= mPageView.getHeight()/5 && mImageAdapter != null){
                     mImageAdapter.mImages.add(result);
                     mImageAdapter.notifyDataSetChanged();
                     return;
             }
-
+            /*
             // set the correct bound according to the result from HTTP call
             urlDrawable.setBounds(0, 0, intWidth, intHeight);
 
@@ -107,6 +105,7 @@ public class ImageGetter implements Html.ImageGetter {
             // redraw the image by invalidating the container
             ImageGetter.this.mContainer.invalidate();
             TextView tv = (TextView) ImageGetter.this.mContainer;
+            */
             /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH){
                 tv.setHeight((tv.getHeight() + result.getMinimumHeight()));
             } else {
