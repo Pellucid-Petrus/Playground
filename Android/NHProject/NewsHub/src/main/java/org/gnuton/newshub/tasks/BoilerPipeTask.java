@@ -125,8 +125,11 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
     }
 
     public String extractImages(TextDocument doc, HTMLDocument htmlDoc, String article){
+        if (article == null)
+            return null;
+
         final ImageExtractor imageExtractor = ImageExtractor.getInstance();
-        final BoilerpipeExtractor everythingExtractor = CommonExtractors.KEEP_EVERYTHING_EXTRACTOR;
+        //final BoilerpipeExtractor everythingExtractor = CommonExtractors.KEEP_EVERYTHING_EXTRACTOR;
 
         List<Image> images= null;
         try {
@@ -149,16 +152,31 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
 
         Log.d("Images:", images.toString());
         return article;
-        /*
-         final TextDocument doc2 = doc.clone();
-                    articleExtractor.process(doc2.clone());
-                    article = hh.process(doc2, htmlDoc.toInputSource());
+    }
 
-        /*
-                    everythingIMGExtractor.process(doc);
-                    List<Image> images= ie.process(doc, htmlDoc.toInputSource());
-                    Log.d("AA", images.toString());
-         */
+    public Boolean isArticlempty(final String article){
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+
+        DocumentBuilder dBuilder = null;
+        try {
+            dBuilder = dbFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        Document doc = null;
+        try {
+            doc = dBuilder.parse(new InputSource(new StringReader(article)));
+        } catch (SAXException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return (doc.getElementsByTagName("BODY").getLength() == 0);
     }
 
     public String extractArticle(TextDocument doc, HTMLDocument htmlDoc) {
@@ -176,7 +194,11 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
             e1.printStackTrace();
         }
 
-        return article;
+        // Check article length
+        if (isArticlempty(article))
+            return null;
+        else
+            return article;
     }
 
 
