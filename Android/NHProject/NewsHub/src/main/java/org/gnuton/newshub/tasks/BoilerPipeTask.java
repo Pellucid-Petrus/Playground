@@ -7,23 +7,11 @@ import org.gnuton.newshub.db.DbHelper;
 import org.gnuton.newshub.db.RSSEntryDataSource;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.utils.MyApp;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import de.l3s.boilerpipe.BoilerpipeExtractor;
-import de.l3s.boilerpipe.BoilerpipeProcessingException;
-import de.l3s.boilerpipe.document.Image;
-import de.l3s.boilerpipe.document.TextDocument;
-import de.l3s.boilerpipe.extractors.CommonExtractors;
-import de.l3s.boilerpipe.sax.BoilerpipeSAXInput;
-import de.l3s.boilerpipe.sax.HTMLDocument;
-import de.l3s.boilerpipe.sax.HTMLFetcher;
-import de.l3s.boilerpipe.sax.HTMLHighlighter;
-import de.l3s.boilerpipe.sax.ImageExtractor;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -41,6 +29,17 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import de.l3s.boilerpipe.BoilerpipeExtractor;
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.document.Image;
+import de.l3s.boilerpipe.document.TextDocument;
+import de.l3s.boilerpipe.extractors.CommonExtractors;
+import de.l3s.boilerpipe.sax.BoilerpipeSAXInput;
+import de.l3s.boilerpipe.sax.HTMLDocument;
+import de.l3s.boilerpipe.sax.HTMLFetcher;
+import de.l3s.boilerpipe.sax.HTMLHighlighter;
+import de.l3s.boilerpipe.sax.ImageExtractor;
 
 /**
  * Created by gnuton on 5/22/13.
@@ -100,7 +99,9 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            e.content = extractArticle(doc, htmlDoc);
+            String article = extractArticle(doc, htmlDoc);
+            article = extractImages(doc, htmlDoc, article);
+            e.content = article;
 
             if (e.content != null) {
                 e.content = sanitizeArticle(e);
@@ -123,35 +124,62 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
         return article;
     }
 
+    public String extractImages(TextDocument doc, HTMLDocument htmlDoc, String article){
+        final ImageExtractor imageExtractor = ImageExtractor.getInstance();
+        final BoilerpipeExtractor everythingExtractor = CommonExtractors.KEEP_EVERYTHING_EXTRACTOR;
+
+        List<Image> images= null;
+        try {
+            images = imageExtractor.process(doc, htmlDoc.toInputSource());
+        } catch (BoilerpipeProcessingException e) {
+            e.printStackTrace();
+        }
+
+        if (images.size() != 0){
+            try {
+                article = appendImgs(images, article);
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.d("Images:", images.toString());
+        return article;
+        /*
+         final TextDocument doc2 = doc.clone();
+                    articleExtractor.process(doc2.clone());
+                    article = hh.process(doc2, htmlDoc.toInputSource());
+
+        /*
+                    everythingIMGExtractor.process(doc);
+                    List<Image> images= ie.process(doc, htmlDoc.toInputSource());
+                    Log.d("AA", images.toString());
+         */
+    }
+
     public String extractArticle(TextDocument doc, HTMLDocument htmlDoc) {
         if (doc == null||htmlDoc == null)
             return null;
+
         String article= null;
         final BoilerpipeExtractor articleExtractor = CommonExtractors.ARTICLE_EXTRACTOR;
         final HTMLHighlighter hh = HTMLHighlighter.newExtractingInstance();
-        final ImageExtractor imageExtractor = ImageExtractor.getInstance();
 
         try {
             articleExtractor.process(doc);
             article = hh.process(doc,htmlDoc.toInputSource());
-
-            List<Image> images= imageExtractor.process(doc, htmlDoc.toInputSource());
-            Log.d("AA", images.toString());
-
-            if (images.size() != 0)
-                article = appendImgs(images, article);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e1) {
-            e1.printStackTrace();
         } catch (BoilerpipeProcessingException e1) {
             e1.printStackTrace();
         }
 
         return article;
     }
+
+
 
     private String appendImgs(List<Image> images, String html) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
