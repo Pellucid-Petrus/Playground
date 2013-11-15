@@ -13,15 +13,54 @@
         android:layout_weight="1">
 
         <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="260dp"
+            android:id="@+id/imageView"
+            android:src="#fd7537"
+            android:layout_marginTop="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/main_logo"
-            android:layout_gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/main_logo"
-            style="@style/ArticleListFrameLogo" />
+            android:text="NewsLine"
+            android:id="@+id/MainLogoTitle"
+            android:textColor="#ffffff"
+            android:textSize="50dp"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="19dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="All news in your hands"
+            android:id="@+id/textView2"
+            android:textColor="#ffffff"
+            android:textSize="15dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="32dp"
+            android:layout_below="@+id/MainLogoTitle"
+            android:layout_alignLeft="@+id/MainLogoTitle"
+            android:layout_marginTop="-12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="BETA"
+            android:id="@+id/textView3"
+            android:textColor="#fc7538"
+            android:textStyle="bold"
+            android:layout_marginRight="19dp"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="53dp" />
     </RelativeLayout>
 
 </LinearLayout>

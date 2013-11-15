@@ -127,6 +127,11 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
                 itemSelectedListener.onItemSelected(adapter, entryPosition);
             }
         });
+
+        // Logo
+        TextView mainLogoTitle = (TextView) view.findViewById(R.id.MainLogoTitle);
+        mainLogoTitle.setTypeface(FontsProvider.getInstace().getTypeface("Daily News 1915"));
+        mainLogoTitle.setTextSize(110);
         return view;
     }
 

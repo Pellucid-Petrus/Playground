@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -94,6 +96,12 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
                 scrollview.setScrollY(0);
             }
         });
+        Animation anim = new AlphaAnimation(0.3f, 1.0f);
+        anim.setDuration(500); //You can manage the time of the blink with this parameter
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        readMoreButton.startAnimation(anim);
 
         // Define action for open link button
         final Button openLinkButton = (Button) view.findViewById(R.id.OpenLinkButton);
@@ -168,10 +176,10 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             @Override
             public void onScrollChanged(int l, int t, int oldl, int oldt) {
                 if (scrollView == null ||
-                    imageViewPager == null ||
-                    scrollView.getChildCount() == 0 ||
-                    imageViewPager.getChildCount() == 0
-                   )
+                        imageViewPager == null ||
+                        scrollView.getChildCount() == 0 ||
+                        imageViewPager.getChildCount() == 0
+                        )
                     return;
 
                 int totalHeight = scrollView.getChildAt(0).getHeight();
