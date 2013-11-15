@@ -38,24 +38,32 @@
             android:id="@+id/articleContentLayout"
 
             >
-
-            <ImageView
-                android:layout_width="fill_parent"
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="350dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/img_shadow"
-                android:scaleType="fitXY" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Loading..."
-                android:id="@+id/TitleTextView"
-                android:layout_gravity="left|center_vertical"
-                android:textAlignment="center"
-                android:textSize="30sp"
-                style="@style/ArticleDetailTitle"
-                android:layout_marginTop="-50dp"
-                />
+                android:animateLayoutChanges="true"
+                >
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/img_shadow"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading..."
+                    android:id="@+id/TitleTextView"
+                    android:layout_gravity="left|center_vertical"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    style="@style/ArticleDetailTitle"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true" />
+            </RelativeLayout>
+
 
             <TextView
                 android:layout_width="fill_parent"
