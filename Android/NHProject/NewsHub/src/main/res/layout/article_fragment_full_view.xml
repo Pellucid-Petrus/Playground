@@ -54,6 +54,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/textView"
+                    android:background="#f30007"
+                    android:textSize="30sp"
+                    style="@style/ArticleDetailTitle"
+                    android:text="L"
+                    android:layout_alignBaseline="@+id/TitleTextView"
+                    android:layout_alignBottom="@+id/TitleTextView"
+                    android:layout_alignLeft="@+id/TitleTextView"
+                    android:textColor="#f20108" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Loading..."
                     android:id="@+id/TitleTextView"
                     android:layout_gravity="left|center_vertical"
@@ -62,6 +76,8 @@
                     style="@style/ArticleDetailTitle"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true" />
+
+
             </RelativeLayout>
 
 
