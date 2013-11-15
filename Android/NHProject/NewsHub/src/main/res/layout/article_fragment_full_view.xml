@@ -91,8 +91,10 @@
 
                 android:textSize="18sp"
                 style="@style/ArticleContentText"
-                android:padding="30dp"
-                android:text=" " />
+                android:paddingRight="70dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="60dp" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
