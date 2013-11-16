@@ -61,6 +61,28 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="53dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A"
+            android:id="@+id/mainLogoPropIcon"
+            android:textColor="#ffffff"
+            android:textSize="100dp"
+            android:layout_above="@+id/mainLogoPropText"
+            android:layout_toRightOf="@+id/MainLogoTitle"
+            android:layout_marginLeft="50dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/mainLogoPropText"
+            android:textColor="#ffffff"
+            android:textSize="30dp"
+            android:layout_alignBottom="@+id/imageView"
+            android:layout_alignRight="@+id/mainLogoPropIcon"
+            android:layout_marginBottom="-10dp" />
     </RelativeLayout>
 
 </LinearLayout>
