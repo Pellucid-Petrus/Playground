@@ -136,8 +136,8 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         TextView mainLogoPropIcon = (TextView) view.findViewById(R.id.mainLogoPropIcon);
         mainLogoPropIcon.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
         mainLogoPropIcon.setText(R.string.icon_rocket);
-        TextView mainLogoPropText = (TextView) view.findViewById(R.id.mainLogoPropText);
-        mainLogoPropText.setText("Fast");
+        //TextView mainLogoPropText = (TextView) view.findViewById(R.id.mainLogoPropText);
+        //mainLogoPropText.setText("Fast");
 
         return view;
     }

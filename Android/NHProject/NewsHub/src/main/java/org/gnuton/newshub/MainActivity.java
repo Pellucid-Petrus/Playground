@@ -109,6 +109,7 @@ public class MainActivity extends FragmentActivity
                         overscrollingFrameCount +=1;
                         if (overscrollingFrameCount > 10) {
                             mDrawerLayout.openDrawer(GravityCompat.START);
+                            //boolean b = mDrawerLayout.dispatchDragEvent(DragEvent a);
                             overscrollingFrameCount = 0;
                             prevOff = -1.0f;
                         }

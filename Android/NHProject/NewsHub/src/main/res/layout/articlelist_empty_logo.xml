@@ -16,10 +16,14 @@
             android:layout_width="fill_parent"
             android:layout_height="260dp"
             android:id="@+id/imageView"
-            android:src="#fd7537"
+            android:src="@drawable/placeholder"
             android:layout_marginTop="80dp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+            android:background="#000000"
+            android:adjustViewBounds="true"
+            android:cropToPadding="false"
+            android:scaleType="fitXY" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -54,13 +58,13 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="BETA"
             android:id="@+id/textView3"
-            android:textColor="#fc7538"
+            android:textColor="#027fd5"
             android:textStyle="bold"
-            android:layout_marginRight="19dp"
+            android:layout_marginRight="20dp"
             android:textSize="30sp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="53dp" />
+            android:layout_marginTop="50dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,13 +80,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="Fast, Smart, Simple, Beautiful"
             android:id="@+id/mainLogoPropText"
             android:textColor="#ffffff"
-            android:textSize="30dp"
+            android:textSize="28dp"
             android:layout_alignBottom="@+id/imageView"
-            android:layout_alignRight="@+id/mainLogoPropIcon"
-            android:layout_marginBottom="-10dp" />
+            android:layout_marginBottom="-10dp"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
 </LinearLayout>
