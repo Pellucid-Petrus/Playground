@@ -50,7 +50,9 @@
                 android:id="@+id/ArticleListEmptyText"
                 android:layout_alignParentBottom="true"
                 android:layout_toRightOf="@+id/ArticleListEmptyMovingLayout"
-                android:textColor="#f30007"/>
+                android:textColor="#027fd5"
+            android:textStyle="bold"
+            android:typeface="normal" />
     </RelativeLayout>
 
 </RelativeLayout>

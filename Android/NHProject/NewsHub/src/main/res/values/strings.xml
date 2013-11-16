@@ -46,7 +46,7 @@
     <string name="swipe_hand_text">Swipe to start!</string>
 
     // logo
-    <string name="icon_rocket">&#xf135;</string>
+    <string name="icon_rocket">&#xf143;</string>
 
     <string name="category_technology">tech</string>
     <string name="category_news">news</string>
