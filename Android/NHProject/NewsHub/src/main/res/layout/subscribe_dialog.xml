@@ -22,7 +22,7 @@
             android:layout_height="50dp"
             android:id="@+id/language_spinner"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="10"/>
+            android:layout_weight="20"/>
         <EditText
             android:layout_width="0dp"
             android:layout_height="50dp"
