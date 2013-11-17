@@ -14,7 +14,6 @@ import android.widget.TextView;
 import org.gnuton.newshub.R;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.utils.FontsProvider;
-import org.gnuton.newshub.utils.NetworkUtils;
 import org.gnuton.newshub.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -25,12 +24,14 @@ import java.util.List;
  * Created by gnuton on 5/21/13.
  */
 public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
-    private final List<RSSEntry> entries;
+    private final List<RSSEntry> mEntries;
     private int dayOfTheMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+    private final String mFeedTitle;
 
-    public ArticleListAdapter(Context context, int textViewResourceId, List<RSSEntry> entries) {
+    public ArticleListAdapter(Context context, int textViewResourceId, List<RSSEntry> entries, String feedTitle) {
         super(context, textViewResourceId, entries);
-        this.entries = entries;
+        mEntries = entries;
+        mFeedTitle = feedTitle;
     }
 
     public static class ViewHolder{
@@ -66,15 +67,16 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             holder=(ViewHolder)v.getTag();
 
         // Update the delegate setting data stored in the holder
-        final RSSEntry e = entries.get(position);
+        final RSSEntry e = mEntries.get(position);
         if (e != null) {
             Spanned titleSpanned = Html.fromHtml(e.title, null, null);
             holder.title.setText(titleSpanned, TextView.BufferType.SPANNABLE);
             holder.title.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"), e.isRead ? Typeface.NORMAL : Typeface.BOLD);
-            String urlDomain = NetworkUtils.getDomainName(e.link);
-            holder.url.setText(urlDomain);
+
+
+            holder.url.setText(mFeedTitle);
             holder.date.setText(dateToString(e.date));
-            holder.sideBar.setBackgroundColor(Utils.generateColor(urlDomain));
+            holder.sideBar.setBackgroundColor(Utils.generateColor(mFeedTitle));
         }
 
         // returns the updated delegate

@@ -110,6 +110,17 @@ public class MainActivity extends FragmentActivity
                         if (overscrollingFrameCount > 10) {
                             mDrawerLayout.openDrawer(GravityCompat.START);
                             //boolean b = mDrawerLayout.dispatchDragEvent(DragEvent a);
+/*
+                            MotionEvent motionEvent = MotionEvent.obtain(
+                                    System.currentTimeMillis(),
+                                    System.currentTimeMillis(), //eventTime
+                                    MotionEvent.ACTION_CANCEL,
+                                    0, // x
+                                    0, // y
+                                    0, // metastate
+                            );
+                            pager.dispatchTouchEvent(motionEvent);
+*/
                             overscrollingFrameCount = 0;
                             prevOff = -1.0f;
                         }
@@ -138,12 +149,12 @@ public class MainActivity extends FragmentActivity
             //if (savedInstanceState == null) {
             //}
             try {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                            //.setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
-                    .replace(R.id.articlelist_container, mArticleListFragment)
-                    .replace(R.id.articledetail_container, mArticleDetailFragment)
-                    .commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                                //.setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
+                        .replace(R.id.articlelist_container, mArticleListFragment)
+                        .replace(R.id.articledetail_container, mArticleDetailFragment)
+                        .commit();
             } catch (IllegalStateException e ){
                 Log.e(TAG, "Caught IllegalStateException");
             }
@@ -250,6 +261,7 @@ public class MainActivity extends FragmentActivity
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         updateDrawerList();
 
+        // Set font for add Feed button in the drawer
         Button addFeedButton = (Button) findViewById(R.id.add_feed_button);
         addFeedButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
         addFeedButtonAnimation();

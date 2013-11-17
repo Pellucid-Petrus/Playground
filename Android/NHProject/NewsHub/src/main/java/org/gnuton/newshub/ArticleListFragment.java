@@ -48,7 +48,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         } else {
             if (feed.adapter == null){
                 // Creates data controller (adapter) for listview abd set "entries" as  data
-                feed.adapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, feed.entries);
+                feed.adapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, feed.entries, feed.title);
                 mListView.setAdapter(feed.adapter);
             } else if (feed.adapter != mListView.getAdapter()) {
                 mListView.setAdapter(feed.adapter);
@@ -180,7 +180,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
             //entries.add(new RSSEntry(-1,-1,"",null,null,null));
             entries.add(new RSSEntry()); //FIXME quite ugly code!!
 
-            ArticleListAdapter dummyAdapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, entries);
+            ArticleListAdapter dummyAdapter = new ArticleListAdapter(getActivity(), R.id.entrylistView, entries, feed.title);
             if (mListView !=null)
                 mListView.setAdapter(dummyAdapter);
             dummyAdapter.notifyDataSetChanged();
