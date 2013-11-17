@@ -81,7 +81,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
                     String content = entry.content;
                     if (content != null) {
                         Spanned myStringSpanned = Html.fromHtml(content, mImageGetter, null);
-                        contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
+                        contentView.setText(myStringSpanned, TextView.BufferType.SPANNABLE); //FIXME java.lang.ArrayIndexOutOfBoundsException: length=1012; index=1599
                         readMoreButton.setVisibility(View.GONE);
 
                     } else {
@@ -256,7 +256,6 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 setEntry(adapter, entryPosition);
             }
         }, 800);

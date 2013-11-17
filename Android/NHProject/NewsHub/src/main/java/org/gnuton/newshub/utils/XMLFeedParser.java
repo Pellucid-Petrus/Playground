@@ -12,9 +12,7 @@ import org.gnuton.newshub.types.RSSFeed;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -244,8 +242,9 @@ public class XMLFeedParser {
         //byte[] utf8 = new String(xml, "ISO-8859-1").getBytes("UTF-8");
 
         // let's start to parse!
-        InputStream is = new ByteArrayInputStream(xml.getBytes("ISO-8859-1"));
-        xpp.setInput(is, "ISO-8859-1");
+        //InputStream is = new ByteArrayInputStream(xml.getBytes("ISO-8859-1"));
+        //xpp.setInput(is, "ISO-8859-1");
+        xpp.setInput(new StringReader(xml));
         xpp.nextTag();
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "RDF");
 
