@@ -41,7 +41,7 @@
             <RelativeLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="250dp"
                 android:animateLayoutChanges="true"
                 >
                 <ImageView
@@ -91,11 +91,10 @@
 
                 android:textSize="18sp"
                 style="@style/ArticleContentText"
-                android:paddingRight="60dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="60dp"
-                android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+                android:paddingRight="70dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="60dp" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
