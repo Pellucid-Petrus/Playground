@@ -3,8 +3,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
-    android:id="@+id/categories_layout">
+    android:layout_height="180dp"
+    android:id="@+id/categories_layout"
+    >
 
     <LinearLayout
         android:orientation="horizontal"
@@ -20,7 +21,7 @@
             android:layout_gravity="center"
             android:background="#fb5e2f"
             android:textColor="#fff"
-            android:textSize="18dp"
+            android:textSize="24dp"
             android:layout_weight="0.4"
             android:ellipsize="marquee"
             android:enabled="true"
@@ -33,7 +34,7 @@
             android:layout_gravity="center"
             android:background="#cb43a4"
             android:textColor="#fff"
-            android:textSize="18dp"
+            android:textSize="24dp"
             android:layout_weight="0.4"
             android:ellipsize="marquee"
             android:enabled="true"
@@ -46,21 +47,8 @@
             android:layout_gravity="center"
             android:background="#81e047"
             android:textColor="#fff"
-            android:textSize="18dp"
+            android:textSize="24dp"
             android:layout_weight="0.5"
-            android:ellipsize="marquee"
-            android:enabled="true"
-            android:clickable="true" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:text="@string/categories_politics"
-            android:id="@+id/button31"
-            android:background="#3732fb"
-            android:textColor="#fff"
-            android:textSize="18dp"
-            android:layout_weight="0.4"
             android:ellipsize="marquee"
             android:enabled="true"
             android:clickable="true" />
@@ -80,25 +68,11 @@
             android:layout_gravity="center"
             android:background="#ffc900"
             android:textColor="#fff"
-            android:textSize="18dp"
+            android:textSize="24dp"
             android:layout_weight="0.3"
             android:ellipsize="marquee"
             android:enabled="true"
             android:clickable="true" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:text="@string/category_cooking"
-            android:id="@+id/button32"
-            android:background="#cb7e11"
-            android:textColor="#fff"
-            android:textSize="18dp"
-            android:layout_weight="0.4"
-            android:ellipsize="marquee"
-            android:enabled="true"
-            android:clickable="true" />
-
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -107,7 +81,7 @@
             android:layout_gravity="center"
             android:background="#ffb58e"
             android:textColor="#fff"
-            android:textSize="18dp"
+            android:textSize="24dp"
             android:layout_weight="0.4"
             android:ellipsize="marquee"
             android:enabled="true"
@@ -121,33 +95,32 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         >
-
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:text="@string/category_gossip"
-            android:id="@+id/button41"
-            android:background="#15afc4"
+            android:text="@string/categories_politics"
+            android:id="@+id/button31"
+            android:layout_gravity="center"
+            android:background="#3732fb"
             android:textColor="#fff"
-            android:textSize="18dp"
-            android:layout_weight="0.6"
-            android:ellipsize="marquee"
-            android:enabled="true"
-            android:clickable="true" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:text="@string/category_sport"
-            android:id="@+id/button42"
-            android:background="#c2e5d2"
-            android:textColor="#fff"
-            android:textSize="18dp"
+            android:textSize="24dp"
             android:layout_weight="0.4"
             android:ellipsize="marquee"
             android:enabled="true"
             android:clickable="true" />
-
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:text="@string/category_cooking"
+            android:id="@+id/button32"
+            android:layout_gravity="center"
+            android:background="#cb7e11"
+            android:textColor="#fff"
+            android:textSize="24dp"
+            android:layout_weight="0.4"
+            android:ellipsize="marquee"
+            android:enabled="true"
+            android:clickable="true" />
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -156,17 +129,50 @@
             android:layout_gravity="center"
             android:background="#e030d3"
             android:textColor="#fff"
-            android:textSize="18dp"
+            android:textSize="24dp"
             android:layout_weight="0.5"
             android:ellipsize="marquee"
             android:enabled="true"
             android:clickable="true" />
-
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:text="@string/category_gossip"
+            android:id="@+id/button41"
+            android:layout_gravity="center"
+            android:background="#15afc4"
+            android:textColor="#fff"
+            android:textSize="24dp"
+            android:layout_weight="0.6"
+            android:ellipsize="marquee"
+            android:enabled="true"
+            android:clickable="true" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:text="@string/category_sport"
+            android:id="@+id/button42"
+            android:layout_gravity="center"
+            android:background="#c2e5d2"
+            android:textColor="#fff"
+            android:textSize="24dp"
+            android:layout_weight="0.4"
+            android:ellipsize="marquee"
+            android:enabled="true"
+            android:clickable="true" />
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:text="@string/category_search"
             android:id="@+id/button43"
+            android:layout_gravity="center"
             android:background="#ed3c59"
             android:textColor="#fff"
             android:textSize="24dp"
