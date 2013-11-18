@@ -93,9 +93,8 @@
                 style="@style/ArticleContentText"
                 android:paddingRight="60dp"
                 android:paddingLeft="10dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="60dp"
-                android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+                android:paddingTop="10dp"
+                android:paddingBottom="60dp" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
