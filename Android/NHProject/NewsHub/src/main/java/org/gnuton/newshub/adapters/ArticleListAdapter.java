@@ -21,9 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by gnuton on 5/21/13.
- */
 public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
     private final List<RSSEntry> mEntries;
     private int dayOfTheMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
@@ -52,6 +49,7 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.articlelist_item, null);
             holder = new ViewHolder();
+            assert v != null;
             holder.title = (TextView) v.findViewById(R.id.ListItemTitleTextView);
 
             holder.url = (TextView) v.findViewById(R.id.ListItemProviderTextView);
@@ -101,9 +99,9 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
         else
             sdf = new SimpleDateFormat("EEE, dd MMM");
 
-        if (cal != null) {
-            strdate = sdf.format(cal.getTime());
-        }
+
+        strdate = sdf.format(cal.getTime());
+
         return strdate;
     }
 }
