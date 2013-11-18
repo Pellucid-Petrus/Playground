@@ -1,6 +1,7 @@
 package org.gnuton.newshub.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.Html;
 import android.text.Spanned;
@@ -68,7 +69,7 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
 
         // Update the delegate setting data stored in the holder
         final RSSEntry e = mEntries.get(position);
-        if (e != null) {
+        if (e != null && !e.title.isEmpty()) {
             Spanned titleSpanned = Html.fromHtml(e.title, null, null);
             holder.title.setText(titleSpanned, TextView.BufferType.SPANNABLE);
             holder.title.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"), e.isRead ? Typeface.NORMAL : Typeface.BOLD);
@@ -77,6 +78,11 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             holder.url.setText(mFeedTitle);
             holder.date.setText(dateToString(e.date));
             holder.sideBar.setBackgroundColor(Utils.generateColor(mFeedTitle));
+        } else {
+            holder.title.setText("");
+            holder.url.setText("");
+            holder.date.setText("");
+            holder.sideBar.setBackgroundColor(Color.TRANSPARENT);
         }
 
         // returns the updated delegate
