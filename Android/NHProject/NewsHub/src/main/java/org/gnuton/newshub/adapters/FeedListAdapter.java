@@ -81,7 +81,7 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
 
 
             holder.desc.setText(urlDomain);
-            holder.sidebar.setBackgroundColor(Utils.generateColor(urlDomain));
+            holder.sidebar.setBackgroundColor(Utils.generateColor(f.title));
         }
 
         // returns the updated delegate
