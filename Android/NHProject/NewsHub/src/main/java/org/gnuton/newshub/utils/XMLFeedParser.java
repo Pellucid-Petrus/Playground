@@ -163,12 +163,40 @@ public class XMLFeedParser {
         return feed;
     }
 
+    /**
+     * Checks if the current feed support ITunes namespace
+     * @param xpp
+     * @return
+     */
+    boolean isITunesPodcast(XmlPullParser xpp){
+        int depth = xpp.getDepth();
+        int nsStart = 0;
+        int nsEnd = 0;
+
+        try {
+            nsStart = xpp.getNamespaceCount(depth-1);
+            nsEnd = xpp.getNamespaceCount(depth);
+            for (int i = nsStart; i < nsEnd; i++) {
+                String prefix = xpp.getNamespacePrefix(i);
+                if (prefix.equals("itunes"))
+                    return true;
+                //String ns = xpp.getNamespaceUri(i);
+
+            }
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @SuppressWarnings("unchecked")
     private RSSFeed parseRSSBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
+
+        boolean itunesPodcast = false;
 
         if (xml == null) {
             Log.e(TAG, "XML Buffer is empty");
@@ -179,6 +207,7 @@ public class XMLFeedParser {
         xpp.setInput(new StringReader(xml));
         xpp.nextTag();
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "rss");
+        itunesPodcast = isITunesPodcast(xpp);
         xpp.nextTag();
         {
             String name = xpp.getName();
@@ -190,7 +219,7 @@ public class XMLFeedParser {
                 continue;
 
             if (xpp.getName().toLowerCase().equals("item")) {
-                final RSSEntry e = parseRSSEntry(xpp, feed.id);
+                final RSSEntry e = parseRSSEntry(xpp, feed.id, itunesPodcast);
 
                 // Stop parsing old news
                 //if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
@@ -240,11 +269,6 @@ public class XMLFeedParser {
             return feed;
         }
 
-        //byte[] utf8 = new String(xml, "ISO-8859-1").getBytes("UTF-8");
-
-        // let's start to parse!
-        //InputStream is = new ByteArrayInputStream(xml.getBytes("ISO-8859-1"));
-        //xpp.setInput(is, "ISO-8859-1");
         xpp.setInput(new StringReader(xml));
         xpp.nextTag();
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "RDF");
@@ -360,13 +384,21 @@ public class XMLFeedParser {
     }
 
     @TargetApi(Build.VERSION_CODES.FROYO)
-    private RSSEntry parseRSSEntry(XmlPullParser xpp, int feedID) throws IOException, XmlPullParserException {
+    private RSSEntry parseRSSEntry(XmlPullParser xpp, int feedID, boolean itunesPodcast) throws IOException, XmlPullParserException {
+        // Checking
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "item");
+
+        // Attributes
         String title = null;
         String description = "";
         String link = null;
         Calendar publishedData = GregorianCalendar.getInstance(); // Avoid crashes if data is not parsed correctly
 
+        //iTunes podcast attributes
+        String enclosure_url= null;
+        String guid = null;
+
+        // Loop XML attributes
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -376,12 +408,12 @@ public class XMLFeedParser {
 
             // Skip media:description and media:title, avoid overwriting  description and title text
             String prefix = xpp.getPrefix();
-
             if (prefix != null && prefix.equals("media")){
                 skip(xpp);
                 continue;
             }
 
+            // Fill attributes
             if (name.equals("title")) {
                 title = readTagText(xpp, "title");
             } else if (name.equals("description")) {
@@ -421,10 +453,23 @@ public class XMLFeedParser {
                         e.printStackTrace();
                     }
                 }
+            } else if (itunesPodcast){
+                if (name.equals("enclosure")){
+                    enclosure_url = xpp.getAttributeValue(null, "url");
+                    xpp.nextTag();
+                } else if (name.equals("guid")){
+                    guid = readTagText(xpp, "guid");
+                } else {
+                    skip(xpp);
+                }
             } else {
                 skip(xpp);
             }
         }
+
+        // ITunes guid must replace link
+        if (guid != null)
+            link = guid;
 
         return (RSSEntry) mEds.create(
                 new String[] {
@@ -439,7 +484,8 @@ public class XMLFeedParser {
     }
 
     private RSSEntry parseRDFEntry(XmlPullParser xpp, int feedID) throws IOException, XmlPullParserException {
-        return this.parseRSSEntry(xpp, feedID);
+        boolean itunesPodcast = false; // RDF cannot be itunes podcasts
+        return this.parseRSSEntry(xpp, feedID, itunesPodcast);
     }
 
     private String readAtomLink(XmlPullParser xpp) throws IOException, XmlPullParserException {
