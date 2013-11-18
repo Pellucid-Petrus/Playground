@@ -479,7 +479,8 @@ public class XMLFeedParser {
                         link,
                         null,  //content
                         String.valueOf(publishedData.getTimeInMillis()),
-                        String.valueOf(0) // Not read
+                        String.valueOf(0), // Not read
+                        enclosure_url
                 });
     }
 

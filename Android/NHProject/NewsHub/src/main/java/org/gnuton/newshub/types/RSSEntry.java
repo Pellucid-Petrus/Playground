@@ -21,6 +21,7 @@ public class RSSEntry implements Serializable{
     public Boolean isRead = false;
 
     public List<String> columnsToUpdate = new ArrayList<String>(); //Columns which to save into the DB
+    public String podcastMedia;
 
     //public Boolean isMarkedAsRead;
 

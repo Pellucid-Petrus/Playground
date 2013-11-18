@@ -15,7 +15,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Created by gnuton on 5/26/13.
  */
 public class RSSEntryDataSource extends GenericDataSource {
     private static final String TAG = RSSEntryDataSource.class.getName();
@@ -35,7 +34,8 @@ public class RSSEntryDataSource extends GenericDataSource {
                 DbHelper.ENTRIES_URL,
                 DbHelper.ENTRIES_CONTENT,
                 DbHelper.ENTRIES_PUBLISHEDDATE,
-                DbHelper.ENTRIES_ISREAD
+                DbHelper.ENTRIES_ISREAD,
+                DbHelper.ENTRIES_PODCAST_MEDIA
         };
     }
 
@@ -48,6 +48,7 @@ public class RSSEntryDataSource extends GenericDataSource {
         String content = record[4];
         long publishDate = Long.parseLong(record[5]);
         int isRead = Integer.parseInt(record[6]);
+        String podcastMedia = record[7];
 
         // Do not double records
         String selection = DbHelper.ENTRIES_URL + " = "+ DatabaseUtils.sqlEscapeString(url);
@@ -70,7 +71,7 @@ public class RSSEntryDataSource extends GenericDataSource {
         values.put(DbHelper.ENTRIES_CONTENT, content);
         values.put(DbHelper.ENTRIES_PUBLISHEDDATE, publishDate);
         values.put(DbHelper.ENTRIES_ISREAD, isRead);
-
+        values.put(DbHelper.ENTRIES_PODCAST_MEDIA, podcastMedia);
 
         long insertId = database.insert(DbHelper.TABLE_ENTRIES, null, values);
         Cursor cursor = database.query(DbHelper.TABLE_ENTRIES,
@@ -121,6 +122,7 @@ public class RSSEntryDataSource extends GenericDataSource {
         final String content = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_CONTENT));
         final long publishedDataLong = cursor.getLong(cursor.getColumnIndex(DbHelper.ENTRIES_PUBLISHEDDATE));
         final Boolean isRead = cursor.getInt(cursor.getColumnIndex(DbHelper.ENTRIES_ISREAD)) > 0;
+        final String podcast_media = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_PODCAST_MEDIA));
 
         Calendar publishedData = new GregorianCalendar();
         publishedData.setTimeInMillis(publishedDataLong);
@@ -129,6 +131,7 @@ public class RSSEntryDataSource extends GenericDataSource {
         RSSEntry entry = new RSSEntry(id, feedId, title, summary, url, publishedData);
         entry.content = content;
         entry.isRead = isRead;
+        entry.podcastMedia = podcast_media;
 
         return entry;
     }
