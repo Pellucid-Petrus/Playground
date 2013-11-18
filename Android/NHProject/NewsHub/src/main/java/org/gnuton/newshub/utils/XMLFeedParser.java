@@ -180,20 +180,21 @@ public class XMLFeedParser {
         xpp.nextTag();
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "rss");
         xpp.nextTag();
-        String name = xpp.getName();
-        Log.d(TAG, "NAME " + name);
-        xpp.require(XmlPullParser.START_TAG, xmlNamespace, "channel");
-
+        {
+            String name = xpp.getName();
+            Log.d(TAG, "NAME " + name);
+            xpp.require(XmlPullParser.START_TAG, xmlNamespace, "channel");
+        }
         while (xpp.next() != XmlPullParser.END_TAG) {
             if (xpp.getEventType() != XmlPullParser.START_TAG)
                 continue;
 
-            if (xpp.getName().equals("item")) {
+            if (xpp.getName().toLowerCase().equals("item")) {
                 final RSSEntry e = parseRSSEntry(xpp, feed.id);
 
                 // Stop parsing old news
-                if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
-                    break;
+                //if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
+                //    break;
 
                 final int pos = entries.size();
                 if (MyApp.mMainActivity != null) {
@@ -368,8 +369,16 @@ public class XMLFeedParser {
             if (xpp.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
-            String name = xpp.getName();
+            String name = xpp.getName().toLowerCase();
             Log.d(TAG, "RSS NAME " + name);
+
+            // Skip media:description and media:title, avoid overwriting  description and title text
+            String prefix = xpp.getPrefix();
+
+            if (prefix != null && prefix.equals("media")){
+                skip(xpp);
+                continue;
+            }
 
             if (name.equals("title")) {
                 title = readTagText(xpp, "title");
@@ -377,7 +386,7 @@ public class XMLFeedParser {
                 description = readTagText(xpp, "description");
             } else if (name.equals("link")) {
                 link = readTagText(xpp, "link");
-            } else if (name.toLowerCase().equals("pubdate")) {
+            } else if (name.equals("pubdate")) {
                 String dateString;
                 try {
                     dateString = readTagText(xpp, "pubDate");
