@@ -88,7 +88,7 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
     }
 
     String dateToString(Calendar cal) {
-        String strdate = null;
+        String strDate;
         if (cal == null)
             return "";
 
@@ -100,8 +100,8 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             sdf = new SimpleDateFormat("EEE, dd MMM");
 
 
-        strdate = sdf.format(cal.getTime());
+        strDate = sdf.format(cal.getTime());
 
-        return strdate;
+        return strDate;
     }
 }
