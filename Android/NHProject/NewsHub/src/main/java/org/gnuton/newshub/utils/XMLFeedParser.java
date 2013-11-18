@@ -344,6 +344,8 @@ public class XMLFeedParser {
 
         if (description == null && content != null)
             description= "";
+        else if (description != null && (content == null || content.isEmpty()))
+            content= description;
 
         return (RSSEntry) mEds.create(
                 new String[] {

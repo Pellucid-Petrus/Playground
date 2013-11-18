@@ -14,6 +14,8 @@ import java.io.UnsupportedEncodingException;
 public class TextUtils {
     public static String removeNonPrintableChars(String s) {
         //s = s.replaceAll("[\\x00-\\x1F]","");
+        String rxp = "^\\s*";
+        s = s.replaceFirst(rxp,"");
         s = s.replaceAll("[\t\n\r\f]","");
         return s;
     }
