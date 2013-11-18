@@ -56,9 +56,13 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
             v = vi.inflate(R.layout.feedlist_item, null);
             holder = new ViewHolder();
 
+            assert v != null;
             holder.title = (TextView) v.findViewById(R.id.FeedListItemTitleTextView);
-            if (mStyle != -1 )
-                holder.title.setTextAppearance(v.getContext(), mStyle);
+            if (mStyle != -1 ) {
+                Context context = v.getContext();
+                if (context != null)
+                    holder.title.setTextAppearance(context, mStyle);
+            }
             holder.desc = (TextView) v.findViewById(R.id.FeedListItemDescTextView);
             holder.sidebar = (ImageView) v.findViewById(R.id.sidebar);
 
