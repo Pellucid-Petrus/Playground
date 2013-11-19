@@ -468,7 +468,7 @@ public class XMLFeedParser {
         }
 
         // ITunes guid must replace link
-        if (guid != null)
+        if (guid != null && guid.contains("http"))
             link = guid;
 
         return (RSSEntry) mEds.create(

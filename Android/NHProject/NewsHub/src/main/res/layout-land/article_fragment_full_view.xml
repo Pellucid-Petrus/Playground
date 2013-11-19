@@ -36,7 +36,6 @@
             android:focusableInTouchMode="true"
             android:animateLayoutChanges="true"
             android:id="@+id/articleContentLayout"
-
             >
             <RelativeLayout
                 android:orientation="horizontal"
@@ -76,17 +75,15 @@
                     style="@style/ArticleDetailTitle"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true" />
-
-
             </RelativeLayout>
+
 
             <org.gnuton.newshub.view.MediaPlayerView
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
-                android:visibility="visible"
-                android:layout_margin="10dp"
-                android:id="@+id/mediaPlayerCtrl" />
-
+                android:id="@+id/mediaPlayerCtrl"
+                android:background="#FFFFFF"
+                android:padding="10dp" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"

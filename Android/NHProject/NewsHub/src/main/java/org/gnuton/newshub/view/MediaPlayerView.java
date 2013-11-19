@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.gnuton.newshub.R;
 import org.gnuton.newshub.utils.FontsProvider;
@@ -23,6 +24,7 @@ public class MediaPlayerView extends LinearLayout {
 
     private final MediaPlayer mMediaPlayer = new MediaPlayer();
     private Button mPlayPauseButton;
+    private TextView mInfoLabel;
 
     public MediaPlayerView(Context context) {
         super(context);
@@ -44,7 +46,9 @@ public class MediaPlayerView extends LinearLayout {
                     LayoutParams.MATCH_PARENT);
             this.setLayoutParams(lp);
 
+            mInfoLabel = (TextView) findViewById(R.id.mediaPlayerTrackInfo);
             mPlayPauseButton = (Button)findViewById(R.id.playPauseButton);
+
             if (mPlayPauseButton != null){
                 mPlayPauseButton.setOnClickListener(new playPauseButtonClickListener());
                 mPlayPauseButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
@@ -53,12 +57,15 @@ public class MediaPlayerView extends LinearLayout {
     }
 
     public void setMedia(final String url){
+        mMediaPlayer.stop();
+        mPlayPauseButton.setText(R.string.icon_play);
+
         if (url == null){
-            mMediaPlayer.stop();
             return;
         }
 
         try {
+            mMediaPlayer.reset();
             mMediaPlayer.setDataSource(url);
             mMediaPlayer.prepare();
         } catch (IOException e) {
@@ -74,6 +81,7 @@ public class MediaPlayerView extends LinearLayout {
                 mPlayPauseButton.setText(R.string.icon_play);
             } else {
                 mMediaPlayer.start();
+
                 mPlayPauseButton.setText(R.string.icon_pause);
             }
         }
