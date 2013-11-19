@@ -30,6 +30,7 @@ import org.gnuton.newshub.tasks.UpdateEntryInDB;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.MyApp;
+import org.gnuton.newshub.view.MediaPlayerView;
 import org.gnuton.newshub.view.ObservableScrollView;
 import org.gnuton.newshub.view.UninterceptableViewPager;
 
@@ -341,6 +342,17 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         articleFragmentEmptyView.setVisibility(View.GONE);
         final View articleFragmentLoadingView = getView().findViewById(R.id.ArticleFragmentLoadingViewLayout);
         articleFragmentLoadingView.setVisibility(View.GONE);
+
+        // Podcast
+        final MediaPlayerView mediaPlayerControls = (MediaPlayerView)getView().findViewById(R.id.mediaPlayerCtrl);
+
+        if (entry.podcastMedia == null || entry.podcastMedia.isEmpty()) {
+            mediaPlayerControls.setVisibility(View.GONE);
+             mediaPlayerControls.setMedia(null);
+        } else {
+            mediaPlayerControls.setVisibility(View.VISIBLE);
+            mediaPlayerControls.setMedia(entry.podcastMedia);
+        }
     }
 
     private void fetchFullArticle(RSSEntry entry) {

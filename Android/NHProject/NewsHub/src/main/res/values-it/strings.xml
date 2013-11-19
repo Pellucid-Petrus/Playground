@@ -43,6 +43,8 @@
     <string name="icon_more">&#xf103;</string>
     <string name="icon_next">&#xf0da;</string>
     <string name="icon_prev">&#xf0d9;</string>
+    <string name="icon_play">&#xf04b;</string>
+    <string name="icon_pause">&#xf04c;</string>
     <string name="swipe_hand_text">Scorri il dito per iniziare!</string>
 
     // logo
