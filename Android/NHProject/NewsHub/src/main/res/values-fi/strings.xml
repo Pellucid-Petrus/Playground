@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    // General
+    <string name="app_name" >NewsLine</string>
+    <string name="action_settings" >Asetukset</string>
+    <string name="page_disclaimer">Tämän sivun sisältö on kolmannen osapuolen omaisuutta ja NewsLinen tekijä ei ole vastuussa sen sisällöstä</string>
+
+    // Errors
+    <string name="networkConnectionError">Ei verkkoyhteyttä saatavilla</string>
+
+    // Warnings
+    <string name="warning_no_entries_found">Ei hakutuloksia</string>
+    <string name="warning_feed_already_in_db">Seuraat jo uutisia tästä sivustosta</string>
+
+    // Info
+    <string name="unsubscribeConfermation">Haluatko lopettaa sivuston seuraamisen?</string>
+    <string name="action_clear_entry_cache">Tyhjennä välimuisti</string>
+    <string name="info_article_cache_cleaned">Kaikki artikkelit on poistettu laitteesta</string>
+    <string name="action_dlg_msg_clear_entry_cache">Haluatko todella poistaa kaikki tallennetut artikkelit?</string>
+    <string name="warning_unable_to_download_content">Sivuston sisältöä ei voi ladata,
+        virhe:
+    </string>
+    <string name="msg_entry_list_updated">Lista päivitetty</string>
+
+    // Drawer strings
+    <string name="drawer_open">Näytä tilauslista</string>
+    <string name="drawer_close">Piilota tilauslista</string>
+    <string name="drawer_title">Tilauslistat</string>
+
+    // Subscribe dialog
+    <string name="subscribe_dialog_title">Valitse suosikki aihe tai etsi sivusto</string>
+    <string name="subscribe_dialog_title2">Etsi haluamasi sivusto tai aihe</string>
+
+    <string name="subscribe_dialog_nofeedstext"></string>
+    <string name="sharing_url_string">Check out this site! (Shared with News Hub on Android)
+    </string>
+
+    // Font Awesome icons http://fortawesome.github.io/Font-Awesome/cheatsheet/
+    <string name="icon_heart">&#xf004;</string>
+    <string name="icon_share">&#xf045;</string>
+    <string name="icon_globe">&#xf0ac;</string>
+    <string name="icon_more">&#xf103;</string>
+    <string name="icon_next">&#xf0da;</string>
+    <string name="icon_prev">&#xf0d9;</string>
+    <string name="swipe_hand_text">Liu'uta sormea aloittamaan!</string>
+
+    // logo
+    <string name="icon_rocket">&#xf143;</string>
+
+    <string name="category_technology">tech</string>
+    <string name="category_news">uutiset</string>
+    <string name="categories_finance">talous</string>
+    <string name="category_games">pelit</string>
+    <string name="categories_health">terveys</string>
+    <string name="categories_politics">politiikka</string>
+    <string name="category_cooking">reseptit</string>
+    <string name="category_travels">matkat</string>
+    <string name="category_gossip">juoru</string>
+    <string name="category_sport">urheilu</string>
+    <string name="category_search">&#xf002;</string>
+    <string name="subscribe_editText_hint">Mitä etsit?</string>
+    <string name="rssParseTaskNoEntries">Valitettavasti sovellus ei pysty hakemaan valitun sisällön. Virheilmoitus on lähetetty sivuston ylläpitäjälle</string>
+
+<string name="UnableToPlayMedia">Valittu tiedosto ei ole saatavilla</string>
+    <string name="icon_bug">&#xf188;</string>
+
+</resources>

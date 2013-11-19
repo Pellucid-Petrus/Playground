@@ -14,7 +14,7 @@
     <string name="warning_feed_already_in_db">Sie verfolgen bereits die Nachrichten von diesem Anbieter</string>
 
     // Info
-    <string name="unsubscribeConfermation">Wollen Sie diese Seite nicht mehr verfolgen?</string>
+    <string name="unsubscribeConfermation">Wollen Sie diese Seite wirklich verlassen?</string>
     <string name="action_clear_entry_cache">Cache leeren</string>
     <string name="info_article_cache_cleaned">Alle Artikel wurden aus dem Gerät entfernt</string>
     <string name="action_dlg_msg_clear_entry_cache">Wollen Sie wirklich alle Artikel auf Ihrem Gerät entfernen?</string>
@@ -24,13 +24,13 @@
     <string name="msg_entry_list_updated">Eingabe aktualisiert</string>
 
     // Drawer strings
-    <string name="drawer_open">Subskriptionsliste zeigen</string>
-    <string name="drawer_close">Subskriptionsliste verstecken</string>
-    <string name="drawer_title">Subskriptionsliste</string>
+    <string name="drawer_open">Abonnements zeigen</string>
+    <string name="drawer_close">Abonnements verbergen</string>
+    <string name="drawer_title">Abonnements</string>
 
     // Subscribe dialog
-    <string name="subscribe_dialog_title">Choose your favorite topic or search for a news provider</string>
-    <string name="subscribe_dialog_title2">Search for a news provider</string>
+    <string name="subscribe_dialog_title">Wählen Sie Ihre Lieblings-Thema oder suche nach eine Seite</string>
+    <string name="subscribe_dialog_title2">Suchen Sie Ihre gewünschte Seite oder Thema</string>
 
     <string name="subscribe_dialog_nofeedstext"></string>
     <string name="sharing_url_string">Check out this site! (Shared with News Hub on Android)
@@ -43,10 +43,7 @@
     <string name="icon_more">&#xf103;</string>
     <string name="icon_next">&#xf0da;</string>
     <string name="icon_prev">&#xf0d9;</string>
-    <string name="icon_play">&#xf04b;</string>
-    <string name="icon_pause">&#xf04c;</string>
-    <string name="icon_bug">&#xf188;</string>
-    <string name="swipe_hand_text">Ziehen Sie den Finger zu beginnen!</string>
+    <string name="swipe_hand_text">Ziehen Sie den Finger um zu beginnen!</string>
 
     // logo
     <string name="icon_rocket">&#xf143;</string>
@@ -64,6 +61,8 @@
     <string name="category_search">&#xf002;</string>
     <string name="subscribe_editText_hint">Was suchen Sie?</string>
     <string name="rssParseTaskNoEntries">Leider der ausgewählte Inhalt konnte nicht geladen werden. Der Fehler wurde dem Autor gemeldet.</string>
-    <string name="UnableToPlayMedia">Unable to play the selected media</string>
+
+ <string name="UnableToPlayMedia">Die ausgewählte Datei kann nicht abgespielt werden</string>
+    <string name="icon_bug">&#xf188;</string>
 
 </resources>

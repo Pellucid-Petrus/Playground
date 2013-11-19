@@ -4,17 +4,17 @@
     // General
     <string name="app_name" >NewsLine</string>
     <string name="action_settings" >Impostazioni</string>
-    <string name="page_disclaimer">Il contenuto di questa pagina è fornito da terzi e l\'autore di Newsline non è responsabile del contenuto</string>
+    <string name="page_disclaimer">Il contenuto di questa pagina è fornito da terzi e l'autore di NewsLine non è responsabile del contenuto</string>
 
     // Errors
     <string name="networkConnectionError">Connessione Internet assente</string>
 
     // Warnings
     <string name="warning_no_entries_found">Nessun risultato per questo sito</string>
-    <string name="warning_feed_already_in_db">Stai già seguendo le notizie di questo provider</string>
+    <string name="warning_feed_already_in_db">Stai già seguendo le notizie di questo sito</string>
 
     // Info
-    <string name="unsubscribeConfermation">Vuoi smettere di seguire questo provider?</string>
+    <string name="unsubscribeConfermation">Vuoi smettere di seguire questo sito?</string>
     <string name="action_clear_entry_cache">Cancella cache articoli</string>
     <string name="info_article_cache_cleaned">Tutti gli articoli sono stati rimossi dal dispositivo</string>
     <string name="action_dlg_msg_clear_entry_cache">Vuoi davvero eliminare tutti gli articoli dal dispositivo?</string>
@@ -24,8 +24,8 @@
     <string name="msg_entry_list_updated">Lista aggiornata</string>
 
     // Drawer strings
-    <string name="drawer_open">Mostra Lista sottoscrizioni</string>
-    <string name="drawer_close">Nascondi Lista sottoscrizioni</string>
+    <string name="drawer_open">Mostra lista sottoscrizioni</string>
+    <string name="drawer_close">Nascondi lista sottoscrizioni</string>
     <string name="drawer_title">Sottoscrizioni</string>
 
     // Subscribe dialog
@@ -43,16 +43,13 @@
     <string name="icon_more">&#xf103;</string>
     <string name="icon_next">&#xf0da;</string>
     <string name="icon_prev">&#xf0d9;</string>
-    <string name="icon_play">&#xf04b;</string>
-    <string name="icon_pause">&#xf04c;</string>
-    <string name="icon_bug">&#xf188;</string>
     <string name="swipe_hand_text">Scorri il dito per iniziare!</string>
 
     // logo
     <string name="icon_rocket">&#xf143;</string>
 
     <string name="category_technology">tech</string>
-    <string name="category_news">notizie</string>
+    <string name="category_news">news</string>
     <string name="categories_finance">finanza</string>
     <string name="category_games">giochi</string>
     <string name="categories_health">salute</string>
@@ -63,7 +60,9 @@
     <string name="category_sport">sport</string>
     <string name="category_search">&#xf002;</string>
     <string name="subscribe_editText_hint">Cosa stai cercando?</string>
-    <string name="rssParseTaskNoEntries">Purtopppo l\'applicazione non è in grado di recuperare il contenuto del sito selezionato. L\'errore è stato segnalato all\'autore.</string>
-    <string name="UnableToPlayMedia">Unable to play the selected media</string>
+    <string name="rssParseTaskNoEntries">Purtopppo l'applicazione non è in grado di recuperare il contenuto del sito selezionato. L'errore è stato segnalato all'autore.</string>
+
+<string name="UnableToPlayMedia">Impossibile riprodurre il file selezionato</string>
+    <string name="icon_bug">&#xf188;</string>
 
 </resources>

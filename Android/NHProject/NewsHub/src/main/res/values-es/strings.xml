@@ -4,20 +4,20 @@
     // General
     <string name="app_name" >NewsLine</string>
     <string name="action_settings" >Ajustes</string>
-    <string name="page_disclaimer">El contenido de esta página es proporcionado por terceros y el autor de Newsline no se hace responsable por su contenido</string>
+    <string name="page_disclaimer">El contenido de esta página es proporcionado por terceros y el autor de NewsLine no se hace responsable por su contenido</string>
 
     // Errors
-    <string name="networkConnectionError">Falta de conexión a la red</string>
+    <string name="networkConnectionError">No hay conexión de red</string>
 
     // Warnings
-    <string name="warning_no_entries_found">Ningún resultado por este sitio</string>
-    <string name="warning_feed_already_in_db">Ya estás siguiendo las noticias de este sitio</string>
+    <string name="warning_no_entries_found">Ningún resultado para este término</string>
+    <string name="warning_feed_already_in_db">Ya está siguiendo las noticias de este sitio</string>
 
     // Info
-    <string name="unsubscribeConfermation">¿Quieres dejar de seguir este sitio?</string>
-    <string name="action_clear_entry_cache">Limpia la caché de archivos</string>
+    <string name="unsubscribeConfermation">¿Quiere dejar de seguir este sitio?</string>
+    <string name="action_clear_entry_cache">Limpia la caché</string>
     <string name="info_article_cache_cleaned">Todos los artículos del dispositivo han sido cancelados</string>
-    <string name="action_dlg_msg_clear_entry_cache">¿Estás seguro de que quieres cancelar todos los artículos del dispositivo?</string>
+    <string name="action_dlg_msg_clear_entry_cache">¿Está seguro de que quiere cancelar todos los artículos del dispositivo?</string>
     <string name="warning_unable_to_download_content">Imposible descargar el contenido del servidor,
         error:
     </string>
@@ -29,8 +29,8 @@
     <string name="drawer_title">Suscripciones</string>
 
     // Subscribe dialog
-    <string name="subscribe_dialog_title">Elige tu tema favorito o busca un sitio</string>
-    <string name="subscribe_dialog_title2">Busca el sitio o tema que quieres</string>
+    <string name="subscribe_dialog_title">Elige su tema preferido o busque un sitio</string>
+    <string name="subscribe_dialog_title2">Escriba el sitio o tema deseado</string>
 
     <string name="subscribe_dialog_nofeedstext"></string>
     <string name="sharing_url_string">Check out this site! (Shared with News Hub on Android)
@@ -43,10 +43,7 @@
     <string name="icon_more">&#xf103;</string>
     <string name="icon_next">&#xf0da;</string>
     <string name="icon_prev">&#xf0d9;</string>
-    <string name="icon_play">&#xf04b;</string>
-    <string name="icon_pause">&#xf04c;</string>
-    <string name="icon_bug">&#xf188;</string>
-    <string name="swipe_hand_text">¡Desliza el dedo para empezar!</string>
+    <string name="swipe_hand_text">¡Deslize el dedo para empezar!</string>
 
     // logo
     <string name="icon_rocket">&#xf143;</string>
@@ -62,8 +59,10 @@
     <string name="category_gossip">chismes</string>
     <string name="category_sport">deporte</string>
     <string name="category_search">&#xf002;</string>
-    <string name="subscribe_editText_hint">¿Qué estás buscando?</string>
-    <string name="rssParseTaskNoEntries">Desafortunadamente la aplicación no puede recuperar el contenido del sitio deseado. El error fué notificado al autor.</string>
-    <string name="UnableToPlayMedia">Unable to play the selected media</string>
+    <string name="subscribe_editText_hint">¿Qué está buscando?</string>
+    <string name="rssParseTaskNoEntries">Desafortunadamente la aplicación no puede recuperar el contenido del sitio deseado. El error fue notificado al autor.</string>
+
+<string name="UnableToPlayMedia">El archivo seleccionado no se puede reproducir</string>
+    <string name="icon_bug">&#xf188;</string>
 
 </resources>
