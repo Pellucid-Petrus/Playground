@@ -4,7 +4,7 @@
     // General
     <string name="app_name" >NewsLine</string>
     <string name="action_settings" >Impostazioni</string>
-    <string name="page_disclaimer">Il contenuto di questa pagina è fornito da terzi e l'autore di NewsLine non è responsabile del contenuto</string>
+    <string name="page_disclaimer">Il contenuto di questa pagina è fornito da terzi e l\'autore di NewsLine non è responsabile del contenuto</string>
 
     // Errors
     <string name="networkConnectionError">Connessione Internet assente</string>
@@ -15,7 +15,7 @@
 
     // Info
     <string name="unsubscribeConfermation">Vuoi smettere di seguire questo sito?</string>
-    <string name="action_clear_entry_cache">Cancella cache articoli</string>
+    <string name="action_clear_entry_cache">Cancella articoli archiviati</string>
     <string name="info_article_cache_cleaned">Tutti gli articoli sono stati rimossi dal dispositivo</string>
     <string name="action_dlg_msg_clear_entry_cache">Vuoi davvero eliminare tutti gli articoli dal dispositivo?</string>
     <string name="warning_unable_to_download_content">Impossibile scaricare il contenuto dal server,
@@ -60,7 +60,7 @@
     <string name="category_sport">sport</string>
     <string name="category_search">&#xf002;</string>
     <string name="subscribe_editText_hint">Cosa stai cercando?</string>
-    <string name="rssParseTaskNoEntries">Purtopppo l'applicazione non è in grado di recuperare il contenuto del sito selezionato. L'errore è stato segnalato all'autore.</string>
+    <string name="rssParseTaskNoEntries">Purtopppo l\'applicazione non è in grado di recuperare il contenuto del sito selezionato. L\'errore è stato segnalato all\'autore.</string>
 
 <string name="UnableToPlayMedia">Impossibile riprodurre il file selezionato</string>
     <string name="icon_bug">&#xf188;</string>

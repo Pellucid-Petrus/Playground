@@ -43,7 +43,7 @@
     <string name="icon_more">&#xf103;</string>
     <string name="icon_next">&#xf0da;</string>
     <string name="icon_prev">&#xf0d9;</string>
-    <string name="swipe_hand_text">Liu'uta sormea aloittamaan!</string>
+    <string name="swipe_hand_text">Liu\'uta sormea aloittamaan!</string>
 
     // logo
     <string name="icon_rocket">&#xf143;</string>
