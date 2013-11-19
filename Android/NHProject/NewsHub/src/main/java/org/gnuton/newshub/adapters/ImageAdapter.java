@@ -55,7 +55,8 @@ public class ImageAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imageView = mImageViews.get(position % 3);
         imageView.setImageDrawable(mImages.get(position));
-        ((ViewPager) container).addView(imageView, 0);
+        if (imageView.getParent() == null)
+            ((ViewPager) container).addView(imageView, 0);
         scheduleAnimationForView(imageView);
         //((UninterceptableViewPager) container).setVisibility(View.VISIBLE);
         return imageView;
