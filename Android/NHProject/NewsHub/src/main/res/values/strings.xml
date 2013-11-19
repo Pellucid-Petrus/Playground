@@ -4,7 +4,7 @@
     // General
     <string name="app_name" >NewsLine</string>
     <string name="action_settings" >Settings</string>
-    <string name="page_disclaimer">The content on this page is provided by third party providers and Newsline author is not responsible for its content</string>
+    <string name="page_disclaimer">The content on this page is provided by third-party providers and Newsline author is not responsible for its content</string>
 
     // Errors
     <string name="networkConnectionError">No network connection available.</string>
@@ -29,7 +29,7 @@
     <string name="drawer_title">Subscriptions</string>
 
     // Subscribe dialog
-    <string name="subscribe_dialog_title">Chose your favorite topic or search for a news provider</string>
+    <string name="subscribe_dialog_title">Choose your favorite topic or search for a news provider</string>
     <string name="subscribe_dialog_title2">Search for a news provider</string>
 
     <string name="subscribe_dialog_nofeedstext"></string>
