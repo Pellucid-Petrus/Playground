@@ -52,7 +52,6 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     private List<RSSFeed> mFeeds;
 
     private ArrayAdapter<RSSFeed> adapter;
-    //private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
     private final String mFindFeedsUrl = "http://rss.gnuton.org/get";
 
     private ListView mListView;
@@ -74,6 +73,10 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
         Log.d(TAG, "Added feed:" + f.title);
 
         this.mFeedDataSource.create(f);
+        final MainActivity mMainActivity = MyApp.mMainActivity;
+        if (mMainActivity != null)
+            mMainActivity.feedSelected(f);
+
         this.dismiss();
     }
 
@@ -253,10 +256,11 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         Log.d(TAG, "Closing dialog");
-        final MainActivity mMainActivity = MyApp.getInstance().mMainActivity;
+        final MainActivity mMainActivity = MyApp.mMainActivity;
 
-        if (mMainActivity != null)
+        if (mMainActivity != null) {
             mMainActivity.updateDrawerList();
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
@@ -301,8 +305,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
             //jArray = new JSONObject(buffer).getJSONObject("responseData").getJSONArray("entries");
             JSONArray jArray = new JSONArray(xml);
             for (int i=0; i< jArray.length(); ++i) {
-                JSONObject j = null;
-                j = jArray.getJSONObject(i);
+                JSONObject j = jArray.getJSONObject(i);
 
                 //FIXME title contains unencoded chars
                 String title = j.getString(DbHelper.FEEDS_TITLE).replaceAll("</*b>","");

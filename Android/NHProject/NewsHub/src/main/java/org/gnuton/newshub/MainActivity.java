@@ -410,7 +410,8 @@ public class MainActivity extends FragmentActivity
             return true;
         }
     }
-    protected void feedSelected(int position) {
+
+    public  void feedSelected(RSSFeed feed) {
         ArticleListFragment alf = (ArticleListFragment) mArticleListFragment;
         ArticleFragment af = (ArticleFragment) mArticleDetailFragment;
 
@@ -422,17 +423,23 @@ public class MainActivity extends FragmentActivity
         // Get the empty article detail fragment every time we change feed
         af.setEntryAndWait(null, -1);
 
+        Log.d(TAG, "Feed: " + feed.title + " clicked!");
+        alf.setRSSFeed(feed);
+
+        mDrawerLayout.closeDrawer(mDrawerPanelLayout);
+    }
+
+    protected void feedSelected(int position) {
+        ArticleListFragment alf = (ArticleListFragment) mArticleListFragment;
+
         // update selected item and title, then close the drawer
         if (position == -1){
             alf.setRSSFeed(null);
             return;
         }
         RSSFeed feed = (RSSFeed)mDrawerList.getAdapter().getItem(position);
-        Log.d(TAG, "Feed: " + feed.title + " clicked!");
-        alf.setRSSFeed(feed);
-
         mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerPanelLayout);
+        feedSelected(feed);
     }
 
     public void SubscribeToFeed(View v){
