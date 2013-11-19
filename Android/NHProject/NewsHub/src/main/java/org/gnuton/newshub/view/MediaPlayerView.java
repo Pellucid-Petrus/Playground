@@ -3,6 +3,7 @@ package org.gnuton.newshub.view;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +65,7 @@ public class MediaPlayerView extends LinearLayout {
             return;
         }
 
+        Log.d(TAG, "Setting Media" + url);
         try {
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(url);
