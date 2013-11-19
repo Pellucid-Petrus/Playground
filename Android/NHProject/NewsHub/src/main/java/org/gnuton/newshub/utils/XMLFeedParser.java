@@ -455,7 +455,10 @@ public class XMLFeedParser {
                 }
             } else if (itunesPodcast){
                 if (name.equals("enclosure")){
-                    enclosure_url = xpp.getAttributeValue(null, "url");
+                    String enclosure_mime = xpp.getAttributeValue(null, "type");
+                    if (enclosure_mime.contains("audio"))
+                        enclosure_url = xpp.getAttributeValue(null, "url");
+
                     xpp.nextTag();
                 } else if (name.equals("guid")){
                     guid = readTagText(xpp, "guid");
