@@ -70,11 +70,16 @@ public class MediaPlayerView extends LinearLayout {
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(url);
             mMediaPlayer.prepare();
+            mInfoLabel.setText("");
+            mPlayPauseButton.setEnabled(true);
+            mPlayPauseButton.setText(R.string.icon_play);
         } catch (IOException e) {
             e.printStackTrace();
+            mInfoLabel.setText(R.string.UnableToPlayMedia);
+            mPlayPauseButton.setEnabled(false);
+            mPlayPauseButton.setText(R.string.icon_bug);
         }
     }
-
     private class playPauseButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {

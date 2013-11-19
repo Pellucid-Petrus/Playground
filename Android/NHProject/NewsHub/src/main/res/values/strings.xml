@@ -45,6 +45,7 @@
     <string name="icon_prev">&#xf0d9;</string>
     <string name="icon_play">&#xf04b;</string>
     <string name="icon_pause">&#xf04c;</string>
+    <string name="icon_bug">&#xf188;</string>
     <string name="swipe_hand_text">Swipe to start!</string>
 
     // logo
@@ -63,5 +64,7 @@
     <string name="category_search">&#xf002;</string>
     <string name="subscribe_editText_hint">What are you looking for?</string>
     <string name="rssParseTaskNoEntries">Unfortunately the application is not able to fetch the content for the selected feed. The error has been reported to the author.</string>
+    <string name="UnableToPlayMedia">Unable to play the selected media</string>
+
 
 </resources>

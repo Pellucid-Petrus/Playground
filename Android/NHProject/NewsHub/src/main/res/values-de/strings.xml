@@ -45,6 +45,7 @@
     <string name="icon_prev">&#xf0d9;</string>
     <string name="icon_play">&#xf04b;</string>
     <string name="icon_pause">&#xf04c;</string>
+    <string name="icon_bug">&#xf188;</string>
     <string name="swipe_hand_text">Ziehen Sie den Finger zu beginnen!</string>
 
     // logo
@@ -63,5 +64,6 @@
     <string name="category_search">&#xf002;</string>
     <string name="subscribe_editText_hint">Was suchen Sie?</string>
     <string name="rssParseTaskNoEntries">Leider der ausgewählte Inhalt konnte nicht geladen werden. Der Fehler wurde dem Autor gemeldet.</string>
+    <string name="UnableToPlayMedia">Unable to play the selected media</string>
 
 </resources>

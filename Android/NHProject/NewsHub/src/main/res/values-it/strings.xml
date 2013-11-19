@@ -45,6 +45,7 @@
     <string name="icon_prev">&#xf0d9;</string>
     <string name="icon_play">&#xf04b;</string>
     <string name="icon_pause">&#xf04c;</string>
+    <string name="icon_bug">&#xf188;</string>
     <string name="swipe_hand_text">Scorri il dito per iniziare!</string>
 
     // logo
@@ -63,5 +64,6 @@
     <string name="category_search">&#xf002;</string>
     <string name="subscribe_editText_hint">Cosa stai cercando?</string>
     <string name="rssParseTaskNoEntries">Purtopppo l\'applicazione non è in grado di recuperare il contenuto del sito selezionato. L\'errore è stato segnalato all\'autore.</string>
+    <string name="UnableToPlayMedia">Unable to play the selected media</string>
 
 </resources>
