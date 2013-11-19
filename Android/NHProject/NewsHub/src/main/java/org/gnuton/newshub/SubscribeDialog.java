@@ -53,7 +53,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
     private ArrayAdapter<RSSFeed> adapter;
     //private final String mFindFeedsUrl = "https://ajax.googleapis.com/ajax/services/feed/find?v=1.0&q=";
-    private final String mFindFeedsUrl = "http://rssfinder.gnuton.org/get";
+    private final String mFindFeedsUrl = "http://rss.gnuton.org/get";
 
     private ListView mListView;
     private Spinner mLanguageSpinner;
@@ -271,7 +271,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
             language = language.replace(".png","");
         sb.append("?l=");
         sb.append(language);
-        sb.append("?q=");
+        sb.append("&q=");
         sb.append(URLEncoder.encode(query));
         String url = sb.toString();
         new DownloadWebTask(this).execute(url);
