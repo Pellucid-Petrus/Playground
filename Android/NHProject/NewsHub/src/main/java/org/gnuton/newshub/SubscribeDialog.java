@@ -174,7 +174,8 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                             String catSearchStr = getResources().getString(R.string.category_search);
                             if (! text.equals(catSearchStr)){
                                 final Spinner languageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
-                                searchFeeds(languageSpinner.getSelectedItem().toString(), "#" + text);
+                                searchFeeds(languageSpinner.getSelectedItem().toString(),  text);
+                                //searchFeeds(languageSpinner.getSelectedItem().toString(), "#" + text);
                             } else {
                                 // layout in the dialog that holds spinner and textedit for searching feeds
                                 View searchFeedLayout = mDlgLayout.findViewById(R.id.search_feed_layout);
