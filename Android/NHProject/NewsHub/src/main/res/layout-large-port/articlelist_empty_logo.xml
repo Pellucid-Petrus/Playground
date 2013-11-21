@@ -25,6 +25,7 @@
             android:cropToPadding="false"
             android:scaleType="fitXY" />
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,40 +53,15 @@
             android:layout_alignLeft="@+id/MainLogoTitle"
             android:layout_marginTop="-12dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="BETA"
-            android:id="@+id/textView3"
-            android:textColor="#027fd5"
-            android:textStyle="bold"
-            android:layout_marginRight="20dp"
-            android:textSize="30sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="50dp" />
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:id="@+id/imageView2"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo_background"
+            android:scaleType="fitXY" />
 
-        TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="A"
-            android:id="@+id/mainLogoPropIcon"
-            android:textColor="#ffffff"
-            android:textSize="160dp"
-            android:layout_above="@+id/mainLogoPropText"
-            android:layout_alignRight="@+id/textView3" />
-
-        TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rapid, Smart, Simple"
-            android:id="@+id/mainLogoPropText"
-            android:textColor="#ffffff"
-            android:textSize="24dp"
-            android:layout_alignBottom="@+id/imageView"
-            android:layout_marginBottom="-5dp"
-            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
 </LinearLayout>
