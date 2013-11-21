@@ -65,6 +65,11 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
                 Log.d(TAG, "Redirect URL:>" + redUrl + "<");
                 conn = (HttpURLConnection) new URL(redUrl).openConnection();
                 conn.setRequestProperty("Cookie", cookies);
+            } else if (status == -1 ) {
+                if (conn.getURL().equals(url))
+                    throw new IOException("Unable to read data from server.");
+                else
+                    return downloadUrl(conn.getURL().toString());
             }
 
             Log.d(TAG, "Status: " + status);
@@ -74,8 +79,9 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
                 Log.d(TAG,"GZIP input stream");
                 is = new GZIPInputStream(is);
             }
-
-            return getBytesFromInputStream(is);
+            byte[] data =getBytesFromInputStream(is);
+            String s = new String(data);
+            return data;
         } catch(Exception e) {
             Notifications.showMsg(e.getMessage());
             return null;
