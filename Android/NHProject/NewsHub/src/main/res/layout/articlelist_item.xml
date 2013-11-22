@@ -32,9 +32,8 @@
                 android:textColor="#87b1ff"
                 android:layout_gravity="center"
                 android:textSize="12sp"
-                android:layout_alignTop="@+id/ListItemProviderTextView"
-                android:layout_alignParentRight="true"
-                android:layout_margin="3dp"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/ListItemTitleTextView" />
 
         <TextView
                 android:layout_width="fill_parent"
