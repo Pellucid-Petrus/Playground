@@ -206,13 +206,18 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
     private String appendImgs(List<Image> images, String html) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
         Document doc = dBuilder.parse(new InputSource(new StringReader(html)));
         doc.getDocumentElement().normalize();
-        Element img = doc.createElement("IMG");
-        img.setAttribute("src", images.get(0).getSrc());
 
-        Node body = doc.getElementsByTagName("BODY").item(0);
-        body.appendChild(img);
+        for (Image image : images) {
+            Element img = doc.createElement("IMG");
+            img.setAttribute("src", image.getSrc());
+
+            Node body = doc.getElementsByTagName("BODY").item(0);
+            body.appendChild(img);
+        }
+
         try {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
