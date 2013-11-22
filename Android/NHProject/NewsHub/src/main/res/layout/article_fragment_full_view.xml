@@ -66,7 +66,7 @@
                     android:textColor="#f20108" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Loading..."
                     android:id="@+id/TitleTextView"
@@ -75,7 +75,8 @@
                     android:textSize="30sp"
                     style="@style/ArticleDetailTitle"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="70dp" />
 
 
             </RelativeLayout>
@@ -83,7 +84,7 @@
             <org.gnuton.newshub.view.MediaPlayerView
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_margin="10dp"
                 android:id="@+id/mediaPlayerCtrl" />
 
