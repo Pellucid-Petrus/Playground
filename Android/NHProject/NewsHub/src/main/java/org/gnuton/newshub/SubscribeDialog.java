@@ -33,6 +33,7 @@ import org.gnuton.newshub.tasks.DownloadWebTask;
 import org.gnuton.newshub.types.RSSFeed;
 import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.MyApp;
+import org.gnuton.newshub.utils.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,9 +75,9 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
         this.mFeedDataSource.create(f);
         final MainActivity mMainActivity = MyApp.mMainActivity;
-        if (mMainActivity != null)
+        if (mMainActivity != null){
             mMainActivity.feedSelected(f);
-
+        }
         this.dismiss();
     }
 
@@ -310,6 +311,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
                 //FIXME title contains unencoded chars
                 String title = j.getString(DbHelper.FEEDS_TITLE).replaceAll("</*b>","");
+                title = TextUtils.stripHtml(title);
                 String url = j.getString(DbHelper.FEEDS_URL);
                 Log.d(TAG, title + " URL=" + url);
                 RSSFeed f = new RSSFeed(title, url);

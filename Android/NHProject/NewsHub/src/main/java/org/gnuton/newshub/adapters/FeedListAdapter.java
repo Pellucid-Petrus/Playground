@@ -1,8 +1,6 @@
 package org.gnuton.newshub.adapters;
 
 import android.content.Context;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,8 +72,7 @@ public class FeedListAdapter extends ArrayAdapter<RSSFeed> {
         // Update the delegate setting data stored in the holder
         final RSSFeed f = feeds.get(position);
         if (f != null) {
-            Spanned myStringSpanned = Html.fromHtml(f.title, null, null);
-            holder.title.setText(myStringSpanned, TextView.BufferType.SPANNABLE);
+            holder.title.setText(f.title);
 
             String urlDomain;
             if (!mShortUrl)

@@ -1,7 +1,9 @@
 package org.gnuton.newshub.utils;
 
+import android.text.Html;
 import android.util.Xml;
 
+import org.jsoup.Jsoup;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.ByteArrayInputStream;
@@ -52,5 +54,13 @@ public class TextUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String htmlToSpannable(String html) {
+        return Html.fromHtml(html).toString();
+    }
+
+    public static String stripHtml(String html) {
+        return Jsoup.parse(html).text();
     }
 }
