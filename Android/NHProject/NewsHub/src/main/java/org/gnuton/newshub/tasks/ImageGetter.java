@@ -87,14 +87,14 @@ public class ImageGetter implements Html.ImageGetter {
                 return;
 
             int intHeight = result.getIntrinsicHeight();
-            int intWidth = result.getIntrinsicWidth();
+            //int intWidth = result.getIntrinsicWidth();
 
             if (intHeight >= mPageView.getHeight()/5 && mImageAdapter != null){
-                    mImageAdapter.mImages.add(result);
-                    mImageAdapter.notifyDataSetChanged();
-                    return;
+                    mImageAdapter.addImage(result);
             }
             /*
+                ** The code below shows images inline with text **
+
             // set the correct bound according to the result from HTTP call
             urlDrawable.setBounds(0, 0, intWidth, intHeight);
 
@@ -106,6 +106,7 @@ public class ImageGetter implements Html.ImageGetter {
             ImageGetter.this.mContainer.invalidate();
             TextView tv = (TextView) ImageGetter.this.mContainer;
             */
+
             /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH){
                 tv.setHeight((tv.getHeight() + result.getMinimumHeight()));
             } else {

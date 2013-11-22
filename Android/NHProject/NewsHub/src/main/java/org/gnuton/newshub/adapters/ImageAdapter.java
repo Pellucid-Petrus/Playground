@@ -23,7 +23,7 @@ import java.util.List;
 
 public class ImageAdapter extends PagerAdapter {
     Context mContext;
-    public List<Drawable> mImages = new ArrayList<Drawable>();
+    private List<Drawable> mImages = new ArrayList<Drawable>();
     private List<ImageView> mImageViews = new ArrayList<ImageView>();
 
     public ImageAdapter(Context context){
@@ -46,6 +46,15 @@ public class ImageAdapter extends PagerAdapter {
         return mImages.size();
     }
 
+    public void clear(){
+        mImages.clear();
+        notifyDataSetChanged();
+
+    }
+    public void addImage(Drawable image){
+        mImages.add(image);
+        notifyDataSetChanged();
+    }
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == ((ImageView) object);

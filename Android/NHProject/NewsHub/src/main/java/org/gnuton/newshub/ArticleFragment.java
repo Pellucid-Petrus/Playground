@@ -296,9 +296,8 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         // reset imageAdapter
         if (mImageAdapter != null){
-            mImageAdapter.mImages.clear();
+            mImageAdapter.clear();
             //mImageAdapter.mImages.add(getResources().getDrawable(R.drawable.placeholder));
-            mImageAdapter.notifyDataSetChanged();
         }
 
         if (getView() == null) {
