@@ -163,6 +163,7 @@ public class MainActivity extends FragmentActivity
 
         //Set up custom action bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            assert actionBar != null;
             actionBar.setCustomView(R.layout.actionbar);
             final TextView actionBarTitle = (TextView) findViewById(R.id.actionBarTitle);
             actionBarTitle.setTypeface(FontsProvider.getInstace().getTypeface("Daily News 1915"));
@@ -359,7 +360,7 @@ public class MainActivity extends FragmentActivity
     // killed and restarted.
     public void onSaveInstanceState(Bundle savedInstanceState) {
         Log.d(TAG, "SAVE INSTANCE STATE");
-        MyApp.getInstance().mMainActivity = null;
+        MyApp.mMainActivity = null;
 
         if (mOrientation != ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
             getSupportFragmentManager().beginTransaction()
@@ -482,6 +483,7 @@ public class MainActivity extends FragmentActivity
 
                 final View articlelistSpacer = findViewById(R.id.articlelist_spacer);
 
+                assert articleListEmptyView != null;
                 articleListEmptyView.setViewToHide(articlelistSpacer);
             }
         }
@@ -491,6 +493,7 @@ public class MainActivity extends FragmentActivity
     }
 
     // Runs after onStart if there is a bundle
+    @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         // Always call the superclass so it can restore the view hierarchy
         //HACK Commenting out the line below do fix a bug.
@@ -513,6 +516,7 @@ public class MainActivity extends FragmentActivity
 
             final ArticleListEmptyView articleListEmptyView =
                     (ArticleListEmptyView) articleListView.getEmptyView();
+            assert articleListEmptyView != null;
             Log.d(TAG, "XXXX" + String.valueOf(articleListEmptyView.getVisibility()));
             articleListEmptyView.setVisibility(articleListEmptyView.getVisibility());
         }

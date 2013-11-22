@@ -14,10 +14,8 @@ import org.gnuton.newshub.types.RSSFeed;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * Created by gnuton on 6/5/13.
- */
-public class RSSFeedManager extends Object implements RSSParseTask.OnParsingCompletedListener, GetEntriesFromDB.OnResultsGot{
+
+public class RSSFeedManager implements RSSParseTask.OnParsingCompletedListener, GetEntriesFromDB.OnResultsGot{
     private final String TAG = getClass().toString();
     private OnEntryListFetchedListener mListener;
     private static final int UPDATE_INTERVAL = 30;
@@ -67,6 +65,7 @@ public class RSSFeedManager extends Object implements RSSParseTask.OnParsingComp
         offset.add(Calendar.MINUTE, UPDATE_INTERVAL);
 
         // Fetch data from the internet if this is the first time or if data is older than 30 mins
+        assert feed != null;
         if (feed.lastUpdate == null || feed.entries.size() == 0 ||
                 feed.lastUpdate.compareTo(offset) > UPDATE_INTERVAL * MILLISECONDS_IN_A_MINUTE){
             // Update data

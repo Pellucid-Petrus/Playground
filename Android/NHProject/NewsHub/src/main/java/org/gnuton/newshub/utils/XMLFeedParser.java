@@ -165,13 +165,11 @@ public class XMLFeedParser {
 
     /**
      * Checks if the current feed support ITunes namespace
-     * @param xpp
-     * @return
      */
     boolean isITunesPodcast(XmlPullParser xpp){
         int depth = xpp.getDepth();
-        int nsStart = 0;
-        int nsEnd = 0;
+        int nsStart;
+        int nsEnd;
 
         try {
             nsStart = xpp.getNamespaceCount(depth-1);
@@ -196,7 +194,7 @@ public class XMLFeedParser {
         final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
 
-        boolean itunesPodcast = false;
+        boolean itunesPodcast;
 
         if (xml == null) {
             Log.e(TAG, "XML Buffer is empty");
@@ -341,7 +339,7 @@ public class XMLFeedParser {
 
             // Skip media:description and media:title, avoid overwriting  description and title text
             String prefix = xpp.getPrefix();
-            if (prefix != null && prefix != null){
+            if (prefix != null){
                 skip(xpp);
                 continue;
             }
@@ -498,14 +496,12 @@ public class XMLFeedParser {
     }
 
     private RSSEntry parseRDFEntry(XmlPullParser xpp, int feedID) throws IOException, XmlPullParserException {
-        boolean itunesPodcast = false; // RDF cannot be itunes podcasts
-        return this.parseRSSEntry(xpp, feedID, itunesPodcast);
+        return this.parseRSSEntry(xpp, feedID, false); // RDF cannot be itunes podcasts
     }
 
     private String readAtomLink(XmlPullParser xpp) throws IOException, XmlPullParserException {
         String link = "";
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "link");
-        String tag = xpp.getName();
         String relType = xpp.getAttributeValue(null, "rel");
         //if (tag.equals("link")) {
             if (relType.equals("alternate")){
