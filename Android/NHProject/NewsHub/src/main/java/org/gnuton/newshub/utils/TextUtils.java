@@ -10,9 +10,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by gnuton on 6/16/13.
- */
 public class TextUtils {
     public static String removeNonPrintableChars(String s) {
         //s = s.replaceAll("[\\x00-\\x1F]","");
@@ -38,8 +35,7 @@ public class TextUtils {
             return null;
         }
 
-        String encoding =xpp.getInputEncoding();
-        return encoding;
+        return xpp.getInputEncoding();
     }
 
     //TODO This class should be removed and part of its code should be in DowlooadTask
@@ -48,8 +44,7 @@ public class TextUtils {
             return null;
 
         try {
-            String xml = new String(xmlBuffer, encoding);
-            return xml;
+            return new String(xmlBuffer, encoding);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
