@@ -423,9 +423,12 @@ public class MainActivity extends FragmentActivity
         // Get the empty article detail fragment every time we change feed
         af.setEntryAndWait(null, -1);
 
-        Log.d(TAG, "Feed: " + feed.title + " clicked!");
-        alf.setRSSFeed(feed);
 
+        alf.setRSSFeed(feed);
+        if (feed == null)
+            return;
+
+        Log.d(TAG, "Feed: " + feed.title + " clicked!");
         mDrawerLayout.closeDrawer(mDrawerPanelLayout);
     }
 

@@ -192,7 +192,7 @@ public class XMLFeedParser {
     @SuppressWarnings("unchecked")
     private RSSFeed parseRSSBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
-        final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
+        final Calendar latestNewsPubDate = (feed.entries != null && feed.entries.size() > 0) ? ((RSSEntry)feed.entries.get(0)).date : null;
         final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
 
@@ -225,6 +225,7 @@ public class XMLFeedParser {
                 //if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
                 //    break;
 
+                assert entries != null;
                 final int pos = entries.size();
                 if (MyApp.mMainActivity != null) {
                     MyApp.mMainActivity.runOnUiThread(new Runnable() {
@@ -338,8 +339,16 @@ public class XMLFeedParser {
             String name = xpp.getName();
             Log.d(TAG, "ATOM NAME " + name);
 
+            // Skip media:description and media:title, avoid overwriting  description and title text
+            String prefix = xpp.getPrefix();
+            if (prefix != null && prefix != null){
+                skip(xpp);
+                continue;
+            }
+
+
             if (name.equals("title")) {
-                title = readTagText(xpp, "title");
+                title = TextUtils.stripHtml(readTagText(xpp, "title"));
             } else if (name.equals("content")) {
                 content = readTagText(xpp, "content");
             } else if (name.equals("summary")) {
@@ -379,7 +388,8 @@ public class XMLFeedParser {
                         link,
                         content,
                         String.valueOf(publishedData != null ? publishedData.getTimeInMillis() : 0),
-                        String.valueOf(0) // Not read
+                        String.valueOf(0), // Not read
+                        ""
                 });
     }
 
@@ -415,7 +425,7 @@ public class XMLFeedParser {
 
             // Fill attributes
             if (name.equals("title")) {
-                title = readTagText(xpp, "title");
+                title = TextUtils.stripHtml(readTagText(xpp, "title"));
             } else if (name.equals("description")) {
                 description = readTagText(xpp, "description");
             } else if (name.equals("link")) {
@@ -497,13 +507,13 @@ public class XMLFeedParser {
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "link");
         String tag = xpp.getName();
         String relType = xpp.getAttributeValue(null, "rel");
-        if (tag.equals("link")) {
+        //if (tag.equals("link")) {
             if (relType.equals("alternate")){
                 link = xpp.getAttributeValue(null, "href");
                 Log.d(TAG, "Read url:"+ link);
             }
-            xpp.nextTag();
-        }
+        //}
+        skip(xpp);
         //link can be self-closing - xpp.require(XmlPullParser.END_TAG, xmlNamespace, "link");
         return link;
     }
