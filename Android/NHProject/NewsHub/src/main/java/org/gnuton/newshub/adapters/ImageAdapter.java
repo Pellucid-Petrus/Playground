@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -34,8 +33,7 @@ public class ImageAdapter extends PagerAdapter {
             ImageView imageView = new ImageView(mContext);
             imageView.setMinimumHeight(240);
             imageView.setBackgroundColor(Color.parseColor("#000000"));
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);//FIT_CENTER
-            scheduleAnimationForView(imageView);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);  // FIT_CENTER
 
             this.mImageViews.add(imageView);
         }
@@ -55,9 +53,10 @@ public class ImageAdapter extends PagerAdapter {
         mImages.add(image);
         notifyDataSetChanged();
     }
+
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((ImageView) object);
+        return view == object;
     }
 
     @Override
@@ -65,18 +64,16 @@ public class ImageAdapter extends PagerAdapter {
         ImageView imageView = mImageViews.get(position % 3);
         imageView.setImageDrawable(mImages.get(position));
         if (imageView.getParent() == null)
-            ((ViewPager) container).addView(imageView, 0);
-        scheduleAnimationForView(imageView);
-        //((UninterceptableViewPager) container).setVisibility(View.VISIBLE);
+            container.addView(imageView, 0);
+        //if (position == 0)
+        //    scheduleAnimationForView(imageView);
         return imageView;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         ImageView imageView = (ImageView) object;
-        ((ViewPager) container).removeView(imageView);
-        //if (getCount() == 0)
-        //    ((UninterceptableViewPager) container).setVisibility(View.GONE);
+        container.removeView(imageView);
     }
 
     @Override
