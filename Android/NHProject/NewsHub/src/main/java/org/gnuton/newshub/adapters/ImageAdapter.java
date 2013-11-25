@@ -6,11 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-
-import org.gnuton.newshub.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +77,9 @@ public class ImageAdapter extends PagerAdapter {
         return POSITION_NONE;
     }
 
+    /*
     public void scheduleAnimationForView(ImageView imageView){
         Animation fadeInAnimation = AnimationUtils.loadAnimation(mContext, R.animator.fadein);
         imageView.setAnimation(fadeInAnimation);
-    }
+    }*/
 }
