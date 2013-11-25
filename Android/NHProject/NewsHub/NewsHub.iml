@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" type="JAVA_MODULE" version="4">
+<module external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
@@ -74,10 +74,10 @@
     <orderEntry type="library" exported="" name="xerces-2.9.1" level="project" />
     <orderEntry type="library" exported="" name="boilerpipe-1.2.0-android" level="project" />
     <orderEntry type="library" exported="" name="GoogleAdMobAdsSdk-6.4.1" level="project" />
+    <orderEntry type="library" exported="" name="jsoup-1.7.3" level="project" />
     <orderEntry type="library" exported="" name="libGoogleAnalyticsServices" level="project" />
     <orderEntry type="library" exported="" name="nekohtml-1.9.13" level="project" />
     <orderEntry type="library" exported="" name="disklrucache-2.0.1" level="project" />
-    <orderEntry type="library" exported="" name="jsoup-1.7.3" level="project" />
   </component>
 </module>
 
