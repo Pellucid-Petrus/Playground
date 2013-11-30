@@ -223,19 +223,22 @@ public class XMLFeedParser {
                 //if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
                 //    break;
 
+
                 assert entries != null;
-                final int pos = entries.size();
-                if (MyApp.mMainActivity != null) {
-                    MyApp.mMainActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            entries.add(pos, e);
-                            if (feed.adapter != null)
-                                feed.adapter.notifyDataSetChanged();
-                        }
-                    });
-                } else {
-                    entries.add(pos, e);
+                if (e != null) {
+                    final int pos = entries.size();
+                    if (MyApp.mMainActivity != null) {
+                        MyApp.mMainActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                entries.add(pos, e);
+                                if (feed.adapter != null)
+                                    feed.adapter.notifyDataSetChanged();
+                            }
+                        });
+                    } else {
+                        entries.add(pos, e);
+                    }
                 }
 
             } else {
@@ -504,10 +507,10 @@ public class XMLFeedParser {
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "link");
         String relType = xpp.getAttributeValue(null, "rel");
         //if (tag.equals("link")) {
-            if (relType.equals("alternate")){
-                link = xpp.getAttributeValue(null, "href");
-                Log.d(TAG, "Read url:"+ link);
-            }
+        if (relType.equals("alternate")){
+            link = xpp.getAttributeValue(null, "href");
+            Log.d(TAG, "Read url:"+ link);
+        }
         //}
         skip(xpp);
         //link can be self-closing - xpp.require(XmlPullParser.END_TAG, xmlNamespace, "link");

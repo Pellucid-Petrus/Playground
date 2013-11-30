@@ -41,6 +41,7 @@ public class RSSEntryDataSource extends GenericDataSource {
 
     @Override
     public Serializable create(String[] record) {
+        // Get vars from record
         int feedId = Integer.parseInt(record[0]);
         String title = record[1];
         String summary = record[2];
@@ -52,13 +53,12 @@ public class RSSEntryDataSource extends GenericDataSource {
 
         // Do not double records
         String selection = DbHelper.ENTRIES_URL + " = "+ DatabaseUtils.sqlEscapeString(url);
-
         List<RSSEntry> entries = this.getAll(selection, null, null, null, null);
         if (entries.size() != 0){
             Log.d(TAG, title + "is already in the DB");
             if (entries.size() > 1)
                 Log.d(TAG, "WARNING: More than an entry has same title");
-            return entries.get(0);
+            return null;
         }
         Log.d(TAG, "No similar item found in the DB. Adding new record...");
 
