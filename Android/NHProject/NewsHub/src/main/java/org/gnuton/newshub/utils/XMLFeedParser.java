@@ -17,6 +17,7 @@ import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -101,12 +102,37 @@ public class XMLFeedParser {
         return feed;
     }
 
+    /**
+     * Adds new Entry to entries list
+     */
+    private void addNewEntries(final List<RSSEntry> newEntries, final RSSFeed feed){
+        final List<RSSEntry> entries = feed.entries;
+        for (final RSSEntry newEntry : newEntries){
+            if (newEntry == null)
+                continue;
+
+            // Get right position for item in the list
+            int _pos = 0;
+            for (RSSEntry entry : entries){
+                Log.d(TAG, "ENTRY TIME: POS:" + String.valueOf(_pos) + " DATE:" + entry.date.getTimeInMillis());
+                if (newEntry.date.compareTo(entry.date) > 0)
+                    break;
+                else
+                    _pos = _pos + 1;
+            }
+            final int pos = _pos;
+            Log.d(TAG, "The new entry will be placed on" + String.valueOf(_pos) + " its time is:" + newEntry.date.getTimeInMillis() );
+
+            entries.add(pos, newEntry);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private RSSFeed parseAtomBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
-        final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
+        final List<RSSEntry> newEntries = new ArrayList<RSSEntry>();
 
         // Some checking
         if (xml == null) {
@@ -126,24 +152,7 @@ public class XMLFeedParser {
 
             if (xpp.getName().equals("entry")) {
                 final RSSEntry e = parseAtomEntry(xpp, feed.id);
-
-                // Stop parsing old news
-                if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
-                    break;
-
-                final int pos = entries.size();
-                if (MyApp.mMainActivity != null) {
-                    MyApp.mMainActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            entries.add(pos, e);
-                            if (feed.adapter != null)
-                                feed.adapter.notifyDataSetChanged();
-                        }
-                    });
-                } else {
-                    entries.add(pos, e);
-                }
+                newEntries.add(e);
 
             } else {
                 skip(xpp);
@@ -158,6 +167,20 @@ public class XMLFeedParser {
                 latestNewsPubDateStr = sdf.format(latestNewsPubDate.getTime());
             }
             Log.d(TAG, "ATOM BUFFER PARSED: NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
+        }
+
+        // Merging new with old entries in the adapter
+        if (MyApp.mMainActivity != null) {
+            MyApp.mMainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    addNewEntries(newEntries, feed);
+                    if (feed.adapter != null)
+                        feed.adapter.notifyDataSetChanged();
+                }
+            });
+        } else {
+            addNewEntries(newEntries, feed);
         }
 
         return feed;
@@ -191,8 +214,8 @@ public class XMLFeedParser {
     private RSSFeed parseRSSBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = (feed.entries != null && feed.entries.size() > 0) ? ((RSSEntry)feed.entries.get(0)).date : null;
-        final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
+        final List<RSSEntry> newEntries = new ArrayList<RSSEntry>();
 
         boolean itunesPodcast;
 
@@ -218,29 +241,7 @@ public class XMLFeedParser {
 
             if (xpp.getName().toLowerCase().equals("item")) {
                 final RSSEntry e = parseRSSEntry(xpp, feed.id, itunesPodcast);
-
-                // Stop parsing old news
-                //if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
-                //    break;
-
-
-                assert entries != null;
-                if (e != null) {
-                    final int pos = entries.size();
-                    if (MyApp.mMainActivity != null) {
-                        MyApp.mMainActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                entries.add(pos, e);
-                                if (feed.adapter != null)
-                                    feed.adapter.notifyDataSetChanged();
-                            }
-                        });
-                    } else {
-                        entries.add(pos, e);
-                    }
-                }
-
+                newEntries.add(e);
             } else {
                 skip(xpp);
             }
@@ -255,6 +256,23 @@ public class XMLFeedParser {
             }
             Log.d(TAG, "RSS BUFFER PARSED: NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
         }
+
+        // Merging new with old entries in the adapter
+        if (MyApp.mMainActivity != null) {
+            MyApp.mMainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    addNewEntries(newEntries, feed);
+                    if (feed.adapter != null)
+                        feed.adapter.notifyDataSetChanged();
+                }
+            });
+        } else {
+            addNewEntries(newEntries, feed);
+        }
+
+
+
         return feed;
     }
 
@@ -262,8 +280,8 @@ public class XMLFeedParser {
     private RSSFeed parseRDFBuffer(final RSSFeed feed) throws XmlPullParserException, IOException {
         final String xml = feed.xml;
         final Calendar latestNewsPubDate = feed.entries.size() > 0 ? ((RSSEntry)feed.entries.get(0)).date : null;
-        final List entries = feed.entries;
         final XmlPullParser xpp = Xml.newPullParser();
+        final List<RSSEntry> newEntries = new ArrayList<RSSEntry>();
 
         // Some checking
         if (xml == null) {
@@ -282,27 +300,7 @@ public class XMLFeedParser {
 
             if (xpp.getName().equals("item")) {
                 final RSSEntry e = parseRDFEntry(xpp, feed.id);
-                Log.d(TAG, "==========>" + e.title);
-                // Stop parsing old news
-                if (latestNewsPubDate != null && e.date.compareTo(latestNewsPubDate) <= 0)
-                    break;
-
-                final int pos = entries.size();
-                if (MyApp.mMainActivity != null) {
-                    MyApp.mMainActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            entries.add(pos, e);
-                            if (feed.adapter != null)
-                                feed.adapter.notifyDataSetChanged();
-                        }
-                    });
-                } else {
-                    entries.add(pos, e);
-                }
-
-
-
+                newEntries.add(e);
             } else {
                 skip(xpp);
             }
@@ -316,6 +314,20 @@ public class XMLFeedParser {
                 latestNewsPubDateStr = sdf.format(latestNewsPubDate.getTime());
             }
             Log.d(TAG, "RDF BUFFER PARSED: NEW ENTRIES NEWER THAN " + latestNewsPubDateStr);
+        }
+
+        // Merging new with old entries in the adapter
+        if (MyApp.mMainActivity != null) {
+            MyApp.mMainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    addNewEntries(newEntries, feed);
+                    if (feed.adapter != null)
+                        feed.adapter.notifyDataSetChanged();
+                }
+            });
+        } else {
+            addNewEntries(newEntries, feed);
         }
 
         return feed;
