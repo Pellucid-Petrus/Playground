@@ -517,13 +517,15 @@ public class XMLFeedParser {
     private String readAtomLink(XmlPullParser xpp) throws IOException, XmlPullParserException {
         String link = "";
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "link");
-        String relType = xpp.getAttributeValue(null, "rel");
-        //if (tag.equals("link")) {
-        if (relType.equals("alternate")){
-            link = xpp.getAttributeValue(null, "href");
-            Log.d(TAG, "Read url:"+ link);
-        }
-        //}
+
+        link = xpp.getAttributeValue(null, "href");
+        /*if (link.isEmpty()){
+            String relType = xpp.getAttributeValue(null, "rel");
+            if (relType.equals("alternate")){
+                link = xpp.getAttributeValue(null, "href");
+                Log.d(TAG, "Read url:"+ link);
+            }
+        }*/
         skip(xpp);
         //link can be self-closing - xpp.require(XmlPullParser.END_TAG, xmlNamespace, "link");
         return link;
