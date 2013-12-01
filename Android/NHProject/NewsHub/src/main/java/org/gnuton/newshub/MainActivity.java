@@ -82,7 +82,6 @@ public class MainActivity extends FragmentActivity
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -100,6 +99,7 @@ public class MainActivity extends FragmentActivity
             //  Portrait layout
             FragmentPagerAdapter mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
             pager.setAdapter(mFragmentPagerAdapter);
+
             pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int page, float offset, int pixOffset) {
@@ -362,12 +362,12 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "SAVE INSTANCE STATE");
         MyApp.mMainActivity = null;
 
-        if (mOrientation != ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
+        //if (mOrientation != ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
             getSupportFragmentManager().beginTransaction()
                     .remove(mArticleListFragment)
                     .remove(mArticleDetailFragment)
                     .commit();
-        }
+        //}
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -459,6 +459,9 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "ON STOP");
         super.onStop();
         EasyTracker.getInstance(this).activityStop(this);
+        /*FragmentManager fm = getFragmentManager();
+        if (fm != null)
+            fm.executePendingTransactions();*/
     }
 
     @Override
