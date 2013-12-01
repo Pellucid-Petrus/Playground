@@ -91,6 +91,12 @@ public class RSSEntryDataSource extends GenericDataSource {
         database.delete(DbHelper.TABLE_ENTRIES, DbHelper.ID + " = " + id, null);
     }
 
+    public void deleteOld() {
+        Log.d(TAG, "Deleting all old posts");
+        int n = database.delete(DbHelper.TABLE_ENTRIES, DbHelper.ENTRIES_PUBLISHEDDATE + "<= date('now','-2 day')", null);
+        Log.d(TAG, "Deleted n=" + String.valueOf(n));
+    }
+
     @Override
     public List getAll(){
         return getAll(null, null, null, null, null);

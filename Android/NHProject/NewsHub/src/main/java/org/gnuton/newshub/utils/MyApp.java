@@ -2,8 +2,11 @@ package org.gnuton.newshub.utils;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
+import android.util.Log;
 
 import org.gnuton.newshub.MainActivity;
+import org.gnuton.newshub.db.RSSEntryDataSource;
 import org.gnuton.newshub.types.RSSEntry;
 
 /**
@@ -11,6 +14,7 @@ import org.gnuton.newshub.types.RSSEntry;
  */
 
 public class MyApp extends Application {
+    private static final String TAG = MyApp.class.getName();
     private static MyApp mInstance;
     private static DiskLruImageCache mCache;
     public static MainActivity mMainActivity;
@@ -33,5 +37,19 @@ public class MyApp extends Application {
         mInstance = this;
         mCache = new DiskLruImageCache();
         super.onCreate();
+
+        // Delete old articles
+        final Runnable r = new Runnable()
+        {
+            public void run()
+            {
+                Log.d(TAG, "Removing old entries");
+                RSSEntryDataSource eds = new RSSEntryDataSource(MyApp.getContext());
+                eds.deleteOld();
+            }
+        };
+
+        Handler handler = new Handler();
+        handler.postDelayed(r, 1000);
     }
 }
