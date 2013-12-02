@@ -362,13 +362,18 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "SAVE INSTANCE STATE");
         MyApp.mMainActivity = null;
 
-        //if (mOrientation != ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
-            getSupportFragmentManager().beginTransaction()
-                    .remove(mArticleListFragment)
-                    .remove(mArticleDetailFragment)
-                    .commit();
-        //}
+        if (mOrientation != ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
+            removeFragments();
+        }
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void removeFragments() {
+        Log.d(TAG, "Remove fragments...");
+        getSupportFragmentManager().beginTransaction()
+                .remove(mArticleListFragment)
+                .remove(mArticleDetailFragment)
+                .commit();
     }
 
     @Override
@@ -459,9 +464,9 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "ON STOP");
         super.onStop();
         EasyTracker.getInstance(this).activityStop(this);
-        /*FragmentManager fm = getFragmentManager();
-        if (fm != null)
-            fm.executePendingTransactions();*/
+        //FragmentManager fm = getFragmentManager();
+        //if (fm != null)
+        //    fm.executePendingTransactions();
     }
 
     @Override
@@ -536,6 +541,22 @@ public class MainActivity extends FragmentActivity
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG,"ON DESTROY");
+    }
+
+    @Override
+    public void onLowMemory (){
+        // Fallback for API < 14
+        Log.d(TAG, "OnMemoryTrim level");
+        onTrimMemory(TRIM_MEMORY_COMPLETE);
+    }
+
+    @Override
+    public void onTrimMemory (int level){
+        Log.d(TAG, "OnMemoryTrim level:" + String.valueOf(level));
+        if (level > TRIM_MEMORY_UI_HIDDEN) {
+            removeFragments();
+            FragmentUtils.clearFragmentMap();
+        }
     }
 
      /*@Override

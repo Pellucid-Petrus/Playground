@@ -12,6 +12,10 @@ import java.util.Map;
 public class FragmentUtils {
     private static Map mMap = new HashMap<String, Fragment>();
 
+    public static void clearFragmentMap(){
+        mMap.clear();
+    }
+
     public static Fragment getFragment(FragmentManager fm, String className, String tag){
         if (tag == null)
             tag = className;
