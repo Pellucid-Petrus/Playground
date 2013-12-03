@@ -87,8 +87,6 @@ public class MainActivity extends FragmentActivity
 
         Log.d(TAG, "CREATEEEEEEEE");
 
-        mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
-        mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
         final ActionBar actionBar = getActionBar();
 
         //Set up custom action bar

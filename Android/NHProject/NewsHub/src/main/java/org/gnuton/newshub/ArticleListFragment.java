@@ -1,6 +1,7 @@
 package org.gnuton.newshub;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,10 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by gnuton on 5/18/13.
+ * Fragment which shows a list of aritcles
  */
 public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEntryListFetchedListener {
-    private static final String TAG = "ARTICLELIST_FRAGMENT";
+    private static final String TAG = ArticleListFragment.class.getName();
     private OnItemSelectedListener itemSelectedListener;
     static private RSSFeed mFeed;
     private ListView mListView;
@@ -66,7 +67,10 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         spinner.setVisibility(busy ? View.VISIBLE : View.GONE);
 
         if (busy){
-            Animation animation = AnimationUtils.loadAnimation(getView().getContext(), R.animator.fadeout);
+            Context ctx =getView().getContext();
+            assert ctx != null;
+            Animation animation = AnimationUtils.loadAnimation(ctx, R.animator.fadeout);
+            assert animation != null;
             spinner.startAnimation(animation);
         } else {
             spinner.clearAnimation();
@@ -110,7 +114,10 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         mListView.setEmptyView(articleListEmptyView);
 
         RelativeLayout articleListEmptyMovingLayout = (RelativeLayout) articleListEmptyView.findViewById(R.id.ArticleListEmptyMovingLayout);
-        Animation animation = AnimationUtils.loadAnimation(articleListEmptyView.getContext(), R.animator.swipe);
+        Context ctx = articleListEmptyView.getContext();
+        assert ctx != null;
+        Animation animation = AnimationUtils.loadAnimation(ctx, R.animator.swipe);
+        assert animation != null;
         articleListEmptyMovingLayout.startAnimation(animation);
         TextView articleListEmptyText = (TextView) articleListEmptyView.findViewById(R.id.ArticleListEmptyText);
         articleListEmptyText.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
@@ -177,7 +184,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
     }*/
 
     public void setRSSFeed(RSSFeed feed) {
-        this.mFeed= feed;
+        mFeed= feed;
 
         // ask for data
         if (feed != null){
