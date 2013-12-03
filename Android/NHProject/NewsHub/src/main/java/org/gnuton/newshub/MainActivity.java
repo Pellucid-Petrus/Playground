@@ -54,7 +54,7 @@ import java.util.List;
 public class MainActivity extends FragmentActivity
         implements ArticleListFragment.OnItemSelectedListener {
     // generic fields
-    private static final String TAG = "MAIN_ACTIVITY";
+    private static final String TAG = MainActivity.class.getName();
 
     //Action Bar
     private ActionBarDrawerToggle mDrawerToggle;
@@ -81,12 +81,15 @@ public class MainActivity extends FragmentActivity
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
+
+        // First things we do is passing the reference to MyApp.
         MyApp.mMainActivity = this;
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
-        Log.d(TAG, "CREATEEEEEEEE");
 
         final ActionBar actionBar = getActionBar();
 
@@ -198,7 +201,7 @@ public class MainActivity extends FragmentActivity
         addFeedButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
         addFeedButtonAnimation();
 
-        Log.d(TAG, "CREATED");
+        Log.d(TAG, "onCreate DONE");
     }
 
     protected void updateDrawerList() {
