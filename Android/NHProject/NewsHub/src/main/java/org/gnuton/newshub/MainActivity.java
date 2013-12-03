@@ -3,6 +3,7 @@ package org.gnuton.newshub;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -20,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -55,7 +55,6 @@ public class MainActivity extends FragmentActivity
         implements ArticleListFragment.OnItemSelectedListener {
     // generic fields
     private static final String TAG = "MAIN_ACTIVITY";
-    private static int mOrientation = -1;
 
     //Action Bar
     private ActionBarDrawerToggle mDrawerToggle;
@@ -82,20 +81,15 @@ public class MainActivity extends FragmentActivity
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        int currentOrientation =((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
         Log.d(TAG, "CREATEEEEEEEE");
 
-        mOrientation = currentOrientation;
         mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
         mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
         final ActionBar actionBar = getActionBar();
-        assert actionBar == null;
-
-
 
         //Set up custom action bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
@@ -131,6 +125,7 @@ public class MainActivity extends FragmentActivity
         ) {
             public void onDrawerClosed(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    assert actionBar != null;
                     actionBar.setTitle(R.string.app_name);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
@@ -151,6 +146,7 @@ public class MainActivity extends FragmentActivity
                     onBackPressed();
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    assert actionBar != null;
                     actionBar.setTitle(R.string.drawer_title);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
@@ -335,7 +331,9 @@ public class MainActivity extends FragmentActivity
     private class DrawerItemLongClickListener implements AdapterView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, long id) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            Context ctx = view.getContext();
+            assert ctx != null;
+            AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
             builder.setMessage(R.string.unsubscribeConfermation).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -387,6 +385,7 @@ public class MainActivity extends FragmentActivity
         feedSelected(feed);
     }
 
+    @SuppressWarnings("unused")
     public void SubscribeToFeed(View v){
         Log.d(TAG, "SUBSCRIBE TO A NEW FEED");
 
@@ -506,7 +505,7 @@ public class MainActivity extends FragmentActivity
 
     // Runs after onStart if there is a bundle
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@SuppressWarnings("NullableProblems") Bundle savedInstanceState) {
         // Always call the superclass so it can restore the view hierarchy
         //HACK Commenting out the line below do fix a bug.
         //If the drawer is open and the view is rotated the drawer is shown again
@@ -557,14 +556,5 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onTrimMemory (int level){
         Log.d(TAG, "OnMemoryTrim level:" + String.valueOf(level));
-        /*if (level > TRIM_MEMORY_UI_HIDDEN) {
-            removeFragments();
-            FragmentUtils.clearFragmentMap();
-        }*/
     }
-
-     /*@Override
-    public void onBackPressed() {
-        mDrawerLayout.openDrawer(mDrawerPanelLayout);
-    }*/
 }
