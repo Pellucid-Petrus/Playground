@@ -19,6 +19,7 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -117,8 +118,8 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
 
         // Sanitize html
         if (article != null) {
-            article = article.replaceFirst("<style[^>]*>[^<]*</style>","");
-            article = article.replaceFirst(e.title,"");
+            article = article.replaceFirst("<style[^>]*>[^<]*</style>", "");
+            article = article.replaceFirst(Pattern.quote(e.title), "");
         }
 
         return article;
