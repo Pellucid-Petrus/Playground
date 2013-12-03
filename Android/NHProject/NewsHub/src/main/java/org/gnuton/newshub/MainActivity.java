@@ -55,7 +55,7 @@ public class MainActivity extends FragmentActivity
         implements ArticleListFragment.OnItemSelectedListener {
     // generic fields
     private static final String TAG = "MAIN_ACTIVITY";
-    private int mOrientation;
+    private static int mOrientation = -1;
 
     //Action Bar
     private ActionBarDrawerToggle mDrawerToggle;
@@ -82,84 +82,20 @@ public class MainActivity extends FragmentActivity
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int currentOrientation =((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
         Log.d(TAG, "CREATEEEEEEEE");
 
-        mOrientation = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+        mOrientation = currentOrientation;
         mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
         mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
         final ActionBar actionBar = getActionBar();
         assert actionBar == null;
 
-        final ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
-        if (pager != null) {
-            //  Portrait layout
-            FragmentPagerAdapter mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
-            pager.setAdapter(mFragmentPagerAdapter);
 
-            pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int page, float offset, int pixOffset) {
-                    //Log.d(TAG,"page:" + page + " pos offset:" + offset+ " pixel pos off:" + pixOffset);
-
-                    if (page == 0 && offset == 0.0f) {
-                        overscrollingFrameCount +=1;
-                        if (overscrollingFrameCount > 10) {
-                            mDrawerLayout.openDrawer(GravityCompat.START);
-                            //boolean b = mDrawerLayout.dispatchDragEvent(DragEvent a);
-/*
-                            MotionEvent motionEvent = MotionEvent.obtain(
-                                    System.currentTimeMillis(),
-                                    System.currentTimeMillis(), //eventTime
-                                    MotionEvent.ACTION_CANCEL,
-                                    0, // x
-                                    0, // y
-                                    0, // metastate
-                            );
-                            pager.dispatchTouchEvent(motionEvent);
-*/
-                            overscrollingFrameCount = 0;
-                            prevOff = -1.0f;
-                        }
-                        return;
-                    }
-
-                    // When the device is in portrait mode, it scrolls back to the article view page (0) if article is not loaded
-                    if (page == 1 && offset <= 0.0f) {
-                        final View articleFragmentEmptyViewLayout = findViewById(R.id.ArticleFragmentEmptyViewLayout);
-                        if (articleFragmentEmptyViewLayout != null && articleFragmentEmptyViewLayout.getVisibility() == View.VISIBLE)
-                            pager.setCurrentItem(0);
-                    }
-
-                    overscrollingFrameCount = 0;
-                    prevOff = offset;
-                }
-
-                @Override
-                public void onPageSelected(int i) {}
-
-                @Override
-                public void onPageScrollStateChanged(int i) {}
-            });
-        } else {
-            // This is used for large portrait layouts
-            //if (savedInstanceState == null) {
-            //}
-            try {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                                //.setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
-                        .replace(R.id.articlelist_container, mArticleListFragment)
-                        .replace(R.id.articledetail_container, mArticleDetailFragment)
-                        .commit();
-            } catch (IllegalStateException e ){
-                Log.e(TAG, "Caught IllegalStateException");
-            }
-
-        }
 
         //Set up custom action bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
@@ -362,9 +298,9 @@ public class MainActivity extends FragmentActivity
         Log.d(TAG, "SAVE INSTANCE STATE");
         MyApp.mMainActivity = null;
 
-        if (mOrientation != ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
-            removeFragments();
-        }
+        removeFragments();
+        FragmentUtils.clearFragmentMap();
+
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -475,7 +411,75 @@ public class MainActivity extends FragmentActivity
         // at this point fragments are attached and created
         super.onStart();
 
+        mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
+        mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
 
+        final ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
+        if (pager != null) {
+            //  Portrait layout
+            FragmentPagerAdapter mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
+            pager.setAdapter(mFragmentPagerAdapter);
+
+            pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int page, float offset, int pixOffset) {
+                    //Log.d(TAG,"page:" + page + " pos offset:" + offset+ " pixel pos off:" + pixOffset);
+
+                    if (page == 0 && offset == 0.0f) {
+                        overscrollingFrameCount +=1;
+                        if (overscrollingFrameCount > 10) {
+                            mDrawerLayout.openDrawer(GravityCompat.START);
+                            //boolean b = mDrawerLayout.dispatchDragEvent(DragEvent a);
+/*
+                            MotionEvent motionEvent = MotionEvent.obtain(
+                                    System.currentTimeMillis(),
+                                    System.currentTimeMillis(), //eventTime
+                                    MotionEvent.ACTION_CANCEL,
+                                    0, // x
+                                    0, // y
+                                    0, // metastate
+                            );
+                            pager.dispatchTouchEvent(motionEvent);
+*/
+                            overscrollingFrameCount = 0;
+                            prevOff = -1.0f;
+                        }
+                        return;
+                    }
+
+                    // When the device is in portrait mode, it scrolls back to the article view page (0) if article is not loaded
+                    if (page == 1 && offset <= 0.0f) {
+                        final View articleFragmentEmptyViewLayout = findViewById(R.id.ArticleFragmentEmptyViewLayout);
+                        if (articleFragmentEmptyViewLayout != null && articleFragmentEmptyViewLayout.getVisibility() == View.VISIBLE)
+                            pager.setCurrentItem(0);
+                    }
+
+                    overscrollingFrameCount = 0;
+                    prevOff = offset;
+                }
+
+                @Override
+                public void onPageSelected(int i) {}
+
+                @Override
+                public void onPageScrollStateChanged(int i) {}
+            });
+        } else {
+            // This is used for large portrait layouts
+            //if (savedInstanceState == null) {
+            //}
+            try {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                                //.setCustomAnimations(R.animator.slidein, R.animator.slideout, R.animator.slideinpop, R.animator.slideoutpop)
+                        .replace(R.id.articlelist_container, mArticleListFragment)
+                        .replace(R.id.articledetail_container, mArticleDetailFragment)
+                        .commit();
+            } catch (IllegalStateException e ){
+                Log.e(TAG, "Caught IllegalStateException");
+            }
+
+        }
         // This code pass the articlelistSpacer pointer ref to ArticleListEmptyView
         // ArticleListEmptyView can hide the spacer when needed
         if (mArticleListFragment != null){
@@ -553,10 +557,10 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onTrimMemory (int level){
         Log.d(TAG, "OnMemoryTrim level:" + String.valueOf(level));
-        if (level > TRIM_MEMORY_UI_HIDDEN) {
+        /*if (level > TRIM_MEMORY_UI_HIDDEN) {
             removeFragments();
             FragmentUtils.clearFragmentMap();
-        }
+        }*/
     }
 
      /*@Override

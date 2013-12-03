@@ -31,7 +31,7 @@ import java.util.List;
 public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEntryListFetchedListener {
     private static final String TAG = "ARTICLELIST_FRAGMENT";
     private OnItemSelectedListener itemSelectedListener;
-    private RSSFeed mFeed;
+    static private RSSFeed mFeed;
     private ListView mListView;
     private View mListViewHeader;
 
@@ -138,6 +138,13 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         mainLogoPropIcon.setText(R.string.icon_rocket);*/
         //TextView mainLogoPropText = (TextView) view.findViewById(R.id.mainLogoPropText);
         //mainLogoPropText.setText("Fast");
+
+        //
+        if (mFeed != null){
+            if (mListView !=null)
+                mListView.setAdapter(mFeed.adapter);
+            mFeed.adapter.notifyDataSetChanged();
+        }
 
         return view;
     }
