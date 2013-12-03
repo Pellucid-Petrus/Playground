@@ -7,15 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import org.gnuton.newshub.MainActivity;
 import org.gnuton.newshub.R;
+import org.gnuton.newshub.utils.MyApp;
 
-/**
- * Created by gnuton on 9/19/13.
- */
 public class ArticleListEmptyView extends LinearLayout {
     public static final int ID = R.id.ArticleListEmpty;
 
-    private View mView;
     private View mViewToHide ;
     LayoutInflater mLayoutInflate;
 
@@ -32,24 +30,25 @@ public class ArticleListEmptyView extends LinearLayout {
     }
 
     private void initialize(){
-        this.setId(this.ID);
+        this.setId(ID);
 
-        this.mLayoutInflate = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        Context ctx = getContext();
+        assert ctx != null;
+        this.mLayoutInflate = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (this.mLayoutInflate != null) {
             // Inflate into this mView
-            this.mView = this.mLayoutInflate.inflate(R.layout.articlelist_empty, this, true);
+            mLayoutInflate.inflate(R.layout.articlelist_empty, this, true);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LayoutParams.MATCH_PARENT,
                     LayoutParams.MATCH_PARENT);
             this.setLayoutParams(lp);
         }
-    }
 
-    /*@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public ArticleListEmptyView(Context context, AttributeSet attrs, int theme) {
-        super(context, attrs, theme);
-    }*/
+        MainActivity mainActivity = MyApp.mMainActivity;
+        assert null != mainActivity;
+        mViewToHide = mainActivity.findViewById(R.id.articlelist_spacer);
+    }
 
     @Override
     protected void onVisibilityChanged(View changedView, int visibility) {
@@ -74,15 +73,5 @@ public class ArticleListEmptyView extends LinearLayout {
         } else {
             this.mViewToHide.setVisibility(View.VISIBLE);
         }
-    }
-
-    /***
-     * Article list grows in size. In order to grow the other mView
-     * in the viewgroup has to be set to GONE
-     *
-     * @param v View which will be managed by this class
-     */
-    public void setViewToHide(View v) {
-        this.mViewToHide = v;
     }
 }

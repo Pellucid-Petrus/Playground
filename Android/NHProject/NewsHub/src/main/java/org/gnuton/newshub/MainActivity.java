@@ -81,6 +81,7 @@ public class MainActivity extends FragmentActivity
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MyApp.mMainActivity = this;
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -476,25 +477,6 @@ public class MainActivity extends FragmentActivity
                 Log.e(TAG, "Caught IllegalStateException");
             }
 
-        }
-        // This code pass the articlelistSpacer pointer ref to ArticleListEmptyView
-        // ArticleListEmptyView can hide the spacer when needed
-        if (mArticleListFragment != null){
-
-            final android.support.v4.app.FragmentActivity activity =
-                    this.mArticleListFragment.getActivity();
-            if (activity != null) {
-
-                final ListView articleListView = (ListView) activity.findViewById(R.id.entrylistView);
-
-                final ArticleListEmptyView articleListEmptyView =
-                        (ArticleListEmptyView) articleListView.getEmptyView();
-
-                final View articlelistSpacer = findViewById(R.id.articlelist_spacer);
-
-                assert articleListEmptyView != null;
-                articleListEmptyView.setViewToHide(articlelistSpacer);
-            }
         }
 
         Log.d(TAG, "ON STARTed");
