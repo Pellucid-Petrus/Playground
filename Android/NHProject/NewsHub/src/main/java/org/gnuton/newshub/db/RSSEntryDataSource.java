@@ -93,7 +93,13 @@ public class RSSEntryDataSource extends GenericDataSource {
 
     public void deleteOld() {
         Log.d(TAG, "Deleting all old posts");
-        int n = database.delete(DbHelper.TABLE_ENTRIES, DbHelper.ENTRIES_PUBLISHEDDATE + "<= date('now','-2 day')", null);
+        int milliseconds = Calendar.getInstance().get(Calendar.MILLISECOND);
+
+        String where = DbHelper.ENTRIES_FEEDID + " NOT IN ( SELECT " + DbHelper.ENTRIES_FEEDID +
+                " FROM "+ DbHelper.TABLE_ENTRIES +
+                " ORDER BY " + DbHelper.ENTRIES_PUBLISHEDDATE +
+                " DESC LIMIT 50)";
+        int n = database.delete(DbHelper.TABLE_ENTRIES, where, null);
         Log.d(TAG, "Deleted n=" + String.valueOf(n));
     }
 
