@@ -44,10 +44,6 @@ public class ArticleListEmptyView extends LinearLayout {
                     LayoutParams.MATCH_PARENT);
             this.setLayoutParams(lp);
         }
-
-        MainActivity mainActivity = MyApp.mMainActivity;
-        assert null != mainActivity;
-        mViewToHide = mainActivity.findViewById(R.id.articlelist_spacer);
     }
 
     @Override
@@ -65,7 +61,12 @@ public class ArticleListEmptyView extends LinearLayout {
     public void setVisibility(int visibility) {
         Log.d(TAG, String.valueOf(getVisibility()) + " ->" + String.valueOf(visibility));
         super.setVisibility(visibility);
-        if (this.mViewToHide == null)
+
+        MainActivity mainActivity = MyApp.mMainActivity;
+        if (mViewToHide == null && mainActivity != null) {
+            mViewToHide = mainActivity.findViewById(R.id.articlelist_spacer);
+        }
+        if (mViewToHide == null)
             return;
 
         if (visibility == View.VISIBLE) {
