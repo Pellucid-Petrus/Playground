@@ -65,6 +65,7 @@
     <string name="subscribe_editText_hint">What are you looking for?</string>
     <string name="rssParseTaskNoEntries">Unfortunately the application is not able to fetch the content for the selected feed. The error has been reported to the author.</string>
     <string name="UnableToPlayMedia">Unable to play the selected media</string>
+    <string name="device_not_connected_to_internet">Application working in offline mode. Connect device to internet to fetch more data.</string>
 
 
 </resources>

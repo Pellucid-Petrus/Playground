@@ -7,6 +7,7 @@ import org.gnuton.newshub.db.DbHelper;
 import org.gnuton.newshub.db.RSSEntryDataSource;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.utils.MyApp;
+import org.gnuton.newshub.utils.NetworkUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -69,6 +70,10 @@ public class BoilerPipeTask extends AsyncTask<RSSEntry, Void, RSSEntry[]> {
 
     @Override
     protected RSSEntry[] doInBackground(RSSEntry... entries) {
+
+        if (!NetworkUtils.isDeviceConnectedToInternet()){
+            return entries;
+        }
 
         for (RSSEntry e : entries) {
             if (e.content != null || "".equals(e.content)) {

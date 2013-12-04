@@ -64,5 +64,6 @@
 
 <string name="UnableToPlayMedia">El archivo seleccionado no se puede reproducir</string>
     <string name="icon_bug">&#xf188;</string>
+    <string name="device_not_connected_to_internet">Application working in offline mode. Connect device to internet to fetch more data.</string>
 
 </resources>

@@ -64,5 +64,6 @@
 
 <string name="UnableToPlayMedia">Impossibile riprodurre il file selezionato</string>
     <string name="icon_bug">&#xf188;</string>
+    <string name="device_not_connected_to_internet">Application working in offline mode. Connect device to internet to fetch more data.</string>
 
 </resources>

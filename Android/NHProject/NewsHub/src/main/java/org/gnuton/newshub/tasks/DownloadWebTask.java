@@ -3,6 +3,7 @@ package org.gnuton.newshub.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.gnuton.newshub.utils.NetworkUtils;
 import org.gnuton.newshub.utils.Notifications;
 
 import java.io.ByteArrayOutputStream;
@@ -45,6 +46,10 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
     static public byte[] downloadUrl(String url) throws IOException {
         InputStream is = null;
         Log.d(TAG, "Downloading: " + url);
+
+        if (!NetworkUtils.isDeviceConnectedToInternet()){
+            return null;
+        }
         try {
 
             URL u = new URL(url);
