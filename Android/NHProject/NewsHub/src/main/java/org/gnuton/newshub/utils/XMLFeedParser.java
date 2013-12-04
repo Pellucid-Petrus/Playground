@@ -114,14 +114,14 @@ public class XMLFeedParser {
             // Get right position for item in the list
             int _pos = 0;
             for (RSSEntry entry : entries){
-                Log.d(TAG, "ENTRY TIME: POS:" + String.valueOf(_pos) + " DATE:" + entry.date.getTimeInMillis());
+                //Log.d(TAG, "ENTRY TIME: POS:" + String.valueOf(_pos) + " DATE:" + entry.date.getTimeInMillis());
                 if (newEntry.date.compareTo(entry.date) > 0)
                     break;
                 else
                     _pos = _pos + 1;
             }
             final int pos = _pos;
-            Log.d(TAG, "The new entry will be placed on" + String.valueOf(_pos) + " its time is:" + newEntry.date.getTimeInMillis() );
+            //Log.d(TAG, "The new entry will be placed on" + String.valueOf(_pos) + " its time is:" + newEntry.date.getTimeInMillis() );
 
             entries.add(pos, newEntry);
         }
