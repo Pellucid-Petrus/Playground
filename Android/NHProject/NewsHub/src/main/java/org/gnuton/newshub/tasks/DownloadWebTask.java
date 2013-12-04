@@ -46,12 +46,14 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
         InputStream is = null;
         Log.d(TAG, "Downloading: " + url);
         try {
+
             URL u = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
             conn.setInstanceFollowRedirects(true);
 
-            conn.setReadTimeout(10 * 1000);
-            conn.setConnectTimeout(10 * 1000);
+            Log.d(TAG, "Default timeout for downloadURL" + String.valueOf(conn.getReadTimeout()));
+            //conn.setReadTimeout(10 * 1000);
+            //conn.setConnectTimeout(10 * 1000);
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
             //conn.connect();
