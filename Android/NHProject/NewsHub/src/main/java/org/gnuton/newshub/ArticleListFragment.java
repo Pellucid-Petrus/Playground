@@ -147,7 +147,7 @@ public class ArticleListFragment extends Fragment implements RSSFeedManager.OnEn
         //mainLogoPropText.setText("Fast");
 
         //
-        if (mFeed != null){
+        if (mFeed != null && mFeed.adapter != null){
             if (mListView !=null)
                 mListView.setAdapter(mFeed.adapter);
             mFeed.adapter.notifyDataSetChanged();
