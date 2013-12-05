@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Build;
 import android.util.Log;
+
 import org.gnuton.newshub.types.RSSEntry;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,9 +20,11 @@ import java.util.List;
  */
 public class RSSEntryDataSource extends GenericDataSource {
     private static final String TAG = RSSEntryDataSource.class.getName();
+    private final Context mContext;
 
     public RSSEntryDataSource(Context context) {
         super(context);
+        mContext = context;
         open();
     }
 
@@ -93,14 +97,35 @@ public class RSSEntryDataSource extends GenericDataSource {
 
     public void deleteOld() {
         Log.d(TAG, "Deleting all old posts");
-        int milliseconds = Calendar.getInstance().get(Calendar.MILLISECOND);
 
         String where = DbHelper.ENTRIES_FEEDID + " NOT IN ( SELECT " + DbHelper.ENTRIES_FEEDID +
                 " FROM "+ DbHelper.TABLE_ENTRIES +
                 " ORDER BY " + DbHelper.ENTRIES_PUBLISHEDDATE +
-                " DESC LIMIT 50)";
+                " DESC LIMIT 500)";
+
         int n = database.delete(DbHelper.TABLE_ENTRIES, where, null);
         Log.d(TAG, "Deleted n=" + String.valueOf(n));
+
+/*
+        // Gets feeds
+        RSSFeedDataSource fds = new RSSFeedDataSource(mContext);
+        List<RSSFeed> feeds = fds.getAll();
+
+
+        // Remove old stuff
+        for (RSSFeed feed : feeds){
+            String where = DbHelper.ENTRIES_FEEDID +"=" + feed.id +
+                    " NOT IN ( " +
+                    " SELECT " + DbHelper.ENTRIES_FEEDID +
+                    " FROM "+ DbHelper.TABLE_ENTRIES +
+                    " WHERE " + DbHelper.ENTRIES_FEEDID + "=" + feed.id +
+                    " ORDER BY " + DbHelper.ENTRIES_PUBLISHEDDATE +
+                    " DESC LIMIT 50)";
+            Log.d(TAG, "QUERY" + where);
+            int n = database.delete(DbHelper.TABLE_ENTRIES, where, null);
+            Log.d(TAG, "Deleted Feed ID=" + feed.id + " n=" + String.valueOf(n));
+        }
+*/
     }
 
     @Override
@@ -135,6 +160,9 @@ public class RSSEntryDataSource extends GenericDataSource {
         final long publishedDataLong = cursor.getLong(cursor.getColumnIndex(DbHelper.ENTRIES_PUBLISHEDDATE));
         final Boolean isRead = cursor.getInt(cursor.getColumnIndex(DbHelper.ENTRIES_ISREAD)) > 0;
         final String podcast_media = cursor.getString(cursor.getColumnIndex(DbHelper.ENTRIES_PODCAST_MEDIA));
+
+        Log.d(TAG, "READ ENTRY " + String.valueOf(id) + " feedID " + String.valueOf(feedId) + " title " + String.valueOf(title));
+
 
         Calendar publishedData = new GregorianCalendar();
         publishedData.setTimeInMillis(publishedDataLong);
