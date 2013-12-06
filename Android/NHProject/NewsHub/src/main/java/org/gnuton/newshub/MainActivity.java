@@ -91,21 +91,6 @@ public class MainActivity extends FragmentActivity
         setContentView(R.layout.activity_main);
 
 
-        final ActionBar actionBar = getActionBar();
-
-        //Set up custom action bar
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            assert actionBar != null;
-            actionBar.setCustomView(R.layout.actionbar);
-            final TextView actionBarTitle = (TextView) findViewById(R.id.actionBarTitle);
-            actionBarTitle.setTypeface(FontsProvider.getInstace().getTypeface("Daily News 1915"));
-            actionBarTitle.setText(getString(R.string.app_name));
-
-            // enable ActionBar app icon to behave as action to toggle nav drawer
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
-        }
-
         //Set up Navigation drawer
         mDrawerPanelLayout = (LinearLayout) findViewById(R.id.layout_panel_drawer);
         mDrawerList = (ListView) findViewById(R.id.list_drawer);
@@ -117,6 +102,20 @@ public class MainActivity extends FragmentActivity
         mDrawerLayout.setScrimColor(0);
 
         //mDrawerLayout.setDrawerShadow(R.drawable.d, GravityCompat.START);
+        final ActionBar actionBar = getActionBarIfAny();
+
+        //Set up custom action bar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            assert actionBar != null;
+            actionBar.setCustomView(R.layout.actionbar);
+            final TextView actionBarTitle = (TextView) findViewById(R.id.actionBarTitle);
+            actionBarTitle.setTypeface(FontsProvider.getInstace().getTypeface("Daily News 1915"));
+            actionBarTitle.setText(getString(R.string.app_name));
+
+            // enable ActionBar app icon to behave as action to toggle nav drawer
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -189,11 +188,17 @@ public class MainActivity extends FragmentActivity
                 } else {
                     //lastOffset = (int)offset - lastOffset;
                     //l.offsetLeftAndRight(lastOffset);
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(l.getWidth(), l.getHeight());
+
+                    layoutParams.setMargins((int) offset, 0, 0, 0);
+                    //l.setLayoutParams(layoutParams);
+                    Log.d(TAG,"offset " + String.valueOf(offset) + " ");
                 }
             }
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
         updateDrawerList();
 
         // Set font for add Feed button in the drawer
@@ -202,6 +207,13 @@ public class MainActivity extends FragmentActivity
         addFeedButtonAnimation();
 
         Log.d(TAG, "onCreate DONE");
+    }
+
+    private ActionBar getActionBarIfAny() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            return getActionBar();
+        else
+            return null;
     }
 
     protected void updateDrawerList() {
@@ -238,7 +250,7 @@ public class MainActivity extends FragmentActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         // Handle action buttons
@@ -279,14 +291,16 @@ public class MainActivity extends FragmentActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+        if (mDrawerToggle != null)
+            mDrawerToggle.syncState();
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         Log.d(TAG,"CONFIGURATION CHANGED");
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        if (mDrawerToggle != null)
+            mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     // Save UI state changes to the savedInstanceState.

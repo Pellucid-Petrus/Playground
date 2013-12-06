@@ -1,12 +1,5 @@
 package org.gnuton.newshub.utils;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
-
-import org.gnuton.newshub.R;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -50,6 +43,8 @@ public class NetworkUtils {
     }
 
     public static boolean isDeviceConnectedToInternet(){
+        return true;
+        /*
         if (MyApp.mMainActivity == null)
             return true; // safer than false
         Context c = MyApp.mMainActivity.getApplicationContext();
@@ -64,6 +59,6 @@ public class NetworkUtils {
             Log.d(TAG, "Device not connected");
             //Notifications.showMsg(R.string.device_not_connected_to_internet);
             return false;
-        }
+        }*/
     }
 }

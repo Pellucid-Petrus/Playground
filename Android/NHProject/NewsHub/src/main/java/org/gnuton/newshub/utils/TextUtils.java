@@ -1,5 +1,6 @@
 package org.gnuton.newshub.utils;
 
+import android.os.Build;
 import android.text.Html;
 import android.util.Xml;
 
@@ -8,6 +9,7 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 
 public class TextUtils {
@@ -18,6 +20,7 @@ public class TextUtils {
         s = s.replaceAll("[\t\n\r\f]","");
         return s;
     }
+
     //TODO This class should be removed and part of its code should be in DowlooadTask
     public static String getXMLEncoding(byte[] xmlBuffer) {
         String xml;
@@ -25,8 +28,14 @@ public class TextUtils {
         final XmlPullParser xpp = Xml.newPullParser();
         try {
             xml = new String(xmlBuffer, "UTF-8");
-            is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
-            xpp.setInput(is, null);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+                xpp.setInput(is, null);
+            } else {
+                xpp.setInput(new StringReader(xml));
+            }
+
             while (!"xml".equals(xpp.getName()) && xpp.getEventType() != XmlPullParser.START_TAG) {
                 xpp.next();
             }

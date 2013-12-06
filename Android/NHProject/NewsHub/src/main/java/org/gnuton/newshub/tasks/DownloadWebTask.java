@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.gnuton.newshub.utils.NetworkUtils;
 import org.gnuton.newshub.utils.Notifications;
+import org.gnuton.newshub.utils.TextUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.zip.GZIPInputStream;
 /**
  * mListener must implement OnRequestCompleted.
  */
-public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
+public class DownloadWebTask extends AsyncTask<String, Void, String>{
     private static final String TAG = "DOWNLOAD_WEB_TASK";
 
     private static OnRequestCompletedListener mListener;
@@ -29,7 +30,7 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
     }
 
     @Override
-    protected byte[] doInBackground(String... urls) {
+    protected String doInBackground(String... urls) {
         try {
             return downloadUrl(urls[0]);
         } catch (IOException e) {
@@ -39,11 +40,11 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
     }
 
     @Override
-    protected void onPostExecute(byte[] s) {
+    protected void onPostExecute(String s) {
         mListener.onRequestCompleted(s);
     }
 
-    static public byte[] downloadUrl(String url) throws IOException {
+    static public String downloadUrl(String url) throws IOException {
         InputStream is = null;
         Log.d(TAG, "Downloading: " + url);
 
@@ -82,13 +83,21 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
             Log.d(TAG, "Status: " + status);
             is = conn.getInputStream();
 
-            if ("gzip".equals(conn.getContentEncoding())) {
+            String encoding = conn.getContentEncoding();
+            if (encoding == null){
+                conn.getHeaderField()
+            }
+
+            if ("gzip".equals(encoding)) {
                 Log.d(TAG,"GZIP input stream");
                 is = new GZIPInputStream(is);
             }
+
             byte[] data =getBytesFromInputStream(is);
-            String s = new String(data);
-            return data;
+            if ("gzip".equals(conn.getContentEncoding()))
+                encoding = TextUtils.getXMLEncoding(data);
+
+            return TextUtils.getXMLasString(data, encoding);
         } catch(Exception e) {
             Notifications.showMsg(e.getMessage());
             return null;
@@ -116,6 +125,6 @@ public class DownloadWebTask extends AsyncTask<String, Void, byte[]>{
     }
 
     public interface OnRequestCompletedListener {
-        public void onRequestCompleted(final byte[] buffer);
+        public void onRequestCompleted(final String buffer);
     }
 }

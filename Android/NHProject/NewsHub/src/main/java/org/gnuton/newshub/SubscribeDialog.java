@@ -284,23 +284,23 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     }
 
     @Override
-    public void onRequestCompleted(byte[] buffer) {
+    public void onRequestCompleted(String xml) {
         mFeeds.clear();
         setBusyIndicatorStatus(false);
 
-        if (buffer == null){
+        if (xml == null){
             Log.d(TAG, "Got empty buffer, no providers found");
             return;
         }
 
         Log.d(TAG, "Got new providers");
-        String xml;
+        /*String xml;
         try {
             xml = new String(buffer, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return;
-        }
+        }*/
 
         try {
             // Scan google responses
