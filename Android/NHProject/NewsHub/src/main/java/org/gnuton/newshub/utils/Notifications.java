@@ -8,7 +8,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 
 /**
- * Created by gnuton on 6/5/13.
+ * Notification class
  */
 public class Notifications {
     /**
@@ -17,7 +17,9 @@ public class Notifications {
      */
     static public void showMsg(final int resourceMsg){
         Context context = MyApp.getContext();
-        String msg = context.getResources().getString(resourceMsg).toString();
+        if (context == null)
+            return;
+        String msg = context.getResources().getString(resourceMsg);
         showMsg(msg);
     }
     static public void showMsg(final String msg){
