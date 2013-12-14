@@ -72,6 +72,10 @@ public class ArticleListAdapter extends ArrayAdapter<RSSEntry> {
             holder.title.setText(titleSpanned, TextView.BufferType.SPANNABLE);
             holder.title.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"), e.isRead ? Typeface.NORMAL : Typeface.BOLD);
 
+            int textColor = Color.BLACK;
+            if (e.isRead)
+                textColor= Color.LTGRAY;
+            holder.title.setTextColor(textColor);
 
             holder.url.setText(mFeedTitle);
             holder.date.setText(dateToString(e.date));

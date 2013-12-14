@@ -1,5 +1,6 @@
 package org.gnuton.newshub;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -76,6 +77,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         readMoreButton.setVisibility(View.GONE);
         readMoreButton.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             public void onClick(View v) {
                 final RSSEntry entry = MyApp.mEntry;
                 if (entry != null) {
@@ -174,6 +176,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         final UninterceptableViewPager imageViewPager = (UninterceptableViewPager) view.findViewById(R.id.view_pager);
         scrollView.setCallbacks(new ObservableScrollView.ScrollCallbacks() {
 
+            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             @Override
             public void onScrollChanged(int l, int t, int oldl, int oldt) {
                 if (scrollView == null ||
