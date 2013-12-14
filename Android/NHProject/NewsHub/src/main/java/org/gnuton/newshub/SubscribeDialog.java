@@ -271,6 +271,9 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     private void searchFeeds(String language, final String query){
+        if (query.isEmpty())
+            return;
+
         setBusyIndicatorStatus(true);
         mFeeds.clear();
 
