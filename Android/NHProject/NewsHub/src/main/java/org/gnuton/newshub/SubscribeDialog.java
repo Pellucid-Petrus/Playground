@@ -53,10 +53,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
     private List<RSSFeed> mFeeds;
 
     private ArrayAdapter<RSSFeed> adapter;
-    private final String mFindFeedsUrl = "http://rss.gnuton.org/get";
-
-    private ListView mListView;
-    private Spinner mLanguageSpinner;
+    private final static String mFindFeedsUrl = "http://rss.gnuton.org/get";
 
     public SubscribeDialog(){
         super();
@@ -125,7 +122,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
         // Set spinner
         String[] langs = LanguageSpinnerAdapter.getFlagNamesArray();
-        mLanguageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
+        Spinner mLanguageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
 
         LanguageSpinnerAdapter langAdapter = new LanguageSpinnerAdapter(MyApp.getContext(), R.layout.language_spinner_item, langs);
 
@@ -166,7 +163,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                 } catch (ClassCastException e){
                     continue;
                 }
-                if (b!= null)
+                if (b!= null) {
                     b.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -175,9 +172,11 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                             if (text == null)
                                 return;
                             String catSearchStr = getResources().getString(R.string.category_search);
-                            if (! text.equals(catSearchStr)){
+                            if (!text.equals(catSearchStr)) {
                                 final Spinner languageSpinner = (Spinner) mDlgLayout.findViewById(R.id.language_spinner);
-                                searchFeeds(languageSpinner.getSelectedItem().toString(),  text);
+                                Object item = languageSpinner.getSelectedItem();
+                                if (item != null)
+                                    searchFeeds(item.toString(), text);
                                 //searchFeeds(languageSpinner.getSelectedItem().toString(), "#" + text);
                             } else {
                                 // layout in the dialog that holds spinner and textedit for searching feeds
@@ -193,6 +192,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                             }
                         }
                     });
+                }
             }
         }
         // Binds SQLite to list
@@ -202,7 +202,7 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
         // Initlialize list
         mFeeds = new ArrayList<RSSFeed>();
         adapter = new FeedListAdapter(ctx, R.layout.feedlist_item, mFeeds, false);
-        mListView = (ListView) mDlgLayout.findViewById(R.id.subscribe_listView);
+        ListView mListView = (ListView) mDlgLayout.findViewById(R.id.subscribe_listView);
         mListView. setEmptyView(mDlgLayout.findViewById(R.id.subscribe_emptyView));
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(this);
@@ -230,8 +230,10 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
                     // CLOSE SOFT KEYBOARD
                     InputMethodManager imm = (InputMethodManager) MyApp.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(queryEditText.getWindowToken(), 0);
-
-                    searchFeeds(languageSpinner.getSelectedItem().toString(), queryEditText.getText().toString());
+                    Object item = languageSpinner.getSelectedItem();
+                    Editable editable = queryEditText.getText();
+                    if (item != null && editable != null)
+                        searchFeeds(item.toString(), editable.toString());
                 }
             }
 
