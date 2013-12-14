@@ -73,10 +73,12 @@ public class SubscribeDialog extends DialogFragment implements ListView.OnItemCl
 
         Log.d(TAG, "Added feed:" + f.title);
 
-        this.mFeedDataSource.create(f);
+        // Save feed in the DB in order to assign an id to the feed object
+        RSSFeed newF = (RSSFeed) mFeedDataSource.create(f);
+
         final MainActivity mMainActivity = MyApp.mMainActivity;
         if (mMainActivity != null){
-            mMainActivity.feedSelected(f);
+            mMainActivity.feedSelected(newF);
         }
         this.dismiss();
     }

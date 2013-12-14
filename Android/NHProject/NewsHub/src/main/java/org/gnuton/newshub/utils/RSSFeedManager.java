@@ -8,10 +8,8 @@ import android.util.Log;
 import org.gnuton.newshub.R;
 import org.gnuton.newshub.tasks.GetEntriesFromDB;
 import org.gnuton.newshub.tasks.RSSParseTask;
-import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.types.RSSFeed;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -98,18 +96,14 @@ public class RSSFeedManager implements RSSParseTask.OnParsingCompletedListener, 
         if (mGetEntryTask != null)
             mGetEntryTask.cancel(false);
 
-        if (feed.id == -1){
-            // This feed is not in DB
-            feed.entries = new ArrayList<RSSEntry>();
-            onResultsGot(feed);
-        } else {
-            // Feed in DB. let's fetch some data!
-            mGetEntryTask = new GetEntriesFromDB(this);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                mGetEntryTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mGetEntryTask.createGetLatestEntriesRequest(feed));
-            else
-                mGetEntryTask.execute(mGetEntryTask.createGetLatestEntriesRequest(feed));
-        }
+
+        // Feed in DB. let's fetch some data!
+        mGetEntryTask = new GetEntriesFromDB(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            mGetEntryTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mGetEntryTask.createGetLatestEntriesRequest(feed));
+        else
+            mGetEntryTask.execute(mGetEntryTask.createGetLatestEntriesRequest(feed));
+
     }
 
     public interface OnEntryListFetchedListener{
