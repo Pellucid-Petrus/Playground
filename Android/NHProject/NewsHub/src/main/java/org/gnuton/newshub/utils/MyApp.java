@@ -46,6 +46,8 @@ public class MyApp extends Application {
                 Log.d(TAG, "Removing old entries");
                 RSSEntryDataSource eds = new RSSEntryDataSource(MyApp.getContext());
                 eds.deleteOld();
+                //BUGFIX: This fix DB in devices affected by entries with invalid feedIDs.
+                eds.deleteEntriesWithInvalidIDs();
             }
         };
 

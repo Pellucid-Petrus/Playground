@@ -40,15 +40,12 @@ import org.gnuton.newshub.adapters.MainPageFragmentAdapter;
 import org.gnuton.newshub.db.DbHelper;
 import org.gnuton.newshub.db.RSSEntryDataSource;
 import org.gnuton.newshub.db.RSSFeedDataSource;
-import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.types.RSSFeed;
 import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.FragmentUtils;
 import org.gnuton.newshub.utils.MyApp;
 import org.gnuton.newshub.utils.Notifications;
 import org.gnuton.newshub.view.ArticleListEmptyView;
-
-import java.util.List;
 
 
 public class MainActivity extends FragmentActivity
@@ -252,10 +249,7 @@ public class MainActivity extends FragmentActivity
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                List<RSSEntry> entries = mEntryDataSource.getAll();
-                                for (RSSEntry entry : entries) {
-                                    mEntryDataSource.delete(entry);
-                                }
+                                mEntryDataSource.deleteAll();
                                 Notifications.showMsg(R.string.info_article_cache_cleaned);
                                 feedSelected(-1);
                                 updateDrawerList();

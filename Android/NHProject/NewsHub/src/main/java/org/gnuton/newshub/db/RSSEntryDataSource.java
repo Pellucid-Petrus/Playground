@@ -95,6 +95,16 @@ public class RSSEntryDataSource extends GenericDataSource {
         database.delete(DbHelper.TABLE_ENTRIES, DbHelper.ID + " = " + id, null);
     }
 
+    public void deleteAll() {
+        Log.d(TAG, "Deleting all entries...");
+        database.delete(DbHelper.TABLE_ENTRIES, null, null);
+    }
+
+    public void deleteEntriesWithInvalidIDs() {
+        Log.d(TAG, "Deleting all entries with invalid IDs...");
+        database.delete(DbHelper.TABLE_ENTRIES, DbHelper.ENTRIES_FEEDID + " = -1", null);
+    }
+
     public void deleteOld() {
         Log.d(TAG, "Deleting all old posts");
 
