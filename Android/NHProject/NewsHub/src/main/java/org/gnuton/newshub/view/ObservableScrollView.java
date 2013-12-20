@@ -6,9 +6,6 @@ package org.gnuton.newshub.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 public class ObservableScrollView extends ScrollView
@@ -18,7 +15,7 @@ public class ObservableScrollView extends ScrollView
     public ObservableScrollView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        gestureDetector = new GestureDetector( new SwipeDetector() );
+        //gestureDetector = new GestureDetector( new SwipeDetector() );
     }
 
     //'''''''''''''' START STUFF NEEDED FOR PARALLAX EFFECT **************************/
@@ -51,6 +48,7 @@ public class ObservableScrollView extends ScrollView
     }
 
     /**********************************************************************************/
+    /*
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -100,36 +98,14 @@ public class ObservableScrollView extends ScrollView
             return true;
         }
     }
-/*
-    @Override
-    public boolean dispatchTouchEvent( MotionEvent ev ) {
-        // TouchEvent dispatcher.
-        Log.d(TAG, "Dispatch Touch event" + String.valueOf(scrollingH));
 
-        if (scrollingH)
-            return true;
-        else
-            return super.dispatchTouchEvent( ev );
-        if( gestureDetector != null ) {
-            if( ! gestureDetector.onTouchEvent( ev ) ){
-                // If the gestureDetector handles the event, a swipe has been
-                // executed and no more needs to be done.
-                Log.d(TAG, "Dispatch Touch event TRUE");
-                return true;
-            }
-        }
-        Log.d(TAG, "Dispatch Touch event FALSE");
-        //return super.dispatchTouchEvent( ev );
-    }
-*/
     @Override
     public boolean onTouchEvent( MotionEvent event ) {
-        boolean gd = gestureDetector.onTouchEvent( event );
+        //gestureDetector.onTouchEvent( event );
+        //boolean aa = super.onTouchEvent(event) && scrollingH;
 
-        boolean aa = super.onTouchEvent(event) && scrollingH;
-        Log.d(TAG, "XXXX +>" +String.valueOf(scrollingH) + "<>" + String.valueOf(aa));
-
-        return aa;
+        //Log.d(TAG, "XXXX +>" +String.valueOf(scrollingH) + "<>" + String.valueOf(aa));
+        return gestureDetector.onTouchEvent( event );
     }
 
     protected  void previous() {
@@ -139,6 +115,6 @@ public class ObservableScrollView extends ScrollView
     protected  void next(){
         Log.d(TAG,"NEXT");
     };
-
+*/
 
 }

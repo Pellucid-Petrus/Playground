@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -31,9 +30,9 @@ import org.gnuton.newshub.tasks.UpdateEntryInDB;
 import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.utils.FontsProvider;
 import org.gnuton.newshub.utils.MyApp;
+import org.gnuton.newshub.view.ArticleImageView;
 import org.gnuton.newshub.view.MediaPlayerView;
 import org.gnuton.newshub.view.ObservableScrollView;
-import org.gnuton.newshub.view.UninterceptableViewPager;
 
 public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoilerplateRemovedListener {
     private static final String TAG = "ARTICLE_FRAGMENT";
@@ -62,14 +61,21 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
         titleView.setTypeface(FontsProvider.getInstace().getTypeface("NanumGothic-Regular"));
 
         // Instantiate imageGetter
+
         mImageGetter = new ImageGetter(contentView);
 
-        // Image view Pager
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        // Image adapter
+        mImageAdapter = ImageAdapter.getInstance();
+        final ArticleImageView articleImage= (ArticleImageView) view.findViewById(R.id.articleImage);
+        mImageGetter.setAdapter(mImageAdapter, articleImage.getHeight() / 5);
+        articleImage.setAdapter(mImageAdapter);
+
+        /* Image view Pager
+        &ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager);
         viewPager.setOffscreenPageLimit(1);
         mImageAdapter = new ImageAdapter(view.getContext());
         mImageGetter.setAdapter(mImageAdapter, viewPager);
-        viewPager.setAdapter(mImageAdapter);
+        viewPager.setAdapter(mImageAdapter);*/
 
         // Define action for button
         final Button readMoreButton = (Button) view.findViewById(R.id.ReadMoreButton);
@@ -173,25 +179,22 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         // Scrolling parallax
         final ObservableScrollView scrollView = (ObservableScrollView) view.findViewById(R.id.scrollView);
-        final UninterceptableViewPager imageViewPager = (UninterceptableViewPager) view.findViewById(R.id.view_pager);
         scrollView.setCallbacks(new ObservableScrollView.ScrollCallbacks() {
 
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             @Override
             public void onScrollChanged(int l, int t, int oldl, int oldt) {
                 if (scrollView == null ||
-                        imageViewPager == null ||
-                        scrollView.getChildCount() == 0 ||
-                        imageViewPager.getChildCount() == 0
+                        articleImage == null
                         )
                     return;
 
                 int totalHeight = scrollView.getChildAt(0).getHeight();
-                int iwPagerHeight = imageViewPager.getChildAt(0).getHeight();
+                int iwPagerHeight = articleImage.getHeight();
                 //Log.d("TAG", "T=" + String.valueOf(t) + " HEIGHT=" + String.valueOf(totalHeight) + " H2=" + String.valueOf(iwPagerHeight));
 
                 int o = t * iwPagerHeight * 2 / totalHeight;
-                imageViewPager.setScrollY(o);
+                articleImage.setScrollY(o);
             }
         });
 

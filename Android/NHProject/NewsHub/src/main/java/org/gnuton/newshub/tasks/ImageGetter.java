@@ -22,7 +22,7 @@ import java.net.URLConnection;
 
 public class ImageGetter implements Html.ImageGetter {
     private final View mContainer;
-    private View mPageView;
+    private int mMinHeight;
     private ImageAdapter mImageAdapter;
     static private DiskLruImageCache mCache;
 
@@ -31,9 +31,9 @@ public class ImageGetter implements Html.ImageGetter {
         this.mContainer = t;
     }
 
-    public void setAdapter(ImageAdapter adapter, View pageView) {
+    public void setAdapter(ImageAdapter adapter, int minHeight) {
         mImageAdapter = adapter;
-        mPageView = pageView;
+        mMinHeight = minHeight;
     }
 
     public Drawable getDrawable(String source) {
@@ -89,7 +89,7 @@ public class ImageGetter implements Html.ImageGetter {
             int intHeight = result.getIntrinsicHeight();
             //int intWidth = result.getIntrinsicWidth();
 
-            if (intHeight >= mPageView.getHeight()/5 && mImageAdapter != null){
+            if (intHeight >= mMinHeight && mImageAdapter != null){
                     mImageAdapter.addImage(result);
             }
             /*

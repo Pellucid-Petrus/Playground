@@ -4,9 +4,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import org.gnuton.newshub.R;
+import org.gnuton.newshub.utils.MyApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +25,17 @@ public class ImageAdapter extends PagerAdapter {
     private List<Drawable> mImages = new ArrayList<Drawable>();
     private List<ImageView> mImageViews = new ArrayList<ImageView>();
 
-    public ImageAdapter(Context context){
+    private static ImageAdapter mInstance;
+    private static final String TAG = ImageAdapter.class.getName();
+
+    public static synchronized ImageAdapter getInstance(){
+        if (mInstance == null)
+            mInstance = new ImageAdapter(MyApp.getContext());
+
+        return mInstance;
+    }
+
+    private ImageAdapter(Context context){
         this.mContext=context;
 
         // Initialize the 4 delegates which will host images
@@ -29,7 +43,7 @@ public class ImageAdapter extends PagerAdapter {
             ImageView imageView = new ImageView(mContext);
             imageView.setMinimumHeight(240);
             imageView.setBackgroundColor(Color.parseColor("#000000"));
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);  // FIT_CENTER
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             this.mImageViews.add(imageView);
         }
@@ -77,9 +91,26 @@ public class ImageAdapter extends PagerAdapter {
         return POSITION_NONE;
     }
 
-    /*
-    public void scheduleAnimationForView(ImageView imageView){
-        Animation fadeInAnimation = AnimationUtils.loadAnimation(mContext, R.animator.fadein);
-        imageView.setAnimation(fadeInAnimation);
-    }*/
+    public Drawable getRepresentativeDrawable() {
+        int size = 0;
+
+        Drawable rep = null;
+        for (Drawable image : mImages){
+            int _size = image.getIntrinsicHeight() * image.getIntrinsicWidth();
+            Log.d(TAG, "XXX" + String.valueOf(_size));
+            if (_size > size){
+                rep = image;
+                size = _size;
+            }
+        }
+
+        return rep;
+    }
+
+    public Drawable getDefaultDrawable() {
+        if (mContext == null)
+            return null;
+
+        return mContext.getResources().getDrawable(R.drawable.placeholder);
+    }
 }

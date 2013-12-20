@@ -7,17 +7,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/ArticleFragmentFullViewLayout"
-    android:animateLayoutChanges="true"
     >
-    <org.gnuton.newshub.view.UninterceptableViewPager
-        android:id="@+id/view_pager"
+    <org.gnuton.newshub.view.ArticleImageView
+        android:id="@+id/articleImage"
         android:layout_width="fill_parent"
         android:layout_height="350dp"
         android:layout_gravity="left|center_vertical"
-        android:src="#b4d4ff"
+        android:src="@drawable/placeholder"
         android:scrollY="200dp"
-        android:background="@drawable/placeholder"
-        />
+        android:background="#000000"
+        android:scaleType="centerCrop" />
 
 
     <org.gnuton.newshub.view.ObservableScrollView
@@ -48,8 +47,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/img_shadow"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:src="@drawable/article_image_gradient" />
 
                 <TextView
                     android:layout_width="wrap_content"
