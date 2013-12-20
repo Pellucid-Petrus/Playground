@@ -26,7 +26,8 @@
         android:id="@+id/scrollView"
         android:layout_gravity="center"
         android:fadingEdge="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:orientation="vertical"
