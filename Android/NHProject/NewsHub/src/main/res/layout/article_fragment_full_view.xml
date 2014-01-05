@@ -7,14 +7,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/ArticleFragmentFullViewLayout"
+    android:animateLayoutChanges="true"
     >
+
+
     <org.gnuton.newshub.view.ArticleImageView
         android:id="@+id/articleImage"
         android:layout_width="fill_parent"
         android:layout_height="350dp"
         android:layout_gravity="left|center_vertical"
         android:src="@drawable/placeholder"
-        android:scrollY="200dp"
         android:background="#000000"
         android:scaleType="centerCrop" />
 
@@ -85,8 +87,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:visibility="gone"
-                android:layout_margin="10dp"
-                android:id="@+id/mediaPlayerCtrl" />
+                android:id="@+id/mediaPlayerCtrl"
+                android:background="#FFFFFF"
+                android:padding="10dp" />
 
             <TextView
                 android:layout_width="fill_parent"

@@ -45,7 +45,6 @@ public class ArticleImageView extends ImageView{
             } else {
                 scheduleAnimationForView();
             }
-            setScrollY(0);
             setImageDrawable(repr);
         }
     }
