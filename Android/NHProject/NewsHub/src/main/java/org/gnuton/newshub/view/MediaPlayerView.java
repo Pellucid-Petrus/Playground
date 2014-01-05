@@ -23,15 +23,17 @@ public class MediaPlayerView extends LinearLayout {
     final LayoutInflater mLayoutInflate;
     private View mView;
 
-    private Object mMediaPlayer;
+    // Let's keep media source and media player singleton
+    static private String mSourceUrl;
+    static private Object mMediaPlayer;
+    static private Boolean mSessionPlayPauseButtonEnabled;
+    static private int mSessionPlayPauseButtonText;
+
     private Button mPlayPauseButton;
     private TextView mInfoLabel;
 
     public MediaPlayerView(Context context) {
         super(context);
-        if (!isInEditMode())
-            mMediaPlayer = new MediaPlayer();
-
         mLayoutInflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         initialize();
     }
@@ -54,7 +56,10 @@ public class MediaPlayerView extends LinearLayout {
             mPlayPauseButton = (Button)findViewById(R.id.playPauseButton);
 
             if (mPlayPauseButton != null && ! isInEditMode()){
-                mMediaPlayer = new MediaPlayer();
+                // Let's reuse the same mediaplayer object
+                if (mMediaPlayer == null){
+                    mMediaPlayer = new MediaPlayer();
+                }
                 mPlayPauseButton.setOnClickListener(new playPauseButtonClickListener());
                 mPlayPauseButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
             }
@@ -62,11 +67,22 @@ public class MediaPlayerView extends LinearLayout {
     }
 
     public void setMedia(final String url){
+
         MediaPlayer mp = (MediaPlayer) mMediaPlayer;
         if (mp == null)
             return;
 
+        // Do not do anything if the mediasource is the same.
+        if (mSourceUrl != null && mSourceUrl.equals(url)){
+            // we need to set the previous playpause button status
+            // because the actual button view has been recreated during device orientat changes
+            setPlayPauseButtonStatus();
+            return;
+        }
+
+        mSourceUrl = url;
         mp.stop();
+
         mPlayPauseButton.setText(R.string.icon_play);
 
         if (url == null){
@@ -79,26 +95,35 @@ public class MediaPlayerView extends LinearLayout {
             mp.setDataSource(url);
             mp.prepare();
             mInfoLabel.setText("");
-            mPlayPauseButton.setEnabled(true);
-            mPlayPauseButton.setText(R.string.icon_play);
+            mSessionPlayPauseButtonEnabled = true;
+            mSessionPlayPauseButtonText = R.string.icon_play;
         } catch (IOException e) {
             e.printStackTrace();
             mInfoLabel.setText(R.string.UnableToPlayMedia);
-            mPlayPauseButton.setEnabled(false);
-            mPlayPauseButton.setText(R.string.icon_bug);
+            mSessionPlayPauseButtonEnabled = false;
+            mSessionPlayPauseButtonText = R.string.icon_bug;
         }
+        setPlayPauseButtonStatus();
     }
+
+    private void setPlayPauseButtonStatus(){
+        mPlayPauseButton.setEnabled(mSessionPlayPauseButtonEnabled);
+        mPlayPauseButton.setText(mSessionPlayPauseButtonText);
+    }
+
     private class playPauseButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {
             MediaPlayer mp = (MediaPlayer) mMediaPlayer;
             if (mp.isPlaying()){
                 mp.pause();
-                mPlayPauseButton.setText(R.string.icon_play);
+                mSessionPlayPauseButtonText =R.string.icon_play;
             } else {
                 mp.start();
-                mPlayPauseButton.setText(R.string.icon_pause);
+                mSessionPlayPauseButtonText =R.string.icon_pause;
             }
+            setPlayPauseButtonStatus();
         }
     }
+
 }
