@@ -23,12 +23,15 @@ public class MediaPlayerView extends LinearLayout {
     final LayoutInflater mLayoutInflate;
     private View mView;
 
-    private final MediaPlayer mMediaPlayer = new MediaPlayer();
+    private Object mMediaPlayer;
     private Button mPlayPauseButton;
     private TextView mInfoLabel;
 
     public MediaPlayerView(Context context) {
         super(context);
+        if (!isInEditMode())
+            mMediaPlayer = new MediaPlayer();
+
         mLayoutInflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         initialize();
     }
@@ -50,7 +53,8 @@ public class MediaPlayerView extends LinearLayout {
             mInfoLabel = (TextView) findViewById(R.id.mediaPlayerTrackInfo);
             mPlayPauseButton = (Button)findViewById(R.id.playPauseButton);
 
-            if (mPlayPauseButton != null){
+            if (mPlayPauseButton != null && ! isInEditMode()){
+                mMediaPlayer = new MediaPlayer();
                 mPlayPauseButton.setOnClickListener(new playPauseButtonClickListener());
                 mPlayPauseButton.setTypeface(FontsProvider.getInstace().getTypeface("fontawesome-webfont"));
             }
@@ -58,7 +62,11 @@ public class MediaPlayerView extends LinearLayout {
     }
 
     public void setMedia(final String url){
-        mMediaPlayer.stop();
+        MediaPlayer mp = (MediaPlayer) mMediaPlayer;
+        if (mp == null)
+            return;
+
+        mp.stop();
         mPlayPauseButton.setText(R.string.icon_play);
 
         if (url == null){
@@ -67,9 +75,9 @@ public class MediaPlayerView extends LinearLayout {
 
         Log.d(TAG, "Setting Media" + url);
         try {
-            mMediaPlayer.reset();
-            mMediaPlayer.setDataSource(url);
-            mMediaPlayer.prepare();
+            mp.reset();
+            mp.setDataSource(url);
+            mp.prepare();
             mInfoLabel.setText("");
             mPlayPauseButton.setEnabled(true);
             mPlayPauseButton.setText(R.string.icon_play);
@@ -83,12 +91,12 @@ public class MediaPlayerView extends LinearLayout {
     private class playPauseButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {
-            if (mMediaPlayer.isPlaying()){
-                mMediaPlayer.pause();
+            MediaPlayer mp = (MediaPlayer) mMediaPlayer;
+            if (mp.isPlaying()){
+                mp.pause();
                 mPlayPauseButton.setText(R.string.icon_play);
             } else {
-                mMediaPlayer.start();
-
+                mp.start();
                 mPlayPauseButton.setText(R.string.icon_pause);
             }
         }
