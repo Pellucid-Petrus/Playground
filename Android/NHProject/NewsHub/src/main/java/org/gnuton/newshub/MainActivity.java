@@ -46,6 +46,7 @@ import org.gnuton.newshub.utils.FragmentUtils;
 import org.gnuton.newshub.utils.MyApp;
 import org.gnuton.newshub.utils.Notifications;
 import org.gnuton.newshub.view.ArticleListEmptyView;
+import org.gnuton.newshub.view.InterceptableViewPager;
 
 
 public class MainActivity extends FragmentActivity
@@ -409,7 +410,7 @@ public class MainActivity extends FragmentActivity
         mArticleListFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleListFragment.class.getName(), null);
         mArticleDetailFragment = FragmentUtils.getFragment(getSupportFragmentManager(), ArticleFragment.class.getName(), null);
 
-        final ViewPager pager = (ViewPager) findViewById(R.id.mainPager);
+        final InterceptableViewPager pager = (InterceptableViewPager) findViewById(R.id.mainPager);
         if (pager != null) {
             //  Portrait layout
             FragmentPagerAdapter mFragmentPagerAdapter = new MainPageFragmentAdapter(getSupportFragmentManager());
@@ -423,6 +424,8 @@ public class MainActivity extends FragmentActivity
                     if (page == 0 && offset == 0.0f) {
                         overscrollingFrameCount +=1;
                         if (overscrollingFrameCount > 10) {
+                            // tells to pager to stop to listen for scrolling events
+                            pager.stopScrolling = true;
                             mDrawerLayout.openDrawer(GravityCompat.START);
                             //boolean b = mDrawerLayout.dispatchDragEvent(DragEvent a);
 /*

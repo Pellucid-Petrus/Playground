@@ -13,7 +13,7 @@
                   tools:context=".MainActivity" android:orientation="horizontal"
                   android:id="@+id/mainActivityLayout"
             >
-        <android.support.v4.view.ViewPager
+        <org.gnuton.newshub.view.InterceptableViewPager
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/mainPager"
                 android:layout_width="match_parent"
