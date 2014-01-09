@@ -170,7 +170,7 @@
             style="@style/ArticleDetailShareLinkButton"
             android:text="@string/icon_share"
 
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
             android:clickable="true"
@@ -183,7 +183,7 @@
             style="@style/ArticleDetailOpenLinkButton"
             android:text="@string/icon_globe"
 
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
             android:clickable="true"
@@ -197,7 +197,7 @@
             style="@style/PreviousArticleButton"
             android:text="@string/icon_prev"
 
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
             android:clickable="true"
@@ -211,7 +211,7 @@
             style="@style/NextArticleButton"
             android:text="@string/icon_next"
 
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
             android:clickable="true"
@@ -224,7 +224,7 @@
             android:id="@+id/ReadMoreButton"
             android:text="@string/icon_more"
             style="@style/ArticleDetailMoreButton"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/NextArticleButton"
             android:layout_alignParentRight="true"/>
