@@ -196,6 +196,9 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             }
         });
 
+        // avoid weird artifact on Android 2.x
+        scrollView.setVerticalFadingEdgeEnabled(false);
+
         return view;
     }
 
