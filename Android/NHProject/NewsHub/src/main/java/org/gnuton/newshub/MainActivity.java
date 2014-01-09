@@ -89,10 +89,9 @@ public class MainActivity extends FragmentActivity
         setContentView(R.layout.activity_main);
 
 
-        final ActionBar actionBar = getActionBar();
-
         //Set up custom action bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            final ActionBar actionBar = getActionBar();
             assert actionBar != null;
             actionBar.setCustomView(R.layout.actionbar);
             final TextView actionBarTitle = (TextView) findViewById(R.id.actionBarTitle);
@@ -124,11 +123,6 @@ public class MainActivity extends FragmentActivity
                 R.string.drawer_close  /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    assert actionBar != null;
-                    actionBar.setTitle(R.string.app_name);
-                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                }
                 // hide empty Article list
                 View ArticleListEmptyViewAnim1 = findViewById(R.id.article_list_empty_anim1);
                 if (ArticleListEmptyViewAnim1 != null)
@@ -145,12 +139,7 @@ public class MainActivity extends FragmentActivity
                 if (listView == null){
                     onBackPressed();
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    assert actionBar != null;
-                    actionBar.setTitle(R.string.drawer_title);
-                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                }
-                // show empty Article list
+
                 // show empty Article list
                 View ArticleListEmptyViewAnim1 = findViewById(R.id.article_list_empty_anim1);
                 if (ArticleListEmptyViewAnim1 != null)
