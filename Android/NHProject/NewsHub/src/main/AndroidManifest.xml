@@ -16,7 +16,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:name="org.gnuton.newshub.utils.MyApp"
-            android:debuggable="true"
+            android:debuggable="false"
             >
         <activity
                 android:name="org.gnuton.newshub.MainActivity"

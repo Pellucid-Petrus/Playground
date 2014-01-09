@@ -111,7 +111,8 @@ public class MainActivity extends FragmentActivity
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setScrimColor(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            mDrawerLayout.setScrimColor(0);
 
         //mDrawerLayout.setDrawerShadow(R.drawable.d, GravityCompat.START);
 
@@ -174,8 +175,7 @@ public class MainActivity extends FragmentActivity
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     l.setX(offset);
                 } else {
-                    //lastOffset = (int)offset - lastOffset;
-                    //l.offsetLeftAndRight(lastOffset);
+                    //l.offsetLeftAndRight((int)offset);
                 }
             }
         };
