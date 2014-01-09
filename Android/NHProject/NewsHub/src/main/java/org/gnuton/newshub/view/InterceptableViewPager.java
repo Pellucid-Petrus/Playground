@@ -3,7 +3,6 @@ package org.gnuton.newshub.view;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 /**
@@ -14,15 +13,11 @@ public class InterceptableViewPager extends ViewPager {
     private static String TAG = InterceptableViewPager.class.getName();
     public boolean stopScrolling;
 
-    //private final CountDownTimer mTimer;
-
     public InterceptableViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev){
-        Log.d(TAG, "DISPATCH");
-
         // Reset stop scrolling when gesture start.
         if(ev.getAction()==MotionEvent.ACTION_DOWN)
             stopScrolling= false;
