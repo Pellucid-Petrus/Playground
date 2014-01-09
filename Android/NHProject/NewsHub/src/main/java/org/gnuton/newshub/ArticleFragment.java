@@ -194,7 +194,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
                 //Log.d("TAG", "T=" + String.valueOf(t) + " HEIGHT=" + String.valueOf(totalHeight) + " H2=" + String.valueOf(iwPagerHeight));
 
                 int o = t * iwPagerHeight * 2 / totalHeight;
-                articleImage.setScrollY(o);
+                articleImage.scrollTo(0,o);
             }
         });
 
