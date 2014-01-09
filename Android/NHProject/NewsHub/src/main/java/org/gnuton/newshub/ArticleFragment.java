@@ -184,9 +184,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             @Override
             public void onScrollChanged(int l, int t, int oldl, int oldt) {
-                if (scrollView == null ||
-                        articleImage == null
-                        )
+                if (scrollView == null || articleImage == null)
                     return;
 
                 int totalHeight = scrollView.getChildAt(0).getHeight();
@@ -194,7 +192,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
                 //Log.d("TAG", "T=" + String.valueOf(t) + " HEIGHT=" + String.valueOf(totalHeight) + " H2=" + String.valueOf(iwPagerHeight));
 
                 int o = t * iwPagerHeight * 2 / totalHeight;
-                articleImage.scrollTo(0,o);
+                articleImage.scrollTo(0, o);
             }
         });
 
@@ -335,12 +333,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
 
         // scroll up
         ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            scrollview.setScrollY(0);
-        }else {
-            scrollview.pageScroll(View.FOCUS_UP);
-        }
+        scrollview.scrollTo(0, 0);
 
         // Remove layouts on top of the article
         final View articleFragmentEmptyView = getView().findViewById(R.id.ArticleFragmentEmptyViewLayout);
