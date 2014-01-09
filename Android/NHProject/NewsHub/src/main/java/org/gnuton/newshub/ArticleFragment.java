@@ -102,7 +102,7 @@ public class ArticleFragment extends Fragment implements BoilerPipeTask.OnBoiler
                 }
                 // scroll up
                 ScrollView scrollview = (ScrollView) getView().findViewById(R.id.scrollView);
-                scrollview.setScrollY(0);
+                scrollview.scrollTo(0, 0);
             }
         });
         Animation anim = new AlphaAnimation(0.3f, 1.0f);
