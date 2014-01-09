@@ -1,10 +1,11 @@
 package org.gnuton.newshub.utils;
 
+import android.os.Build;
 import android.text.Html;
-import android.util.Xml;
 
 import org.jsoup.Jsoup;
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -19,23 +20,28 @@ public class TextUtils {
         return s;
     }
     //TODO This class should be removed and part of its code should be in DowlooadTask
+    // This tryes to read the XML as UTF and tries to get <?xml ... encoding='UTF-8'>
     public static String getXMLEncoding(byte[] xmlBuffer) {
         String xml;
         InputStream is;
-        final XmlPullParser xpp = Xml.newPullParser();
+        //final XmlPullParser xpp = Xml.newPullParser();
+
         try {
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser xpp = factory.newPullParser();
             xml = new String(xmlBuffer, "UTF-8");
             is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
             xpp.setInput(is, null);
             while (!"xml".equals(xpp.getName()) && xpp.getEventType() != XmlPullParser.START_TAG) {
                 xpp.next();
             }
+            if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB)
+                xpp.next();
+            return xpp.getInputEncoding();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-
-        return xpp.getInputEncoding();
     }
 
     //TODO This class should be removed and part of its code should be in DowlooadTask

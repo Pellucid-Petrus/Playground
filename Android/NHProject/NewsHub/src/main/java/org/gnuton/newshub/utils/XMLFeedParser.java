@@ -3,7 +3,6 @@ package org.gnuton.newshub.utils;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
-import android.util.Xml;
 
 import org.gnuton.newshub.BuildConfig;
 import org.gnuton.newshub.db.RSSEntryDataSource;
@@ -11,6 +10,7 @@ import org.gnuton.newshub.types.RSSEntry;
 import org.gnuton.newshub.types.RSSFeed;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -103,7 +103,8 @@ public class XMLFeedParser {
     private RSSFeed parseUnknownBuffer(RSSFeed feed) throws IOException {
         final String xml = feed.xml;
         try {
-            XmlPullParser xpp = Xml.newPullParser();
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser xpp = factory.newPullParser();
             xpp.setInput(new StringReader(xml));
 
             int eventType = xpp.getEventType();
@@ -150,7 +151,8 @@ public class XMLFeedParser {
 
     @SuppressWarnings("unchecked")
     private List<RSSEntry> parseAtomBuffer(final String xml, final Integer feedID) throws XmlPullParserException, IOException {
-        final XmlPullParser xpp = Xml.newPullParser();
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        XmlPullParser xpp = factory.newPullParser();
         final List<RSSEntry> newEntries = new ArrayList<RSSEntry>();
 
         // Some checking
@@ -216,7 +218,8 @@ public class XMLFeedParser {
         boolean itunesPodcast;
 
         // Start parsing
-        final XmlPullParser xpp = Xml.newPullParser();
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        XmlPullParser xpp = factory.newPullParser();
         xpp.setInput(new StringReader(xml));
         xpp.nextTag();
         xpp.require(XmlPullParser.START_TAG, xmlNamespace, "rss");
@@ -254,7 +257,8 @@ public class XMLFeedParser {
 
     @SuppressWarnings("unchecked")
     private List<RSSEntry> parseRDFBuffer(final String xml, final Integer feedID) throws XmlPullParserException, IOException {
-        final XmlPullParser xpp = Xml.newPullParser();
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        XmlPullParser xpp = factory.newPullParser();
         final List<RSSEntry> newEntries = new ArrayList<RSSEntry>();
 
         // Some checking
