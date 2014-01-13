@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Blender mesh in three.js</title>
+		<meta charset="utf-8">
+	</head>
+	<body style="margin: 0;">
+
+		<script src="http://threejs.org/build/three.min.js"></script>
+		<script src="http://threejs.org/examples/js/Detector.js"></script>
+		<script src="http://solonport.com/download/examples/js/controls/OrbitControls.js"></script>
+		<script src="http://threejs.org/examples/js/loaders/ColladaLoader.js"></script>
+		<script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
+		
+		<script>
+			// Our 3D code will go here...
+			// Set up the scene, camera, and renderer as global variables.
+
+			var scene, camera, renderer, stats;
+
+			var t = 0;
+			var clock = new THREE.Clock();
+			init();
+			animate();
+
+			// Globals from the previous step go here...
+
+			// Sets up the scene.
+			function init() {
+				// Create the scene and set the scene size.
+				scene = new THREE.Scene();
+				var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
+
+				// Create a renderer and add it to the DOM.
+				renderer = new THREE.WebGLRenderer({
+					antialias : true
+				});
+				renderer.setSize(WIDTH, HEIGHT);
+				document.body.appendChild(renderer.domElement);
+
+				// Create a camera, zoom it out from the model a bit, and add it to the scene.
+				camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 20000);
+				camera.position.set(400, 400, 400);
+				scene.add(camera);
+
+				// Create an event listener that resizes the renderer with the browser window.
+				window.addEventListener('resize', function() {
+					var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
+					renderer.setSize(WIDTH, HEIGHT);
+					camera.aspect = WIDTH / HEIGHT;
+					camera.updateProjectionMatrix();
+				});
+
+				// Create a light, set its position, and add it to the scene.
+				var light = new THREE.PointLight(0xffffff);
+				light.position.set(-100, 200, 100);
+				scene.add(light);
+
+				// Load in the mesh and add it to the scene.
+				new THREE.ColladaLoader().load('models/monster.dae', function(collada) {
+					var model = collada.scene;
+					skin = collada.skins[0];
+					model.scale.set(0.1, 0.1, 0.1);
+					model.rotation.x = -Math.PI / 2;
+					model.castShadow = model.receiveShadow = true;
+					scene.add(model);
+				});
+
+				/*var loader = new THREE.JSONLoader();
+				loader.load("models/test.js", function(geometry) {
+				var material = new THREE.MeshLambertMaterial({
+				color : 0x55B663
+				});
+				mesh = new THREE.Mesh(geometry, material);
+				scene.add(mesh);
+				});*/
+
+				// Add OrbitControls so that we can pan around with the mouse.
+				controls = new THREE.OrbitControls(camera, renderer.domElement);
+				
+				// Adds everything to HTML
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				container.appendChild( renderer.domElement );
+
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+				container.appendChild( stats.domElement );
+				
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+				container.appendChild( stats.domElement );
+
+			}
+
+			// Renders the scene and updates the render as needed.
+
+			function animate() {
+
+				var delta = clock.getDelta();
+
+				requestAnimationFrame(animate);
+
+				if (t > 1)
+					t = 0;
+
+				if (skin) {
+
+					// guess this can be done smarter...
+
+					// (Indeed, there are way more frames than needed and interpolation is not used at all
+					//  could be something like - one morph per each skinning pose keyframe, or even less,
+					//  animation could be resampled, morphing interpolation handles sparse keyframes quite well.
+					//  Simple animation cycles like this look ok with 10-15 frames instead of 100 ;)
+
+					for (var i = 0; i < skin.morphTargetInfluences.length; i++) {
+
+						skin.morphTargetInfluences[i] = 0;
+
+					}
+
+					skin.morphTargetInfluences[ Math.floor(t * 30)] = 1;
+
+					t += delta;
+
+				}
+
+				render();
+				controls.update();
+				stats.update();
+
+			}
+
+			function render() {
+
+				var timer = Date.now() * 0.0005;
+
+				//particleLight.position.x = Math.sin(timer * 4) * 3009;
+				//particleLight.position.y = Math.cos(timer * 5) * 4000;
+				//particleLight.position.z = Math.cos(timer * 4) * 3009;
+
+				renderer.render(scene, camera);
+
+			}
+		</script>
+
+	</body>
+</html>
