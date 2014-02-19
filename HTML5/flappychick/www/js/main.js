@@ -5,7 +5,7 @@ var FLAP = 320;
 var SPAWN_RATE = 1 / 1.2;
 var OPENING = 130;
 
-
+/*
 WebFontConfig = {
     google: { families: [ 'Press+Start+2P::latin' ] },
     active: main
@@ -21,7 +21,9 @@ WebFontConfig = {
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(wf, s);
 })();
+*/
 
+main();
 
 function main() {
 
