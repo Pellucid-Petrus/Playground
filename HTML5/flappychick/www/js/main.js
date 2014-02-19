@@ -47,7 +47,7 @@ function main() {
     function preload() {
         var assets = {
             spritesheet: {
-                birdie: ['sprites/birdie.png', 24, 24],
+                birdie: ['sprites/chick.png', 24, 24],
                 clouds: ['sprites/clouds.png', 128, 64]
             },
             image: {
