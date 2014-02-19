@@ -11,3 +11,8 @@ body {
     position: relative;
     overflow: hidden;
 }
+
+@font-face {
+    font-family: "Press2P";
+    src: url("fonts/player2p.woff") format('woff');
+}
