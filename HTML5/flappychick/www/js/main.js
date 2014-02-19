@@ -193,7 +193,7 @@ function main() {
         gameOver = false;
         score = 0;
         credits.renderable = true;
-        scoreText.setText("Flappy\nChick");
+        scoreText.setText("Fleeing\nChick");
         instText.setText("Touch the screen\nto fly!");
         gameOverText.renderable = false;
         birdie.body.allowGravity = false;
