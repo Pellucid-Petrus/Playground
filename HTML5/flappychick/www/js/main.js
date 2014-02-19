@@ -227,6 +227,8 @@ function main() {
         if (!gameOver) {
             birdie.body.velocity.y = -FLAP;
             flapSnd.play();
+        } else {
+            reset();
         }
     }
 
@@ -302,7 +304,7 @@ function main() {
 
     function setGameOver() {
         gameOver = true;
-        instText.setText("Touch the chick\nand fly again!");
+        instText.setText("Touch the screen\nto fly again!");
         instText.renderable = true;
         var hiscore = window.localStorage.getItem('hiscore');
         hiscore = hiscore ? hiscore : score;

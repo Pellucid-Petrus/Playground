@@ -51,8 +51,8 @@ function main() {
                 clouds: ['sprites/clouds.png', 128, 64]
             },
             image: {
-                finger: ['imgs/finger.png'],
-                fence: ['imgs/fence.png']
+                finger: ['imgs/tree1.png'],
+                fence: ['imgs/terrain1.png']
             },
             audio: {
                 flap: ['fx/flap.wav'],
@@ -264,7 +264,7 @@ function main() {
         finger.body.allowGravity = false;
 
         // Flip finger! *GASP*
-        finger.scale.setTo(1, flipped ? -2 : 2);
+        finger.scale.setTo(2, flipped ? -2 : 2);
         finger.body.offset.y = flipped ? -finger.body.height * 2 : 0;
 
         // Move to the left
