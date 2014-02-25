@@ -95,21 +95,49 @@ class huuto:
                 return res
 
 	def getNotifications(self):
-		# import things we need to display allerts
-		import pynotify
-		if not pynotify.init("Urgency"):
-			print "The script cannot display notifications, sorry!"
-			return
-
 		# never ending loop!
 		while True:
 			data = self.showNewItems()
-			n = pynotify.Notification("New item added toHuuto.net" ,"".join(data))
-			n.set_urgency(pynotify.URGENCY_CRITICAL)
-			n.set_timeout(60000)
-			if not n.show():
-				print "Failed to send notification"
+			text = "".join(data)
+			self.__sendNotification(text)
+			self.__sendEmail(text)
 			time.sleep(60 * 10) # 10 mins
+
+	def __sendNotification(self, TEXT):
+		import pynotify
+                if not pynotify.init("Urgency"):
+                        print "The script cannot display notifications, sorry!"
+                        return
+		n = pynotify.Notification("New item added toHuuto.net" , TEXT)
+                n.set_urgency(pynotify.URGENCY_CRITICAL)
+                n.set_timeout(60000)
+                if not n.show():
+                	print "Failed to send notification"
+		
+	def __sendEmail(self, TEXT):
+		print "Sending email..."
+		import smtplib
+
+           	gmail_user = "something@gmail.com"
+            	gmail_pwd = "secret"
+            	FROM = 'something@gmail.com'
+            	TO = ['xxx@gmail.com'] #must be a list
+            	SUBJECT = "Huuto.com checker script"
+
+            	# Prepare actual message
+            	message = """\From: %s\nTo: %s\nSubject: %s\n\n%s
+            	""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
+            	try:
+                	server = smtplib.SMTP("smtp.gmail.com", 587) #or port 465 doesn't seem to work!
+                	server.ehlo()
+                	server.starttls()
+                	server.login(gmail_user, gmail_pwd)
+                	server.sendmail(FROM, TO, message)
+                	#server.quit()
+                	server.close()
+                	print 'successfully sent the mail'
+            	except:
+                	print "failed to send mail"
 
 if __name__ == "__main__":
         h = huuto()
