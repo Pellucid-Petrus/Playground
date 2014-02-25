@@ -1,0 +1,18 @@
+body {
+    background: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+#screen {
+    margin: 0 auto;
+    height: 480px;
+    width: 320px;
+    position: relative;
+    overflow: hidden;
+}
+
+@font-face {
+    font-family: "Press2P";
+    src: url("fonts/player2p.woff") format('woff');
+}

@@ -1,0 +1,7 @@
+.jar
+.apk
+.d
+platforms/android/bin/
+platforms/android/CordovaLib/bin/
+platforms/android/gen/
+platforms/android/assets
