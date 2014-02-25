@@ -1,0 +1,9 @@
+This directory contains huuto checker a script which allows you to get notifications 
+in Ubuntu, when a new item is added to a specified category in huuto.net.
+
+At moment the category in the script has been hardcoded to 331 (videoprojectors or videotykki in Finnish).
+
+To use this make sure to have python notification installed on your machine and change the category
+
+
+http://www.huuto.net/osasto/kodin-elektroniikka/videotykit/331
