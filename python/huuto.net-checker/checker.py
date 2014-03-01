@@ -27,7 +27,7 @@ class huuto:
 			i = dict() 
                         i["title"] = self.__getValue(item, "title")
                         i["time"] = self.__getValue(item, "updated")
-			i["id"] = re.sub(self.id_url, '', self.__getValue(item, "id"))
+			i["id"] = int(re.sub(self.id_url, '', self.__getValue(item, "id")))
 
 			itemList.append(i)
 		return itemList
@@ -45,6 +45,7 @@ class huuto:
 
 	def showNewItems(self):
 		res = list()
+		res_with_link = list()
 
 		# get new items
 		newItems = self.getNewItems()
@@ -60,7 +61,9 @@ class huuto:
 			print "SKIP" 
 
 		# print difference
-	        newItemIDs = [x["id"] for x in newItems]	
+	        newItemIDs = [x["id"] for x in newItems]
+		#print "NEWITEM" + repr(set(newItemIDs))
+		#print "oldItems" + repr(set(oldItemIDs))	
 		diff = list(set(newItemIDs) - set(oldItemIDs))
 		#print "NEW ITEMS:" + repr(newItemIDs)
 		#print "OLD ITEMS:" + repr(oldItemIDs)
@@ -72,8 +75,10 @@ class huuto:
 			for x in newItems:
 				if x["id"] == item:
 					title = x["title"]
-			print "%d\t%s%s\t %s" % (i, self.item_url, item, title)
+			data_with_link ="%d\t%s%s\t %s" % (i, self.item_url, item, title)
 			data = "%s(%s)\n" % (title, item)
+			print data_with_link
+			res_with_link.append(data_with_link)
 			res.append(data)
 			i+= 1
 
@@ -84,7 +89,7 @@ class huuto:
 			foldItemsFile.write(repr(oldIDs))
 			foldItemsFile.close()
 
-		return res
+		return (res, res_with_link)
 
         def __getValue(self, mynode, val):
                 res = None
@@ -98,9 +103,9 @@ class huuto:
 		# never ending loop!
 		while True:
 			data = self.showNewItems()
-			text = "".join(data)
-			self.__sendNotification(text)
-			self.__sendEmail(text)
+			if len(data[0]):
+				self.__sendNotification("\n".join(data[0]))
+				self.__sendEmail("\n".join(data[1]))
 			time.sleep(60 * 10) # 10 mins
 
 	def __sendNotification(self, TEXT):
@@ -118,17 +123,17 @@ class huuto:
 		print "Sending email..."
 		import smtplib
 
-           	gmail_user = "something@gmail.com"
-            	gmail_pwd = "secret"
-            	FROM = 'something@gmail.com'
-            	TO = ['xxx@gmail.com'] #must be a list
-            	SUBJECT = "Huuto.com checker script"
+           	gmail_user = "gnuton.org40691"
+            	gmail_pwd = ""
+            	FROM = 'noreply@gnuton.org'
+            	TO = ['gnuton@gnuton.org'] #must be a list
+            	SUBJECT = "Huuto.com -" + TEXT[:20]
 
             	# Prepare actual message
             	message = """\From: %s\nTo: %s\nSubject: %s\n\n%s
             	""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
             	try:
-                	server = smtplib.SMTP("smtp.gmail.com", 587) #or port 465 doesn't seem to work!
+                	server = smtplib.SMTP("mail.gnuton.org", 587) #or port 465 doesn't seem to work!
                 	server.ehlo()
                 	server.starttls()
                 	server.login(gmail_user, gmail_pwd)
@@ -136,8 +141,8 @@ class huuto:
                 	#server.quit()
                 	server.close()
                 	print 'successfully sent the mail'
-            	except:
-                	print "failed to send mail"
+            	except Exception as e:
+                	print "failed to send mail" + e
 
 if __name__ == "__main__":
         h = huuto()
