@@ -49,8 +49,11 @@ class huuto:
 
 		# get new items
 		newItems = self.getNewItems()
-		print "Downloaded %d items" % len(newItems)
-		# get old ones
+                print "Downloaded %d items" % len(newItems)
+
+		# get new IDs
+                newItemIDs = set([x["id"] for x in newItems])
+		# get old IDs
 		oldItemIDs = []
 		try:
 			with file(self.oldItemsFilePath, "r") as foldItemsFile:
@@ -61,13 +64,9 @@ class huuto:
 			print "SKIP" 
 
 		# print difference
-	        newItemIDs = [x["id"] for x in newItems]
-		#print "NEWITEM" + repr(set(newItemIDs))
-		#print "oldItems" + repr(set(oldItemIDs))	
-		diff = list(set(newItemIDs) - set(oldItemIDs))
-		#print "NEW ITEMS:" + repr(newItemIDs)
-		#print "OLD ITEMS:" + repr(oldItemIDs)
-		#print "DIFF:" + repr(diff)
+		diff = list(newItemIDs- set(oldItemIDs))
+
+		# create output data
 		i = 0
 		for item in diff:
 			# get title
@@ -75,18 +74,23 @@ class huuto:
 			for x in newItems:
 				if x["id"] == item:
 					title = x["title"]
+			# actual line that create the two output strings
 			data_with_link ="%d\t%s%s\t %s" % (i, self.item_url, item, title)
 			data = "%s(%s)\n" % (title, item)
+			
+			# some nice output
 			print data_with_link
+
+			# let's append the output to the lists
 			res_with_link.append(data_with_link)
 			res.append(data)
+
+			# increments counter
 			i+= 1
 
 		# save new items to db
 		with file(self.oldItemsFilePath, "w") as foldItemsFile:
-			oldIDs = [x["id"] for x in newItems ]
-			oldIDs = set(oldIDs)
-			foldItemsFile.write(repr(oldIDs))
+			foldItemsFile.write(repr(newItemIDs))
 			foldItemsFile.close()
 
 		return (res, res_with_link)
@@ -140,9 +144,9 @@ class huuto:
                 	server.sendmail(FROM, TO, message)
                 	#server.quit()
                 	server.close()
-                	print 'successfully sent the mail'
+                	print 'mail sent succesfully'
             	except Exception as e:
-                	print "failed to send mail" + e
+                	print "failed to send email:" + e
 
 if __name__ == "__main__":
         h = huuto()
