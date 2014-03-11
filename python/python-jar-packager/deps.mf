@@ -1,0 +1,1 @@
+Class-Path: /usr/share/java/*.jar /usr/share/java/asm3-all.jar /usr/share/java/google-collections.jar /usr/share/java/constantine.jar /usr/share/java/jnr-posix.jar /usr/share/java/jaffl.jar /usr/share/java/jline.jar

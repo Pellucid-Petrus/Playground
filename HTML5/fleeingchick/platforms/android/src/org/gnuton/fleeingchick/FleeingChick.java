@@ -19,19 +19,38 @@
 
 package org.gnuton.fleeingchick;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import org.apache.cordova.*;
 
-public class FlappyChick extends CordovaActivity 
+import org.apache.cordova.Config;
+import org.apache.cordova.CordovaActivity;
+
+public class FleeingChick extends CordovaActivity
 {
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        if(isScreenLarge()) {
+            // width > height, better to use Landscape
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         super.init();
         // Set by <content src="index.html" /> in config.xml
         super.loadUrl(Config.getStartUrl());
         //super.loadUrl("file:///android_asset/www/index.html")
+    }
+
+
+    public boolean isScreenLarge() {
+        final int screenSize = getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK;
+        return screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE
+                || screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 }
 

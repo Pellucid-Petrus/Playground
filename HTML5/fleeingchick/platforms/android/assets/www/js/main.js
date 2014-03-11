@@ -5,26 +5,12 @@ var FLAP = 320;
 var SPAWN_RATE = 1 / 1.2;
 var OPENING = 130;
 
-
-WebFontConfig = {
-    google: { families: [ 'Press+Start+2P::latin' ] },
-    active: main
-};
-
-
-(function() {
-    var wf = document.createElement('script');
-    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-    wf.type = 'text/javascript';
-    wf.async = 'true';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(wf, s);
-})();
-
+function start()
+{
+    setTimeout(main(), 10000);
+}
 
 function main() {
-
     var state = {
         preload: preload,
         create: create,
@@ -33,10 +19,12 @@ function main() {
     };
 
     var parent = document.querySelector('#screen');
+    var screenWidth = parent.clientWidth < window.innerWidth ? window.innerWidth : parent.clientWidth;
+    var screenHeight = parent.clientHeight < window.innerHeight ? window.innerHeight : parent.clientHeight;
 
     var game = new Phaser.Game(
-        0,
-        0,
+        screenWidth,
+        screenHeight,
         Phaser.CANVAS,
         parent,
         state,
@@ -51,12 +39,12 @@ function main() {
                 clouds: ['sprites/clouds.png', 128, 64]
             },
             image: {
-                finger: ['imgs/tree1.png'],
+                finger: ['imgs/coloumn3.png'],
                 fence: ['imgs/terrain1.png']
             },
             audio: {
                 flap: ['fx/flap.wav'],
-                score: ['fx/score.wav'],
+                score: ['fx/flap.wav'],
                 hurt: ['fx/hurt.wav']
             }
         };
@@ -88,9 +76,6 @@ function main() {
 
     function create() {
         // Set world dimensions
-        var screenWidth = parent.clientWidth > window.innerWidth ? window.innerWidth : parent.clientWidth;
-        var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
-        //alert("WIDTH" + screenWidth + "HEIGHT" + screenHeight);
 
         game.world.width = screenWidth;
         game.world.height = screenHeight;
@@ -107,7 +92,7 @@ function main() {
             10,
             '',
             {
-                font: '8px "Press Start 2P"',
+                font: '16px Arial',
                 fill: '#fff',
                 align: 'center'
             }
@@ -135,10 +120,10 @@ function main() {
             game.world.height / 4,
             "",
             {
-                font: '16px "Press Start 2P"',
+                font: '42px Arial',
                 fill: '#fff',
                 stroke: '#430',
-                strokeThickness: 4,
+                strokeThickness: 6,
                 align: 'center'
             }
         );
@@ -149,7 +134,7 @@ function main() {
             game.world.height - game.world.height / 4,
             "",
             {
-                font: '8px "Press Start 2P"',
+                font: '16px Arial',
                 fill: '#fff',
                 stroke: '#430',
                 strokeThickness: 4,
@@ -163,10 +148,10 @@ function main() {
             game.world.height / 2,
             "",
             {
-                font: '12px "Press Start 2P"',
-                fill: '#fff',
+                font: '30px Arial',
+                fill: '#ff0000',
                 stroke: '#430',
-                strokeThickness: 4,
+                strokeThickness: 6,
                 align: 'center'
             }
         );
@@ -193,7 +178,7 @@ function main() {
         gameOver = false;
         score = 0;
         credits.renderable = true;
-        scoreText.setText("Fleeing Chick");
+        scoreText.setText("Fleeing\nChick");
         instText.setText("Touch the screen\nto fly!");
         gameOverText.renderable = false;
         birdie.body.allowGravity = false;
@@ -310,7 +295,7 @@ function main() {
         hiscore = hiscore ? hiscore : score;
         hiscore = score > parseInt(hiscore, 10) ? score : hiscore;
         window.localStorage.setItem('hiscore', hiscore);
-        gameOverText.setText("Game Over\n\nHigh score\n" + hiscore);
+        gameOverText.setText("Game Over\nHigh score\n" + hiscore);
         gameOverText.renderable = true;
         // Stop all fingers
         fingers.forEachAlive(function(finger) {

@@ -27,7 +27,7 @@ class huuto:
 			i = dict() 
                         i["title"] = self.__getValue(item, "title")
                         i["time"] = self.__getValue(item, "updated")
-			i["id"] = re.sub(self.id_url, '', self.__getValue(item, "id"))
+			i["id"] = int(re.sub(self.id_url, '', self.__getValue(item, "id")))
 
 			itemList.append(i)
 		return itemList
@@ -45,11 +45,15 @@ class huuto:
 
 	def showNewItems(self):
 		res = list()
+		res_with_link = list()
 
 		# get new items
 		newItems = self.getNewItems()
-		print "Downloaded %d items" % len(newItems)
-		# get old ones
+                print "Downloaded %d items" % len(newItems)
+
+		# get new IDs
+                newItemIDs = set([x["id"] for x in newItems])
+		# get old IDs
 		oldItemIDs = []
 		try:
 			with file(self.oldItemsFilePath, "r") as foldItemsFile:
@@ -60,11 +64,9 @@ class huuto:
 			print "SKIP" 
 
 		# print difference
-	        newItemIDs = [x["id"] for x in newItems]	
-		diff = list(set(newItemIDs) - set(oldItemIDs))
-		#print "NEW ITEMS:" + repr(newItemIDs)
-		#print "OLD ITEMS:" + repr(oldItemIDs)
-		#print "DIFF:" + repr(diff)
+		diff = list(newItemIDs- set(oldItemIDs))
+
+		# create output data
 		i = 0
 		for item in diff:
 			# get title
@@ -72,19 +74,26 @@ class huuto:
 			for x in newItems:
 				if x["id"] == item:
 					title = x["title"]
-			print "%d\t%s%s\t %s" % (i, self.item_url, item, title)
+			# actual line that create the two output strings
+			data_with_link ="%d\t%s%s\t %s" % (i, self.item_url, item, title)
 			data = "%s(%s)\n" % (title, item)
+			
+			# some nice output
+			print data_with_link
+
+			# let's append the output to the lists
+			res_with_link.append(data_with_link)
 			res.append(data)
+
+			# increments counter
 			i+= 1
 
 		# save new items to db
 		with file(self.oldItemsFilePath, "w") as foldItemsFile:
-			oldIDs = [x["id"] for x in newItems ]
-			oldIDs = set(oldIDs)
-			foldItemsFile.write(repr(oldIDs))
+			foldItemsFile.write(repr(newItemIDs))
 			foldItemsFile.close()
 
-		return res
+		return (res, res_with_link)
 
         def __getValue(self, mynode, val):
                 res = None
@@ -98,9 +107,9 @@ class huuto:
 		# never ending loop!
 		while True:
 			data = self.showNewItems()
-			text = "".join(data)
-			self.__sendNotification(text)
-			self.__sendEmail(text)
+			if len(data[0]):
+				self.__sendNotification("\n".join(data[0]))
+				self.__sendEmail("\n".join(data[1]))
 			time.sleep(60 * 10) # 10 mins
 
 	def __sendNotification(self, TEXT):
@@ -118,26 +127,26 @@ class huuto:
 		print "Sending email..."
 		import smtplib
 
-           	gmail_user = "something@gmail.com"
-            	gmail_pwd = "secret"
-            	FROM = 'something@gmail.com'
-            	TO = ['xxx@gmail.com'] #must be a list
-            	SUBJECT = "Huuto.com checker script"
+           	gmail_user = "gnuton.org40691"
+            	gmail_pwd = ""
+            	FROM = 'noreply@gnuton.org'
+            	TO = ['gnuton@gnuton.org'] #must be a list
+            	SUBJECT = "Huuto.com -" + TEXT[:20]
 
             	# Prepare actual message
             	message = """\From: %s\nTo: %s\nSubject: %s\n\n%s
             	""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
             	try:
-                	server = smtplib.SMTP("smtp.gmail.com", 587) #or port 465 doesn't seem to work!
+                	server = smtplib.SMTP("mail.gnuton.org", 587) #or port 465 doesn't seem to work!
                 	server.ehlo()
                 	server.starttls()
                 	server.login(gmail_user, gmail_pwd)
                 	server.sendmail(FROM, TO, message)
                 	#server.quit()
                 	server.close()
-                	print 'successfully sent the mail'
-            	except:
-                	print "failed to send mail"
+                	print 'mail sent succesfully'
+            	except Exception as e:
+                	print "failed to send email:" + e
 
 if __name__ == "__main__":
         h = huuto()

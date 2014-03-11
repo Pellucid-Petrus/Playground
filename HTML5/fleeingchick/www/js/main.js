@@ -109,7 +109,7 @@ function main() {
             10,
             '',
             {
-                font: '8px "Press Start 2P"',
+                font: '8px "fonts/prstartk.ttf"',
                 fill: '#fff',
                 align: 'center'
             }
