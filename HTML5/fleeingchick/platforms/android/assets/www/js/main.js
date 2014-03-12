@@ -25,7 +25,7 @@ function main() {
     var game = new Phaser.Game(
         screenWidth,
         screenHeight,
-        Phaser.CANVAS,
+        Phaser.AUTO,
         parent,
         state,
         false,
