@@ -1,3 +1,4 @@
+document.addEventListener("deviceready", start, false);
 function start() {
 // constant values appear in UPPER_CASE.
 
