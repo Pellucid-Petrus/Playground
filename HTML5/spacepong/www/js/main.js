@@ -14,7 +14,7 @@ function start() {
     var MAX_SCORE = 5;
 
 // every n seconds the ball moves a little faster
-    var SPEEDUP_TIMEOUT = 5;
+    var SPEEDUP_TIMEOUT = 10;
 
 // a counter that increments on each SPEEDUP_TIMEOUT.
 // resets for each round.
@@ -123,14 +123,6 @@ function start() {
         }
         else
         {
-            /*
-            game.stage.scaleMode = Phaser.StageScaleMode.SHOW_ALL;
-            game.stage.scale.minWidth = 320;
-            game.stage.scale.minHeight = 240;
-            game.stage.scale.maxWidth = 800;
-            game.stage.scale.maxHeight = 600;
-            game.stage.scale.setScreenSize(true);
-            game.stage.scale.startFullScreen();*/
             game.stage.scale.minWidth = game.width / 2;
             game.stage.scale.minHeight = game.width / 2;
             game.stage.scale.maxWidth = game.width * 2;
@@ -250,7 +242,7 @@ function start() {
             {
                 // FIXME ONE PLAYER ALLOWED
                 // start a new multiplayer game
-                isMultiplayer = false;
+                isMultiplayer = true;
                 resetGame();
                 resetBall();
             }
@@ -614,7 +606,7 @@ function start() {
                 resetBall();
             }
 
-            scoreTextObject.content = leftPlayer.score + ' - ' + rightPlayer.score;
+            scoreTextObject.content = '1P ' + leftPlayer.score + ' - ' + rightPlayer.score + (isMultiplayer ? ' 2P' : ' CPU');
 
 // if either player reaches the max score the game is over
             if (leftPlayer.score == MAX_SCORE || rightPlayer.score == MAX_SCORE)
