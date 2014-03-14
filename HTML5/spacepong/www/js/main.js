@@ -1,3 +1,4 @@
+
 document.addEventListener("deviceready", start, false);
 function start() {
 // constant values appear in UPPER_CASE.
@@ -59,7 +60,15 @@ function start() {
     var winText;
 
 // phaser game instance
-    var game = new Phaser.Game(640, 480, Phaser.CANVAS, 'screen',
+    // get dimensions of the window considering retina displays
+    /*
+    var w = window.innerWidth * window.devicePixelRatio,
+    h = window.innerHeight * window.devicePixelRatio;
+
+    w = bound(w, 320, 960);
+    h = bound(h, 240, 560);
+    var game = new Phaser.Game((h > w) ? h : w, (h > w) ? w : h, Phaser.AUTO, 'screen',*/
+    var game = new Phaser.Game(640, 480, Phaser.AUTO, 'screen',
         { preload: onPreload, create: onCreate, update: onUpdate }
     );
 
@@ -114,12 +123,21 @@ function start() {
         }
         else
         {
+            /*
             game.stage.scaleMode = Phaser.StageScaleMode.SHOW_ALL;
             game.stage.scale.minWidth = 320;
             game.stage.scale.minHeight = 240;
-            game.stage.scale.maxWidth = 640;
-            game.stage.scale.maxHeight = 480;
+            game.stage.scale.maxWidth = 800;
+            game.stage.scale.maxHeight = 600;
             game.stage.scale.setScreenSize(true);
+            game.stage.scale.startFullScreen();*/
+            game.stage.scale.minWidth = game.width / 2;
+            game.stage.scale.minHeight = game.width / 2;
+            game.stage.scale.maxWidth = game.width * 2;
+            game.stage.scale.maxHeight = game.height * 2;
+            game.stage.scaleMode = Phaser.StageScaleMode.SHOW_ALL;
+            game.stage.scale.pageAlignHorizontally = true;
+            game.stage.scale.pageAlignVeritcally = true;
         }
 
 // add the pong playfield background
@@ -141,7 +159,7 @@ function start() {
         buildWalls();
 
 // create various text objects
-        scoreTextObject = game.add.text(320, 50, '0 0', { font: '30px arial', stroke: '#3de3e3', strokeThickness: 6, align: 'center' });
+        scoreTextObject = game.add.text(game.world.width/2, 50, '0 0', { font: '30px arial', stroke: '#3de3e3', strokeThickness: 6, align: 'center' });
         scoreTextObject.anchor.setTo(0.5, 0.5);
         winText = game.add.text(MARGIN * 2, game.world.height - 70, '', {  font: '30px arial', stroke: '#3de3e3', strokeThickness: 6,  align: 'center' });
 
@@ -177,17 +195,19 @@ function start() {
 
     function buildWalls()
     {
+        var wall_thickness = 20;
+
         // build a top wall
-        var wall = walls.create(0, -20, '');
+        var wall = walls.create(0, -wall_thickness, '');
         wall.body.immovable = true;
-        wall.height = 20;
-        wall.width = 640;
+        wall.height = wall_thickness;
+        wall.width = game.world.width;
 
         // build a bottom wall
-        wall = walls.create(0, 480, '');
+        wall = walls.create(0, game.world.height, '');
         wall.body.immovable = true;
-        wall.height = 20;
-        wall.width = 640;
+        wall.height = wall_thickness;
+        wall.width = game.world.width;
     }
 
     /**
@@ -601,4 +621,8 @@ function start() {
             }
         }
     }
+}
+
+function bound(_number, _min, _max){
+        return Math.max(Math.min(_number, _max), _min);
 }
