@@ -466,7 +466,7 @@ function start() {
             }
             else
             {
-                winText.content = 'Aliens wins!';
+                winText.content = 'Alien computer wins!';
             }
         }
         else
@@ -513,11 +513,13 @@ function start() {
 // when no game is playing we animate the ball randomly
         if (isGameOver)
         {
-            ball.body.velocity.x = Math.random() * 100;
-            ball.body.velocity.y = Math.random() * 50;
+            ball.body.velocity.x = 0;
+            ball.body.velocity.y = 0;
+            ball.visible = false;
         }
         else
         {
+            ball.visible = true;
             ball.body.velocity.x = 0;
             ball.body.velocity.y = 0;
         }
