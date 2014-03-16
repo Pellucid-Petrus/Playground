@@ -17,12 +17,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp
 
+# This has been disabled because we don't wanna use shadow builds
 # Copies android project to the build directory
-copydata.commands = $(COPY_DIR) $$PWD/android-build $$OUT_PWD
-first.depends = $(first) copydata
-export(first.depends)
-export(copydata.commands)
-QMAKE_EXTRA_TARGETS += first copydata
+#message(Copying native android code ($$PWD/android-native-build) to $$OUT_PWD)
+#copydata.commands = $(COPY_DIR) $$PWD/android-native-build $$OUT_PWD
+#first.depends = $(first) copydata
+#export(first.depends)
+#export(copydata.commands)
+#QMAKE_EXTRA_TARGETS += first copydata
 
 OTHER_FILES += \
     android-build/custom_rules.xml
