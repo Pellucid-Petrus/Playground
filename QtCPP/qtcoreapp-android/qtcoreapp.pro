@@ -15,7 +15,8 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    org_gnuton_jni_QtCoreApplicationWrapper.cpp
 
 # This has been disabled because we don't wanna use shadow builds
 # Copies android project to the build directory
@@ -27,5 +28,10 @@ SOURCES += main.cpp
 #QMAKE_EXTRA_TARGETS += first copydata
 
 OTHER_FILES += \
-    android-build/custom_rules.xml
+    android-build/custom_rules.xml \
+    README.txt
+
+HEADERS += \
+    qtmyobj.h \
+    org_gnuton_jni_QtCoreApplicationWrapper.h
 

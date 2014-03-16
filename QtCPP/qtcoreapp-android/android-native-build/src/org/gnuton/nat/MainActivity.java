@@ -2,7 +2,7 @@ package org.gnuton.nat;
 
 import java.util.Locale;
 
-import org.gnuton.jni.QtCoreWrapper;
+import org.gnuton.jni.QtLibsLoader;
 
 
 import android.os.Bundle;
@@ -43,7 +43,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         
         // This will create the wrapper and it will load libqtcoreapp.so
-        QtCoreWrapper.getInstance("qtcoreapp");
+        QtLibsLoader.getInstance("qtcoreapp");
         
         
         // Create the adapter that will return a fragment for each of the three
