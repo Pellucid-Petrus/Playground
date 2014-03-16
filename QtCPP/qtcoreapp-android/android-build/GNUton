@@ -1,0 +1,12 @@
+
+WHY::
+This prevent us to have our native code in the android-build directory
+ <!-- Code Generation: compile resources (aapt -> R.java), aidl, renderscript -->
+    <target name="-code-gen">
+        <!-- always merge manifest -->
+        <mergemanifest
+                appManifest="${manifest.abs.file}"
+                outManifest="${out.manifest.abs.file}"
+                enabled="${manifestmerger.enabled}">
+            <library refid="project.library.manifest.file.path" />
+        </mergemanifest>
