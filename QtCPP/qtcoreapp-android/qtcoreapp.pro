@@ -33,5 +33,5 @@ OTHER_FILES += \
 
 HEADERS += \
     qtmyobj.h \
-    org_gnuton_jni_QtCoreApplicationWrapper.h
-
+    org_gnuton_jni_QtCoreApplicationWrapper.h \
+    QtMainThread.h

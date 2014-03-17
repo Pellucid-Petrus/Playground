@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -43,7 +42,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         
         // This will create the wrapper and it will load libqtcoreapp.so
-        QtLibsLoader.getInstance("qtcoreapp");
+        QtLibsLoader.getInstance().startApplication();
         
         
         // Create the adapter that will return a fragment for each of the three
@@ -58,7 +57,13 @@ public class MainActivity extends FragmentActivity {
         
 
     }
-
+    
+    @Override
+    protected void onDestroy (){
+    	super.onDestroy();
+    	QtLibsLoader.getInstance().stopApplication();
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -67,7 +72,6 @@ public class MainActivity extends FragmentActivity {
     }
     
     
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
