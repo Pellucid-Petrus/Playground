@@ -8,8 +8,7 @@ class QtMyObj : public QObject
 {
 
     Q_OBJECT
-    Q_PROPERTY(Priority priority READ priority WRITE setPriority NOTIFY priorityChanged)
-    Q_ENUMS(Priority)
+    Q_PROPERTY(QString priority READ priority WRITE setPriority NOTIFY priorityChanged)
 
 public:
     explicit QtMyObj(QObject *parent = 0) {
@@ -17,23 +16,20 @@ public:
         qDebug() << "QtMyObj created";
     };
 
-    enum Priority { High=0, Low, VeryHigh, VeryLow };
-
-    void setPriority(Priority priority)
+    void setPriority(QString priority)
     {
         m_priority = priority;
         emit priorityChanged(priority);
     }
 
-    Priority priority() const
+    QString priority() const
     { return m_priority; }
 
 signals:
-    void priorityChanged(Priority);
+    void priorityChanged(QString);
 
 private:
-    Priority m_priority;
-
+    QString m_priority;
 };
 
 #endif // QTMYOBJ_H
