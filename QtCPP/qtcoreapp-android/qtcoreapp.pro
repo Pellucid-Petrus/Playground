@@ -16,7 +16,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    org_gnuton_jni_QtCoreApplicationWrapper.cpp
+    org_gnuton_jni_QtCoreApplicationWrapper.cpp \
+    org_gnuton_jni_qtmyobjWrapper.cpp
 
 # This has been disabled because we don't wanna use shadow builds
 # Copies android project to the build directory
@@ -34,4 +35,5 @@ OTHER_FILES += \
 HEADERS += \
     qtmyobj.h \
     org_gnuton_jni_QtCoreApplicationWrapper.h \
-    QtMainThread.h
+    QtMainThread.h \
+    org_gnuton_jni_qtmyobjWrapper.h

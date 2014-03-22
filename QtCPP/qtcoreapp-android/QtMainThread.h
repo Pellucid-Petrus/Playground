@@ -14,6 +14,10 @@ class QtMainThread : public QThread
     QCoreApplication *app;
     QtMainThread(){};
 
+    //**** HERE THE QObject pointers that will be exported to JAVA **/
+public:
+    QtMyObj* instance_qtMyObj;
+
 public:
     static QtMainThread& getInstance(){
         static QtMainThread instance;
@@ -36,9 +40,11 @@ private:
 
         // Create an instance of my object
         QtMyObj myObj;
+        instance_qtMyObj = &myObj;
 
         // runs the eventloop
         app->exec();
+        qDebug() << "BYE BYE";
     }
 
  private slots:
