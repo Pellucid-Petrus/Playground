@@ -41,8 +41,9 @@ This is the procedure to create the needed files step by step:
      b.
 
 
-
-
+--------------
+http://journals.ecs.soton.ac.uk/java/tutorial/native1.1/implementing/method.html
+---------
 JNIEnv *env;
 cls = (*env)->FindClass(env, "Sample2");
 31. if(cls !=0)

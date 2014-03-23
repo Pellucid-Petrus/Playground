@@ -8,8 +8,10 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
     qDebug() << "QCoreApplication running!";
 
-    // Create an instance of my object
+    // Create instances of my objects
     QtMyObj myObj;
+
+    // Tells to Java that the app has been loaded
 
     return a.exec();
 }
