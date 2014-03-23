@@ -36,4 +36,5 @@ HEADERS += \
     qtmyobj.h \
     org_gnuton_jni_QtCoreApplicationWrapper.h \
     QtMainThread.h \
-    org_gnuton_jni_qtmyobjWrapper.h
+    org_gnuton_jni_qtmyobjWrapper.h \
+    jnitypeconverter.h
