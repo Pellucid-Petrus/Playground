@@ -1,4 +1,14 @@
-.idea
-.gradle
+*.idea
+*.gradle
 build
 a.out
+*.apk
+moc_*
+*.o
+*.so
+*.dex
+*.class
+Makefile
+*.user
+*.autosave
+*.ap_
