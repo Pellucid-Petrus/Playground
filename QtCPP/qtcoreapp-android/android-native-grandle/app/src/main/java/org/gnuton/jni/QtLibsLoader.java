@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import org.gnuton.jni.wrappers.QtCoreApplicationWrapper;
+
 public class QtLibsLoader extends Fragment{
 	private static final String TAG = QtLibsLoader.class.getName();
 
@@ -40,7 +42,7 @@ public class QtLibsLoader extends Fragment{
 		}
 
         // Starts the Qt application in a new thread in background
-		coreApplicationWrapper = new QtCoreApplicationWrapper();
+		coreApplicationWrapper = (QtCoreApplicationWrapper) QtCoreApplicationWrapper.getInstance(QtCoreApplicationWrapper.class);
         coreApplicationWrapper.startApplication();
 	}
 

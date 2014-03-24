@@ -157,7 +157,6 @@ public class MainActivity extends FragmentActivity {
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "AFTER TEXT CHANGED");
-
                 }
             });
 
