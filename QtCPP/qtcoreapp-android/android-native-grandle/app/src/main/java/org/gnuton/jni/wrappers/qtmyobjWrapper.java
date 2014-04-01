@@ -1,7 +1,8 @@
-package org.gnuton.jni;
-public class qtmyobjWrapper {
+package org.gnuton.jni.wrappers;
 
+import org.gnuton.jni.QtLibsLoader;
 
+public class qtmyobjWrapper implements QtObjectWrapper {
     public native String priority();
     public native void setPriority(String value);
     public static void priorityChanged(){

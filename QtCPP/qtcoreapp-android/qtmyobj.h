@@ -16,8 +16,9 @@ public:
         qDebug() << "QtMyObj created";
     };
 
-    void setPriority(QString priority)
+    void setPriority(const QString& priority)
     {
+        qDebug() << "Priority changed";
         m_priority = priority;
         emit priorityChanged(priority);
     }

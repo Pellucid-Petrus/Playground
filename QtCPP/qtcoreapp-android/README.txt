@@ -40,13 +40,17 @@ How to connect Java to Qt?
          Now we need to generate the C++ wrapper for the QObject class.
 
          a. a bash script can do this for us;
-           cd android-native-build/src/org/gnuton/jni/wrappers
-           jni-tools/generate_cpp_from_java_wrappers.sh
+           cd android-native-grandle/app/src/main/java/org/gnuton/jni/wrappers
+           java2cppWrappers.sh file.java
+           Note: If it doesn't work please update the ROOT_DIR and SRC_DIR paths.
+
          This command outputs the c++ header file that we need to implement in C++ and that we can find in
             ../../..//org_gnuton_jni_QtMyObjTestWrapper.h
 
-         b.
-
+         b.Move the header in the directory containing your Qt code:
+         c.create a cpp file for the generated header
+         c.Ádd the h and cpp files to the .pro file of your project
+           eg: Add org_gnuton_jni_wrappers_QtCoreApplicationWrapper.h and org_gnuton_jni_wrappers_QtCoreApplicationWrapper.cpp
 
 > How to access to call C++ from Java:
     JNIEnv *env;

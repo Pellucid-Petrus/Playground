@@ -4,7 +4,7 @@ import re
 
 
 ########### VARS #############################################################################
-JAVA_PACKAGE = "org.gnuton.jni"
+JAVA_PACKAGE = "org.gnuton.jni.wrappers"
 
 
 ########## DO NOT TOUCH ######################################################################
@@ -70,12 +70,12 @@ with open(CPP_FILE, "r") as in_file:
   in_file.close()
   
 # write outputfile
-OUTPUT_CLASS_NAME = CPP_FILE[:-2]
+OUTPUT_CLASS_NAME = "%sWrapper" % CPP_FILE[:-2]
 OUTPUT_FILE = "%sWrapper.java" % OUTPUT_CLASS_NAME
 with open(OUTPUT_FILE, "w") as out_file:
   out_file.write("package %s;\n" % JAVA_PACKAGE)
-  out_file.write("public class %sWrapper {\n" % OUTPUT_CLASS_NAME)
-
+  out_file.write("public class %s extends QtGenericObjectWrapper {\n" % OUTPUT_CLASS_NAME)
+  out_file.write("	protected %s(){};\n" % OUTPUT_CLASS_NAME)
   for line in output:
   	out_file.write(line)
 

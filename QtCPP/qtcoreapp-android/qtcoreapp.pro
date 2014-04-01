@@ -15,8 +15,8 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp \
-    org_gnuton_jni_QtCoreApplicationWrapper.cpp \
+SOURCES += \
+    org_gnuton_jni_wrappers_QtCoreApplicationWrapper.cpp \
     org_gnuton_jni_qtmyobjWrapper.cpp
 
 # This has been disabled because we don't wanna use shadow builds
@@ -34,7 +34,7 @@ OTHER_FILES += \
 
 HEADERS += \
     qtmyobj.h \
-    org_gnuton_jni_QtCoreApplicationWrapper.h \
+    org_gnuton_jni_wrappers_QtCoreApplicationWrapper.h \
     QtMainThread.h \
     org_gnuton_jni_qtmyobjWrapper.h \
     jnitypeconverter.h

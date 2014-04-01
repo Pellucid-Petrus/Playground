@@ -11,9 +11,7 @@ public class QtLibsLoader extends Fragment{
 
 	private static String appName = "qtcoreapp"; // <-- THIS IS THE NAME OF THE LIB CONTAINING YOUR CODE!
 	private static QtLibsLoader uniqInstance;
-	private QtCoreApplicationWrapper coreApplicationWrapper;
-	private boolean isAppStarted = false;
-
+    private QtCoreApplicationWrapper mCoreApplicationWrapper;
 
 	public static synchronized QtLibsLoader getInstance()
 	{		
@@ -42,8 +40,8 @@ public class QtLibsLoader extends Fragment{
 		}
 
         // Starts the Qt application in a new thread in background
-		coreApplicationWrapper = (QtCoreApplicationWrapper) QtCoreApplicationWrapper.getInstance(QtCoreApplicationWrapper.class);
-        coreApplicationWrapper.startApplication();
+        mCoreApplicationWrapper = new QtCoreApplicationWrapper();
+        mCoreApplicationWrapper.startApplication();
 	}
 
     /***  Fragment lifecycle methods ***/
@@ -59,10 +57,8 @@ public class QtLibsLoader extends Fragment{
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-        if (!this.isAppStarted)
-			return;
 
         // Stops the Qt application whe the Java application is closed
-        coreApplicationWrapper.stopApplication();
+        mCoreApplicationWrapper.stopApplication();
     }
 }
