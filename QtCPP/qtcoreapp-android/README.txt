@@ -6,9 +6,12 @@ How it works:
 How to compile the project
     1. Load the Qt project with Qt Creator. On the left side, click "projects" and uncheck "shadow build"
     2. Press the "play" button to build the code, this will create an android-build dir with some .so files and it will deploy the app the device. The app won't actually work.
+    Alternatives to 1 & 2.
+      1a. Edit the build.sh paths
+      2a. Run build.sh with ./build.sh
+
     3. Now let's edit the java files. Open Android Studio (> 0.5.2), File  > New > Project > from existing code. This will import the project.
     4. Select MainActivity on the left panel and press the "play" button in the toolbar to build and run the app on the device/emulator
-
 
 How to connect Java to Qt?
     We are gonna use JNI APIs.
