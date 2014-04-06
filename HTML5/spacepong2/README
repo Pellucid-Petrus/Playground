@@ -1,0 +1,3 @@
+This project can run on android thanks to crosswalk.
+
+crosswalk-4.32.76.6$ ./make_apk.py --manifest=/tmp/xwalk-simple/manifest.json --orientation=landscape -f && adb install -r spong2_arm.apk
