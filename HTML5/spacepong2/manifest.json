@@ -1,0 +1,12 @@
+{
+  "name": "spong",
+  "version": "0.0.0.2",
+  "app": {
+    "launch":{
+      "local_path": "index.html"
+    }
+  },
+  "icons": {
+    "128": "res/drawable-hdpi/ic_launcher.png"
+  }
+}
