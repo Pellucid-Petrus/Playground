@@ -60,14 +60,6 @@ function start() {
     var winText;
 
 // phaser game instance
-    // get dimensions of the window considering retina displays
-    /*
-    var w = window.innerWidth * window.devicePixelRatio,
-    h = window.innerHeight * window.devicePixelRatio;
-
-    w = bound(w, 320, 960);
-    h = bound(h, 240, 560);
-    var game = new Phaser.Game((h > w) ? h : w, (h > w) ? w : h, Phaser.AUTO, 'screen',*/
     var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'screen',
         { preload: onPreload, create: onCreate, update: onUpdate }
     );
@@ -142,6 +134,8 @@ function start() {
 // we just show the playfield image above it while a game is
 // in play.
         welcomeImage = game.add.sprite(0, 0, 'welcome');
+        welcomeImage.width = game.width - MARGIN * 2;
+        welcomeImage.height = game.height - MARGIN * 2;
         welcomeImage.x = (game.width - welcomeImage.width) /2;
         welcomeImage.y = (game.height - welcomeImage.height) /2;
 
@@ -210,45 +204,16 @@ function start() {
      */
     function touchScreen()
     {
-        // is the left or right side of the screen clicked?
-        if (game.input.x < (game.world.width / 2))
-        {
-            // left side touch
-            if (!isGameOver)
-            {
-                // if the ball is already in play, move the left paddle.
-                if (!releaseBall())
-                {
-                    leftPlayer.targetY = game.input.y;
-                }
+        if (!isGameOver){
+            // Start new game set
+            if (ball.body.velocity.y == 0) {
+                startGameSet();
             }
-            else
-            {
-                // start a new single player game
-                isMultiplayer = false;
-                resetGame();
-                resetBall();
-            }
-        }
-        else
-        {
-            // right side touch
-            if (!isGameOver)
-            {
-                // // if the ball is already in play, move the right paddle.
-                if (!releaseBall())
-                {
-                    rightPlayer.targetY = game.input.y;
-                }
-            }
-            else
-            {
-                // FIXME ONE PLAYER ALLOWED
-                // start a new multiplayer game
-                isMultiplayer = true;
-                resetGame();
-                resetBall();
-            }
+        } else {
+            // is the left or right side of the screen clicked?
+            isMultiplayer = (game.input.x > (game.world.width / 2));
+            resetGame();
+            resetBall();
         }
     }
 
@@ -257,24 +222,9 @@ function start() {
      */
     function onUpdate()
     {
-
-        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
-        {
-            if (!isGameOver)
-            {
-                releaseBall();
-            }
-        }
-
         if (!isGameOver)
         {
-
-            movePlayerPaddle(leftPlayer);
-            if (isMultiplayer)
-            {
-                movePlayerPaddle(rightPlayer);
-            }
-            else
+            if (!isMultiplayer)
             {
                 moveComputerPaddle(rightPlayer.paddle);
             }
@@ -355,49 +305,6 @@ function start() {
     }
 
     /**
-     * Handle player paddle movement if the player's keys are pressed.
-     * The paddle can either be moved by keyboard or by a target-Y
-     * position, which gets set on screen clicks or taps.
-     */
-    function movePlayerPaddle(playerObject)
-    {
-        if (game.input.keyboard.isDown(playerObject.upKey))
-        {
-            // the up key for this player is pressed
-            playerObject.paddle.body.velocity.y = -paddleMoveSpeed;
-            playerObject.targetY = null;
-        }
-        else if (game.input.keyboard.isDown(playerObject.downKey))
-        {
-            // the down key for this player is pressed
-            playerObject.paddle.body.velocity.y = paddleMoveSpeed;
-            playerObject.targetY = null;
-        }
-        else if (playerObject.targetY)
-        {
-            // the paddle has a target Y-position set
-            var diff = (playerObject.targetY - playerObject.paddle.y);
-            if (Math.abs(diff) > 15)
-            {
-                // move towards the target position
-                var negative = diff < 0 ? -10 : 10;
-                playerObject.paddle.body.velocity.y = negative * paddleMoveSpeed;
-            }
-            else
-            {
-                // we reached the target position
-                playerObject.targetY = null;
-                playerObject.paddle.body.velocity.y = 0;
-            }
-        }
-        else
-        {
-            // paddle should stop moving
-            playerObject.paddle.body.velocity.y = 0;
-        }
-    }
-
-    /**
      * A very basic computer player that follows the ball
      * when it moves towards the paddle, otherwise it
      * floats toward a center position.
@@ -432,6 +339,8 @@ function start() {
     function createPaddle(x, y)
     {
         var bat = game.add.sprite(x, y, 'bat');
+        bat.scale.x = 0.8;
+        bat.scale.y = 0.8;
         bat.anchor.setTo(0.5, 0.5);
         bat.body.collideWorldBounds = true;
         bat.body.immovable = true;
@@ -492,6 +401,14 @@ function start() {
         leftPlayer.paddle.y = 240;
     }
 
+    function enableInputForPlayer(player, inputEnabled){
+        player.paddle.inputEnabled = inputEnabled;
+        if (inputEnabled) {
+            player.paddle.input.enableDrag();
+            player.paddle.input.allowHorizontalDrag = false;
+        }
+    }
+
     /**
      * Center the ball in the screen and make it stationary.
      */
@@ -524,6 +441,12 @@ function start() {
         ball.x = game.world.centerX;
         ball.y = game.world.centerY;
         ballReleased = false;
+    }
+
+    function startGameSet(){
+        enableInputForPlayer(leftPlayer, true);
+        enableInputForPlayer(rightPlayer, isMultiplayer);
+        releaseBall();
     }
 
     /**
@@ -609,7 +532,7 @@ function start() {
                 resetBall();
             }
 
-            scoreTextObject.content = '1P ' + leftPlayer.score + ' - ' + rightPlayer.score + (isMultiplayer ? ' 2P' : ' CPU');
+            scoreTextObject.content = '1P  ' + leftPlayer.score + ' - ' + rightPlayer.score + (isMultiplayer ? '  2P' : ' CPU');
 
 // if either player reaches the max score the game is over
             if (leftPlayer.score == MAX_SCORE || rightPlayer.score == MAX_SCORE)
@@ -621,5 +544,5 @@ function start() {
 }
 
 function bound(_number, _min, _max){
-        return Math.max(Math.min(_number, _max), _min);
+    return Math.max(Math.min(_number, _max), _min);
 }

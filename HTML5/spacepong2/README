@@ -1,3 +1,4 @@
 This project can run on android thanks to crosswalk.
 
-crosswalk-4.32.76.6$ ./make_apk.py --manifest=/tmp/xwalk-simple/manifest.json --orientation=landscape -f && adb install -r spong2_arm.apk
+./make_apk.py --manifest=/home/gnuton/GIT/Playground/HTML5/spacepong2/manifest.json --orientation=landscape -f --package=org.gnuton.spacepong  --keystore-path=/home/gnuton/keystore spong_arm.apk --keystore-alias=test1 --keystore-passcode=testpass --app-versionCode=2
+
