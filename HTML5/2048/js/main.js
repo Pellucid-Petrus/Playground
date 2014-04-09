@@ -41,25 +41,25 @@ window.onload = function() {
     // true when the device orientation change has been alredy consumed
     var tiltConsumed;
 
-    // colors to tint tiles according to their value
-    var colors = {
-        2:0xFFFFFF,
-        4:0xFFEEEE,
-        8:0xFFDDDD,
-        16:0xFFCCCC,
-        32:0xFFBBBB,
-        64:0xFFAAAA,
-        128:0xFF9999,
-        256:0xFF8888,
-        512:0xFF7777,
-        1024:0xFF6666,
-        2048:0xFF5555,
-        4096:0xFF4444,
-        8192:0xFF3333,
-        16384:0xFF2222,
-        32768:0xFF1111,
-        65536:0xFF0000
+    var tileNames = {
+        2: "1.png",
+        4: "2.png",
+        8: "3.png",
+        16: "4.png",
+        32: "5.png",
+        64: "6.png",
+        128: "7.png",
+        256: "8.png",
+        512: "9.png",
+        1024: "10.png",
+        2048: "11.png",
+        4096: "12.png",
+        8192: "13.png",
+        16384: "14.png",
+        32768: "15.png",
+        65536: "16.png"
     }
+
     // at the beginning of the game, the player cannot move
     var canMove=false;
 
@@ -68,6 +68,7 @@ window.onload = function() {
         // preload the only image we are using in the game
         game.load.image("tile", "assets/tile-haku.png");
         game.load.image("bg", "assets/background.jpg");
+        game.load.atlas("tiles", 'assets/tiles-atlas.png', 'assets/tiles-atlas.json' );
     }
 
     // THE GAME HAS BEEN CREATED
@@ -116,20 +117,16 @@ window.onload = function() {
         // such empty tile now takes "2" value
         fieldArray[randomValue]=2;
         // creation of a new sprite with "tile" instance, that is "tile.png" we loaded before
-        var tile = game.add.sprite(toCol(randomValue)*tileSize,toRow(randomValue)*tileSize,"tile");
+        var tile = game.add.sprite(toCol(randomValue)*tileSize,toRow(randomValue)*tileSize, "tiles");
+        tile.frameName = tileNames[2];
         tile.height = tileSize;
-        tile.width = tileSize;
+        tile.width = tileSize*2/3;
 
         // creation of a custom property "pos" and assigning it the index of the newly added "2"
         tile.pos = randomValue;
         // at the beginning the tile is completely transparent
         tile.alpha=0;
-        // creation of a text which will represent the value of the tile
-        var text = game.add.text(tileSize/2,tileSize/2,"2",{font:"bold 16px Arial",align:"center"});
-        // setting text anchor in the horizontal and vertical center
-        text.anchor.set(0.5);
-        // adding the text as a child of tile sprite
-        tile.addChild(text);
+
         // adding tile sprites to the group
         tileSprites.add(tile);
         // creation of a new tween for the tile sprite
@@ -163,10 +160,7 @@ window.onload = function() {
         tileSprites.forEach(function(item){
             // retrieving the proper value to show
             var value = fieldArray[item.pos];
-            // showing the value
-            item.getChildAt(0).text=value;
-            // tinting the tile
-            item.tint=colors[value]
+            item.frameName=tileNames[value];
         });
     }
 
