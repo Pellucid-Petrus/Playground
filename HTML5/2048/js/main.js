@@ -129,7 +129,8 @@ window.onload = function() {
 
         // adding tile sprites to the group
         tileSprites.add(tile);
-        // creation of a new tween for the tile sprite
+
+        // Add animation!!
         var fadeIn = game.add.tween(tile);
         // the tween will make the sprite completely opaque in 250 milliseconds
         fadeIn.to({alpha:1}, 500);
@@ -160,7 +161,11 @@ window.onload = function() {
         tileSprites.forEach(function(item){
             // retrieving the proper value to show
             var value = fieldArray[item.pos];
-            item.frameName=tileNames[value];
+            var currFramename = item.frameName;
+            if (currFramename != tileNames[value]) {
+                //update needed
+                item.frameName=tileNames[value];
+            }
         });
     }
 
@@ -338,7 +343,7 @@ window.onload = function() {
         var r = tiltLR > 30;
         var l = tiltLR < -30;
         var b = tiltFB > 30;
-        var f = tiltFB < -30;
+        var f = tiltFB < -15;
 
 
         if (tiltConsumed) {
