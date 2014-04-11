@@ -120,7 +120,7 @@ window.onload = function() {
         var tile = game.add.sprite(toCol(randomValue)*tileSize,toRow(randomValue)*tileSize, "tiles");
         tile.frameName = tileNames[2];
         tile.height = tileSize;
-        tile.width = tileSize*2/3;
+        tile.width = tileSize;
 
         // creation of a custom property "pos" and assigning it the index of the newly added "2"
         tile.pos = randomValue;
