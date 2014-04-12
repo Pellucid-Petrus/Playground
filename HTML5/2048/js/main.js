@@ -26,6 +26,7 @@ window.onload = function() {
     var w = window.innerWidth;
     var h = window.innerHeight;
     var tileSize = w < h ? w/4 : h/4;
+    var tileScale;
 
     var game = new Phaser.Game(w, h, Phaser.AUTO, "screen", {preload:onPreload, create:onCreate});
     // game array, starts with all cells to zero
@@ -38,8 +39,15 @@ window.onload = function() {
     var leftKey;
     var rightKey;
 
+    var scoreText;
+    var score = 0;
+
+    // audio
+    var audioScore;
+    var audioTilt;
+
     // true when the device orientation change has been alredy consumed
-    var tiltConsumed;
+    var tiltConsumed = false;
 
     var tileNames = {
         2: "1.png",
@@ -66,9 +74,11 @@ window.onload = function() {
     // THE GAME IS PRELOADING
     function onPreload() {
         // preload the only image we are using in the game
-        game.load.image("tile", "assets/tile-haku.png");
-        game.load.image("bg", "assets/background.jpg");
+        game.load.image("bg", "assets/bg2.jpg")
         game.load.atlas("tiles", 'assets/tiles-atlas.png', 'assets/tiles-atlas.json' );
+        game.load.image("lantern", "assets/lantern.png");
+        game.load.audio('audioScore', [ 'assets/audio/score.wav' ]);
+        game.load.audio('audioTilt', ['assets/audio/tilt.mp3' ]);
     }
 
     // THE GAME HAS BEEN CREATED
@@ -89,9 +99,16 @@ window.onload = function() {
         }
 
         // create bg
-        bgImg = game.add.tileSprite(0,0, 279,269,'bg');
+        /*bgImg = game.add.tileSprite(0,0, 279,269,'bg');*/
+        var bgImg = game.add.sprite(0,0, 'bg');
         bgImg.width = game.width;
         bgImg.height = game.height;
+
+        var lantern = game.add.sprite(0 ,0, 'lantern');
+        lantern.x = game.width - lantern.width;
+
+        updateScore();
+
         // listeners for WASD keys
         upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
         upKey.onDown.add(moveUp,this);
@@ -101,11 +118,36 @@ window.onload = function() {
         leftKey.onDown.add(moveLeft,this);
         rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
         rightKey.onDown.add(moveRight,this);
+
         // sprite group declaration
         tileSprites = game.add.group();
+
+        //	Here we set-up our audio
+        audioScore = game.add.audio('audioScore');
+        audioTilt = game.add.audio('audioTilt');
+
         // at the beginning of the game we add two "2"
         addTwo();
         addTwo();
+    }
+
+    function updateScore(){
+        var text = "Score: " + score;
+        if (! scoreText){
+            var style = { font: "30px Arial", fill: "#ff0044", align: "center" };
+
+            scoreText = game.add.text(0,0, text, style);
+            scoreText.x = game.width - (scoreText.width +10);
+            scoreText.y = game.height - (scoreText.height + 10);
+            scoreText.anchor.setTo(0.5, 0.5);
+            return;
+        }
+        scoreText.text = text;
+
+        scoreText.scale.setTo(1.5, 1.5);
+        game.add.tween(scoreText.scale).to({x: 1.0, y: 1.0}, 300, Phaser.Easing.Bounce.Out, true);
+
+        audioScore.play();
     }
 
     // A NEW "2" IS ADDED TO THE GAME
@@ -116,16 +158,24 @@ window.onload = function() {
         } while (fieldArray[randomValue]!=0)
         // such empty tile now takes "2" value
         fieldArray[randomValue]=2;
+
         // creation of a new sprite with "tile" instance, that is "tile.png" we loaded before
-        var tile = game.add.sprite(toCol(randomValue)*tileSize,toRow(randomValue)*tileSize, "tiles");
+        var tile = game.add.sprite(0,0, "tiles");
+        tile.anchor.setTo(0.5,0.5);
+        tile.x = toAnchorCoordinate(toCol(randomValue)*tileSize);
+        tile.y = toAnchorCoordinate(toRow(randomValue)*tileSize);
+
         tile.frameName = tileNames[2];
-        tile.height = tileSize;
-        tile.width = tileSize;
+
+        // this is actually a constant
+        tileScale = tileSize/tile.height;
+        tile.scale.setTo(tileScale, tileScale);
 
         // creation of a custom property "pos" and assigning it the index of the newly added "2"
         tile.pos = randomValue;
         // at the beginning the tile is completely transparent
         tile.alpha=0;
+
 
         // adding tile sprites to the group
         tileSprites.add(tile);
@@ -143,6 +193,11 @@ window.onload = function() {
         })
         // starting the tween
         fadeIn.start();
+    }
+
+    // Since tiles anchor is 0.5/0.5 we can use this hardcoded function!
+    function toAnchorCoordinate(initialCoordinate){
+        return initialCoordinate + tileSize /2;
     }
 
     // GIVING A NUMBER IN A 1-DIMENSION ARRAY, RETURNS THE ROW
@@ -165,6 +220,14 @@ window.onload = function() {
             if (currFramename != tileNames[value]) {
                 //update needed
                 item.frameName=tileNames[value];
+                item.scale.setTo(2.0, 2.0);
+                game.add.tween(item.scale).to({x: tileScale, y: tileScale}, 150, Phaser.Easing.Bounce.Out, true);
+
+                // scoring
+                score += (value/2);
+                updateScore();
+
+
             }
         });
     }
@@ -218,8 +281,10 @@ window.onload = function() {
     // FUNCTION TO COMPLETE THE MOVE AND PLACE ANOTHER "2" IF WE CAN
     function endMove(m){
         // if we move the tile...
+
         if(m){
             // add another "2"
+            audioTilt.play();
             addTwo();
         }
         else{
@@ -236,7 +301,9 @@ window.onload = function() {
         tile.pos=to;
         // then we create a tween
         var movement = game.add.tween(tile);
-        movement.to({x:tileSize*(toCol(to)),y:tileSize*(toRow(to))},150);
+        movement.to({x: toAnchorCoordinate(tileSize*(toCol(to))),
+                     y: toAnchorCoordinate(tileSize*(toRow(to)))},
+                     150);
         if(remove){
             // if the tile has to be removed, it means the destination tile must be multiplied by 2
             fieldArray[to]*=2;
@@ -340,10 +407,10 @@ window.onload = function() {
     }
 
     function deviceOrientationHandler(tiltLR, tiltFB, dir) {
-        var r = tiltLR > 30;
-        var l = tiltLR < -30;
-        var b = tiltFB > 30;
-        var f = tiltFB < -15;
+        var f = tiltLR > 30;
+        var b = tiltLR < -30;
+        var r= tiltFB > 30;
+        var l = tiltFB < -30;
 
 
         if (tiltConsumed) {
