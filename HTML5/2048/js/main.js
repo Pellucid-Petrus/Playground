@@ -291,6 +291,52 @@ window.onload = function() {
             // otherwise just let the player be able to move again
             canMove=true;
         }
+        if (checkGameOver())
+            alert("GAME OVER");
+    }
+
+    function checkGameOver(){
+        // Check if array has empty slots
+        for (var i = 0 ; i < fieldArray.length; i++){
+            if (fieldArray[i] == 0)
+                return false;
+        }
+
+        /*
+                 0   1   2   3
+                 4   5   6   7
+                 8   9   10  11
+                 12  13  14  15
+         */
+        // Check if they slots can be merged
+        for (var i = 0 ; i < fieldArray.length; i++){
+            // Upper tile
+            var u = i-4;
+            if (u >= 0){
+                if (fieldArray[u] == fieldArray[i])
+                    return false;
+            }
+
+            // Lower tile
+            var d = i+4;
+            if (d < fieldArray.length){
+                if (fieldArray[d] == fieldArray[i])
+                    return false;
+            }
+
+            var module = i%4;
+            var l = i-1;
+            if (module > 0){
+                if (fieldArray[l] == fieldArray[i])
+                    return false;
+            }
+            var r = i+1;
+            if (module < 4){
+                if (fieldArray[r] == fieldArray[i])
+                    return false;
+            }
+        }
+        return true;
     }
 
     // FUNCTION TO MOVE A TILE
