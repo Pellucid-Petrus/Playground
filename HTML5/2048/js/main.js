@@ -46,6 +46,9 @@ window.onload = function() {
     var audioScore;
     var audioTilt;
 
+    var gameOverText;
+    var logoText;
+
     // true when the device orientation change has been alredy consumed
     var tiltConsumed = false;
 
@@ -77,6 +80,8 @@ window.onload = function() {
         game.load.image("bg", "assets/bg2.jpg")
         game.load.atlas("tiles", 'assets/tiles-atlas.png', 'assets/tiles-atlas.json' );
         game.load.image("lantern", "assets/lantern.png");
+        game.load.image("logo", "assets/2048Mahjong.png");
+        game.load.image("gameover", "assets/GameOver.png");
         game.load.audio('audioScore', [ 'assets/audio/score.wav' ]);
         game.load.audio('audioTilt', ['assets/audio/tilt.mp3' ]);
     }
@@ -126,11 +131,19 @@ window.onload = function() {
         audioScore = game.add.audio('audioScore');
         audioTilt = game.add.audio('audioTilt');
 
-        // at the beginning of the game we add two "2"
-        addTwo();
-        addTwo();
+        toggleLogo();
     }
 
+    function startGame(){
+        toggleLogo();
+        addTwo();
+        addTwo();
+        canMove = true;
+
+        // reset score
+        score = 0;
+        updateScore();
+    }
     function updateScore(){
         var text = "Score: " + score;
         if (! scoreText){
@@ -195,6 +208,55 @@ window.onload = function() {
         fadeIn.start();
     }
 
+    // Set and unset gameover state and graphics
+    function toggleLogo(){
+        // hides gameover text;
+        if (gameOverText)
+            toggleGameOver()
+
+        if (logoText){
+            // unset it
+            logoText.destroy();
+            logoText = null;
+        } else {
+            logoText = game.add.sprite(0, 0, 'logo');
+            var s =  (game.width*(4/5)) / logoText.width;
+            logoText.scale.setTo(s, s);
+            logoText.anchor.setTo(0.5, 0.5);
+            logoText.x = game.width /2;
+            logoText.y = game.height /2;
+
+            canMove = false;
+            logoText.inputEnabled = true;
+            logoText.events.onInputDown.add(startGame, this);
+        }
+    }
+    // Set and unset gameover state and graphics
+    function toggleGameOver(){
+        if (gameOverText){
+            // unset it
+            gameOverText.destroy();
+            gameOverText = null;
+        } else {
+            gameOverText = game.add.sprite(0, 0, 'gameover');
+            gameOverText.anchor.setTo(0.5, 0.5);
+            gameOverText.x = game.width /2;
+            gameOverText.y = game.height /2;
+            gameOverText.inputEnabled = true;
+            gameOverText.events.onInputDown.add(toggleLogo, this);
+
+            resetTiles();
+        }
+    }
+
+    function resetTiles(){
+        for  (var i = 0 ; i < fieldArray.length; i++){
+            fieldArray[i] = 0;
+        }
+
+        updateNumbers();
+    }
+
     // Since tiles anchor is 0.5/0.5 we can use this hardcoded function!
     function toAnchorCoordinate(initialCoordinate){
         return initialCoordinate + tileSize /2;
@@ -215,8 +277,17 @@ window.onload = function() {
         // look how I loop through all tiles
         tileSprites.forEach(function(item){
             // retrieving the proper value to show
+            if (item == null)
+                return;
             var value = fieldArray[item.pos];
             var currFramename = item.frameName;
+
+            // remove tile
+            if (value === 0){
+                item.destroy();
+            }
+
+            // update tile
             if (currFramename != tileNames[value]) {
                 //update needed
                 item.frameName=tileNames[value];
@@ -226,8 +297,6 @@ window.onload = function() {
                 // scoring
                 score += (value/2);
                 updateScore();
-
-
             }
         });
     }
@@ -291,22 +360,22 @@ window.onload = function() {
             // otherwise just let the player be able to move again
             canMove=true;
         }
-        if (checkGameOver())
-            alert("GAME OVER");
+        if (checkGameOver() && gameOverText == null)
+            toggleGameOver();
     }
 
     function checkGameOver(){
         // Check if array has empty slots
-        for (var i = 0 ; i < fieldArray.length; i++){
+        for  (var i = 0 ; i < fieldArray.length; i++){
             if (fieldArray[i] == 0)
                 return false;
         }
 
         /*
-                 0   1   2   3
-                 4   5   6   7
-                 8   9   10  11
-                 12  13  14  15
+         0   1   2   3
+         4   5   6   7
+         8   9   10  11
+         12  13  14  15
          */
         // Check if they slots can be merged
         for (var i = 0 ; i < fieldArray.length; i++){
@@ -348,8 +417,8 @@ window.onload = function() {
         // then we create a tween
         var movement = game.add.tween(tile);
         movement.to({x: toAnchorCoordinate(tileSize*(toCol(to))),
-                     y: toAnchorCoordinate(tileSize*(toRow(to)))},
-                     150);
+                y: toAnchorCoordinate(tileSize*(toRow(to)))},
+            150);
         if(remove){
             // if the tile has to be removed, it means the destination tile must be multiplied by 2
             fieldArray[to]*=2;
