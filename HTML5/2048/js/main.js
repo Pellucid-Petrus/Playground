@@ -1,3 +1,14 @@
+// game array, starts with all cells to zero
+var fieldArray = new Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
 window.onload = function() {
     init();
 
@@ -29,8 +40,7 @@ window.onload = function() {
     var tileScale;
 
     var game = new Phaser.Game(w, h, Phaser.AUTO, "screen", {preload:onPreload, create:onCreate});
-    // game array, starts with all cells to zero
-    var fieldArray = new Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+
     // this is the group which will contain all tile sprites
     var tileSprites;
     // variables to handle keyboard input
@@ -112,6 +122,21 @@ window.onload = function() {
         var lantern = game.add.sprite(0 ,0, 'lantern');
         lantern.x = game.width - lantern.width;
 
+        // DEBUG Helper code!! Disable it in production
+        if(getUrlVars()["debug"] == "true"){
+            lantern.inputEnabled =true;
+            lantern.events.onInputDown.add(function(){
+
+                for (var i = 0; i < 14; i++) {
+                    addTwo();
+                }
+                fieldArray = new Array(2,2,8,4,16,32,64,128,256,512,1024,2048,16,32,2,8);
+                updateNumbers();
+                canMove =true;
+
+            }, this)
+        }
+
         updateScore();
 
         // listeners for WASD keys
@@ -135,6 +160,8 @@ window.onload = function() {
     }
 
     function startGame(){
+        resetTiles();
+
         toggleLogo();
         addTwo();
         addTwo();
@@ -202,6 +229,7 @@ window.onload = function() {
             // updating tile numbers. This is not necessary the 1st time, anyway
             updateNumbers();
             // now I can move
+            console.log("ACTIVATE");
             canMove=true;
         })
         // starting the tween
@@ -244,8 +272,6 @@ window.onload = function() {
             gameOverText.y = game.height /2;
             gameOverText.inputEnabled = true;
             gameOverText.events.onInputDown.add(toggleLogo, this);
-
-            resetTiles();
         }
     }
 
@@ -253,8 +279,13 @@ window.onload = function() {
         for  (var i = 0 ; i < fieldArray.length; i++){
             fieldArray[i] = 0;
         }
-
-        updateNumbers();
+        // Iterate untile all the objects are removed in the group
+        while (tileSprites.length){
+            tileSprites.forEach(function(item){
+                if(item)
+                    item.destroy();
+            });
+        }
     }
 
     // Since tiles anchor is 0.5/0.5 we can use this hardcoded function!
@@ -285,8 +316,7 @@ window.onload = function() {
             // remove tile
             if (value === 0){
                 item.destroy();
-            }
-
+            } else
             // update tile
             if (currFramename != tileNames[value]) {
                 //update needed
@@ -305,6 +335,7 @@ window.onload = function() {
     function moveLeft(){
         // Is the player allowed to move?
         if(canMove){
+            console.log("CAN MOVE");
             // the player can move, let's set "canMove" to false to prevent moving again until the move process is done
             canMove=false;
             // keeping track if the player moved, i.e. if it's a legal move
@@ -355,20 +386,21 @@ window.onload = function() {
             // add another "2"
             audioTilt.play();
             addTwo();
-        }
-        else{
+        } else{
             // otherwise just let the player be able to move again
+
             canMove=true;
         }
-        if (checkGameOver() && gameOverText == null)
-            toggleGameOver();
+
     }
 
     function checkGameOver(){
         // Check if array has empty slots
         for  (var i = 0 ; i < fieldArray.length; i++){
-            if (fieldArray[i] == 0)
+            if (fieldArray[i] == 0){
+                console.log("Array not empty");
                 return false;
+            }
         }
 
         /*
@@ -382,29 +414,40 @@ window.onload = function() {
             // Upper tile
             var u = i-4;
             if (u >= 0){
-                if (fieldArray[u] == fieldArray[i])
+                if (fieldArray[u] == fieldArray[i]){
+                    console.log("Tile U:" + u+ "Tile i;" + i);
                     return false;
+                }
             }
 
             // Lower tile
             var d = i+4;
             if (d < fieldArray.length){
-                if (fieldArray[d] == fieldArray[i])
+                if (fieldArray[d] == fieldArray[i]){
+                    console.log("Tile D:" + d+ "Tile i;" + i);
                     return false;
+                }
             }
 
-            var module = i%4;
+            var iRow = Math.floor(i /4);
             var l = i-1;
-            if (module > 0){
-                if (fieldArray[l] == fieldArray[i])
+            var lRow = Math.floor(l /4);
+            if (iRow === lRow){
+                if (fieldArray[l] == fieldArray[i]){
+                    console.log("Tile L:" + l+ "Tile i;" + i);
                     return false;
+                }
             }
             var r = i+1;
-            if (module < 4){
-                if (fieldArray[r] == fieldArray[i])
+            var rRow = Math.floor(r /4);
+            if (iRow === rRow){
+                if (fieldArray[r] == fieldArray[i]){
+                    console.log("Tile R:" + r + "Tile i;" + i);
                     return false;
+                }
             }
         }
+        console.log("It's a game over!");
         return true;
     }
 
@@ -419,12 +462,19 @@ window.onload = function() {
         movement.to({x: toAnchorCoordinate(tileSize*(toCol(to))),
                 y: toAnchorCoordinate(tileSize*(toRow(to)))},
             150);
+        movement.onComplete.add(function(){
+            // Check game over
+            if (checkGameOver() && gameOverText == null)
+                toggleGameOver();
+        });
+
         if(remove){
             // if the tile has to be removed, it means the destination tile must be multiplied by 2
             fieldArray[to]*=2;
             // at the end of the tween we must destroy the tile
             movement.onComplete.add(function(){
                 tile.destroy();
+
             });
         }
         // let the tween begin!
