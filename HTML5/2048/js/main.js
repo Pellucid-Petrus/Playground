@@ -39,7 +39,7 @@ window.onload = function() {
     var tileSize = w < h ? w/4 : h/4;
     var tileScale;
 
-    var game = new Phaser.Game(w, h, Phaser.AUTO, "screen", {preload:onPreload, create:onCreate});
+    var game = new Phaser.Game(w, h, Phaser.AUTO, "screen", {preload:onPreload, create:onCreate, update: onUpdate});
 
     // this is the group which will contain all tile sprites
     var tileSprites;
@@ -114,15 +114,20 @@ window.onload = function() {
         }
 
         // create bg
-        /*bgImg = game.add.tileSprite(0,0, 279,269,'bg');*/
         var bgImg = game.add.sprite(0,0, 'bg');
         bgImg.width = game.width;
         bgImg.height = game.height;
 
-        var lantern = game.add.sprite(0 ,0, 'lantern');
-        lantern.x = game.width - lantern.width;
+        // lantern
+        lantern = game.add.sprite(0 ,0, 'lantern');
+        lantern.anchor.setTo(0.5, 0);
+        lantern.x = game.width - lantern.width/2;
+        game.add.tween(lantern).to({angle:20}, 2000, Phaser.Easing.Cubic.Out, true)
+                               .to({angle:-20}, 2000, Phaser.Easing.Cubic.Out, true).loop();
 
-        // DEBUG Helper code!! Disable it in production
+
+        // DEBUG Helper code!!
+        // To enable it go to index.html?debug=true
         if(getUrlVars()["debug"] == "true"){
             lantern.inputEnabled =true;
             lantern.events.onInputDown.add(function(){
@@ -139,14 +144,14 @@ window.onload = function() {
 
         updateScore();
 
-        // listeners for WASD keys
-        upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
+        // listener keys
+        upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
         upKey.onDown.add(moveUp,this);
-        downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
+        downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
         downKey.onDown.add(moveDown,this);
-        leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
         leftKey.onDown.add(moveLeft,this);
-        rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
+        rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
         rightKey.onDown.add(moveRight,this);
 
         // sprite group declaration
@@ -157,6 +162,15 @@ window.onload = function() {
         audioTilt = game.add.audio('audioTilt');
 
         toggleLogo();
+    }
+
+    function onUpdate() {
+        /*var lantern_angle = lantern.angle;
+        if (lantern_angle > 45){
+            lantern.angle = lantern_angle -1
+        } else if (lantern_angle > -45){
+            lantern.angle = lantern_angle +1
+        }*/
     }
 
     function startGame(){
@@ -243,35 +257,44 @@ window.onload = function() {
             toggleGameOver()
 
         if (logoText){
-            // unset it
-            logoText.destroy();
-            logoText = null;
+            game.add.tween(logoText).to({y: - logoText.height * 2}, 1000, Phaser.Easing.Bounce.Out, true)
+                .onComplete.add(function(){
+                        logoText.destroy();
+                        logoText = null;
+                    });
         } else {
             logoText = game.add.sprite(0, 0, 'logo');
             var s =  (game.width*(4/5)) / logoText.width;
             logoText.scale.setTo(s, s);
             logoText.anchor.setTo(0.5, 0.5);
             logoText.x = game.width /2;
-            logoText.y = game.height /2;
+            logoText.y = game.height *2;
 
             canMove = false;
             logoText.inputEnabled = true;
             logoText.events.onInputDown.add(startGame, this);
+            game.add.tween(logoText).to({y: game.height /2}, 1000, Phaser.Easing.Bounce.Out, true).start();
         }
     }
     // Set and unset gameover state and graphics
     function toggleGameOver(){
         if (gameOverText){
             // unset it
-            gameOverText.destroy();
-            gameOverText = null;
+             game.add.tween(gameOverText).to({y: - gameOverText.height * 2}, 1000, Phaser.Easing.Bounce.Out, true)
+                .onComplete.add(function(){
+                     gameOverText.destroy();
+                     gameOverText = null;
+                    });
+
         } else {
             gameOverText = game.add.sprite(0, 0, 'gameover');
             gameOverText.anchor.setTo(0.5, 0.5);
             gameOverText.x = game.width /2;
-            gameOverText.y = game.height /2;
+            gameOverText.y = game.height * 2;
             gameOverText.inputEnabled = true;
             gameOverText.events.onInputDown.add(toggleLogo, this);
+            game.add.tween(gameOverText).to({y: game.height /2}, 1000, Phaser.Easing.Bounce.Out, true).start();
+
         }
     }
 
