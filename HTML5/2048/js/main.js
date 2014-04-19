@@ -88,6 +88,7 @@ window.onload = function() {
     function onPreload() {
         // preload the only image we are using in the game
         game.load.image("bg", "assets/bg2.jpg")
+        game.load.bitmapFont('fonts', 'assets/font.png', 'assets/font.fnt');
         game.load.atlas("tiles", 'assets/tiles-atlas.png', 'assets/tiles-atlas.json' );
         game.load.image("lantern", "assets/lantern.png");
         game.load.image("logo", "assets/2048Mahjong.png");
@@ -186,22 +187,30 @@ window.onload = function() {
         updateScore();
     }
     function updateScore(){
-        var text = "Score: " + score;
+        var text = "SCORE: " + score;
+        var fontSize = 64;
+
         if (! scoreText){
-            var style = { font: "30px Arial", fill: "#ff0044", align: "center" };
+            // Creates Score text
+            scoreText = game.add.bitmapText(200, 100, 'fonts', text, fontSize);
+            scoreText.y = game.height - (fontSize +10);
+            scoreText.x = game.width - text.length *fontSize /2;
+            scoreText.x = game.width - (text.length *fontSize /2 + 10);
 
-            scoreText = game.add.text(0,0, text, style);
-            scoreText.x = game.width - (scoreText.width +10);
-            scoreText.y = game.height - (scoreText.height + 10);
-            scoreText.anchor.setTo(0.5, 0.5);
             return;
+        } else {
+            // Update Score text
+            scoreText.text = text;
+
+            scoreText.align = 'center';
+
+            scoreText.scale.setTo(1.5, 1.5);
+            game.add.tween(scoreText.scale).to({x: 1.0, y: 1.0}, 300, Phaser.Easing.Bounce.Out, true);
+
+            audioScore.play();
         }
-        scoreText.text = text;
 
-        scoreText.scale.setTo(1.5, 1.5);
-        game.add.tween(scoreText.scale).to({x: 1.0, y: 1.0}, 300, Phaser.Easing.Bounce.Out, true);
 
-        audioScore.play();
     }
 
     // A NEW "2" IS ADDED TO THE GAME
