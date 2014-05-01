@@ -19,4 +19,5 @@ var menuState = {
     start: function () {
         this.game.state.start('play');
     }
+
 };
