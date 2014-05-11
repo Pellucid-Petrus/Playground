@@ -28,8 +28,8 @@ var loadState = {
 
         // Here the stuff to preload
         game.load.image('sky', 'assets/sprites/sky2.png');
-        game.load.image('world1', 'assets/sprites/world1.png');
-        game.load.image('stone', 'assets/sprites/stone.png');
+        game.load.image('world1', 'assets/sprites/world2.png');
+        game.load.image('stone', 'assets/sprites/obstacle2.png');
 
         game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
