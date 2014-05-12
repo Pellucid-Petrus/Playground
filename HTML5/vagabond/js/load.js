@@ -30,7 +30,7 @@ var loadState = {
         game.load.image('sky', 'assets/sprites/sky2.png');
         game.load.image('world1', 'assets/sprites/world2.png');
         game.load.image('stone', 'assets/sprites/obstacle2.png');
-
+        game.load.bitmapFont('fonts', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
         game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
     },
