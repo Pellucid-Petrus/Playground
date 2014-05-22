@@ -3,6 +3,7 @@
 var menuState = {
 
     create: function() {
+        adaptToScreen(this);
         var logo = game.add.sprite(w/2, -150, 'logo');
         logo.inputEnabled = true;
         logo.events.onInputDown.add(this.start, this);

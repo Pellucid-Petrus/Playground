@@ -4,6 +4,9 @@ var playState = {
     gameTitleText: "VAGABOND",
     gameoverText: "GAME OVER",
     allowedJumps: 3,
+    zoomOutLevel: 0.5,
+    zoomInLevel: 1.3,
+    atmosphereWorldRatio: 1.5,
 
     levels: [
         //{ name: "Level0", map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
@@ -11,6 +14,7 @@ var playState = {
         { name: "Level2", map: [0,0,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,1]}
     ],
     create: function () {
+        adaptToScreen(this);
         // sky
         var sky = game.add.image(0, 0, 'sky');
         sky.fixedToCamera = true;
@@ -18,12 +22,12 @@ var playState = {
         // rotating world
         this.rotWorldGrp = game.add.group();
         var worldSprite = this.rotWorldGrp.create(0,0, 'world1');
-        // 1.005 makes the world little bit bigger.
-        var scaling_factor = game.height * 1.05 / worldSprite.height;
+        this.worldRadius = worldSprite.width/2;// * scaling_factor /2;
+        var scaling_factor = game.height * 1.05 / worldSprite.height * this.atmosphereWorldRatio;
         worldSprite.scale.x = scaling_factor;
-        worldSprite.scale.y = scaling_factor;
+        worldSprite.scale.y = scaling_factor ;
         worldSprite.anchor.setTo(0.5, 0.5);
-        this.worldRadius = worldSprite.width * scaling_factor /2;
+
         this.rotWorldGrp.x = game.width / 2;
         this.rotWorldGrp.y = game.height;
 
@@ -37,7 +41,7 @@ var playState = {
 
         // obstacles
         this.obs = game.add.group();
-        this.obs.createMultiple(30, "stone");
+        this.obs.createMultiple(30, "obs3");
         this.obs.setAll("scale.x", scaling_factor);
         this.obs.setAll("scale.y", scaling_factor);
         this.draw_level();
@@ -51,8 +55,8 @@ var playState = {
         this.cameraScene.add(this.rotWorldGrp);
         this.cameraScene.add(this.player);
         this.cameraScene.add(this.bigWriting);
-        this.cameraScene.scale.x = 0.5;
-        this.cameraScene.scale.y = 0.5;
+        this.cameraScene.scale.x = playState.zoomOutLevel;
+        this.cameraScene.scale.y = playState.zoomOutLevel;
 
         // input
         game.input.onDown.add(function() {
@@ -64,7 +68,7 @@ var playState = {
     },
 
     update: function() {
-        if (this.gameOver === false && this.cameraScene.scale.x === 1){
+        if (this.gameOver === false && this.cameraScene.scale.x === playState.zoomInLevel){
             var rotationSpeed = 0.8;
             if (playState.isJumping > 0) {
                 rotationSpeed = 1.2;
@@ -94,7 +98,7 @@ var playState = {
         if (obstacle == null)
             return;
 
-        var ro = this.worldRadius * Math.PI;
+        var ro = playState.worldRadius/2 /(this.atmosphereWorldRatio * 1.05);
         var x = ro * Math.sin(angle);
         var y = ro * Math.cos(angle);
         obstacle.anchor.setTo(0.5,0.5);
@@ -125,7 +129,7 @@ var playState = {
 
     setGameOver: function() {
         playState.gameOver = true;
-        var zoomOutTween = game.add.tween(this.cameraScene.scale).to({ x: 0.5, y: 0.5});
+        var zoomOutTween = game.add.tween(this.cameraScene.scale).to({ x: playState.zoomOutLevel, y: playState.zoomOutLevel});
         zoomOutTween.start();
     },
 
@@ -156,7 +160,7 @@ var playState = {
         this.draw_level();
         this.rotWorldGrp.rotation = 0;
         this.gameOver = false;
-        var zoomInTween = game.add.tween(this.cameraScene.scale).to({ x: 1, y: 1});
+        var zoomInTween = game.add.tween(this.cameraScene.scale).to({ x: playState.zoomInLevel, y: playState.zoomInLevel});
         zoomInTween.start();
     },
 
