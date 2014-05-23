@@ -7,6 +7,7 @@ var playState = {
     zoomOutLevel: 0.5,
     zoomInLevel: 1.3,
     atmosphereWorldRatio: 1.5,
+    playerScalingFactor: 0.30,
 
     levels: [
         //{ name: "Level0", map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
@@ -22,7 +23,7 @@ var playState = {
         // rotating world
         this.rotWorldGrp = game.add.group();
         var worldSprite = this.rotWorldGrp.create(0,0, 'world1');
-        this.worldRadius = worldSprite.width/2;// * scaling_factor /2;
+        //this.worldRadius = worldSprite.width/2;// * scaling_factor /2;
         var scaling_factor = game.height * 1.05 / worldSprite.height * this.atmosphereWorldRatio;
         worldSprite.scale.x = scaling_factor;
         worldSprite.scale.y = scaling_factor ;
@@ -33,8 +34,8 @@ var playState = {
 
         // player
         this.player = game.add.sprite(game.width/2, game.height/2, 'mummy');
-        this.player.scale.x = 0.25;
-        this.player.scale.y = 0.25;
+        this.player.scale.x = scaling_factor * this.playerScalingFactor;
+        this.player.scale.y = scaling_factor * this.playerScalingFactor;
 
         this.player.anchor.setTo(0.5, 1.0);
         this.player.animations.add('walk');
@@ -101,7 +102,7 @@ var playState = {
         if (obstacle == null)
             return;
 
-        var ro = game.width/2 /(this.atmosphereWorldRatio * 1.15);//playState.worldRadius/2 /(this.atmosphereWorldRatio * 1.05);
+        var ro = this.playerInitialY * 0.95;
         var x = ro * Math.sin(angle);
         var y = ro * Math.cos(angle);
         obstacle.anchor.setTo(0.5,0.5);
@@ -150,7 +151,8 @@ var playState = {
         }
 
         var jumpTween = game.add.tween(playState.player);
-        jumpTween.to({ y: playState.playerInitialY - 70 }, 100);
+        var rationPlayerInitYJumpY = .80;
+        jumpTween.to({ y: playState.playerInitialY * rationPlayerInitYJumpY }, 100);
         jumpTween.onComplete.add(function(){playState.isJumping += 1;}, this);
         jumpTween.to({ y: playState.playerInitialY}, 400);
         jumpTween._lastChild.onComplete.add(function(){
