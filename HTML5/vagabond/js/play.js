@@ -33,6 +33,9 @@ var playState = {
 
         // player
         this.player = game.add.sprite(game.width/2, game.height/2, 'mummy');
+        this.player.scale.x = 0.25;
+        this.player.scale.y = 0.25;
+
         this.player.anchor.setTo(0.5, 1.0);
         this.player.animations.add('walk');
         this.player.animations.play('walk', 12, true);
@@ -98,7 +101,7 @@ var playState = {
         if (obstacle == null)
             return;
 
-        var ro = playState.worldRadius/2 /(this.atmosphereWorldRatio * 1.05);
+        var ro = game.width/2 /(this.atmosphereWorldRatio * 1.15);//playState.worldRadius/2 /(this.atmosphereWorldRatio * 1.05);
         var x = ro * Math.sin(angle);
         var y = ro * Math.cos(angle);
         obstacle.anchor.setTo(0.5,0.5);

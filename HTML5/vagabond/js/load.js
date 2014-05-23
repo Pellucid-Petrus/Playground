@@ -33,8 +33,11 @@ var loadState = {
         game.load.image('obs1', 'assets/sprites/obstacle1.png');
         game.load.image('obs3', 'assets/sprites/obstacle3.png');
 
+        game.load.image('mummy', 'assets/sprites/navicella.png');
+
+
         game.load.bitmapFont('fonts', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
-        game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
+        //game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
 
     },
     create: function () {

@@ -1,4 +1,4 @@
-var w = 800;
+var w = 1080;
 var h = w * 3/5;
 
 var score = 0;
