@@ -1,9 +1,14 @@
 
-
 var menuState = {
-
     create: function() {
         adaptToScreen(this);
+
+        var filter = game.add.filter('', 800, 600);
+        /*var background = game.add.sprite(0, 0);
+        background.width = 800;
+        background.height = 600;
+        background.filters = [this.filter];
+        */
         var logo = game.add.sprite(w/2, -150, 'logo');
         logo.inputEnabled = true;
         logo.events.onInputDown.add(this.start, this);

@@ -17,8 +17,18 @@ var playState = {
     create: function () {
         adaptToScreen(this);
         // sky
-        var sky = game.add.image(0, 0, 'sky');
-        sky.fixedToCamera = true;
+        //var sky = game.add.image(0, 0, 'sky');
+        //sky.fixedToCamera = true;
+
+        /*
+        var background = game.add.sprite(0, 0);
+        background.width = 800;
+        background.height = 600;
+        this.plasma = game.add.filter('plasmaFilter', 800, 600);
+        //var blurFilter = new Phaser.BlurFilter();
+        //var greyFilter = new Phaser.GreyFilter();
+        background.filters = [this.plasma];
+        */
 
         // rotating world
         this.rotWorldGrp = game.add.group();
@@ -34,12 +44,13 @@ var playState = {
 
         // player
         this.player = game.add.sprite(game.width/2, game.height/2, 'mummy');
-        this.player.scale.x = scaling_factor * this.playerScalingFactor;
-        this.player.scale.y = scaling_factor * this.playerScalingFactor;
+        var totPlayerScalingFactor = scaling_factor * this.playerScalingFactor;
+        this.player.scale.x = totPlayerScalingFactor;
+        this.player.scale.y = totPlayerScalingFactor;
 
         this.player.anchor.setTo(0.5, 1.0);
-        this.player.animations.add('walk');
-        this.player.animations.play('walk', 12, true);
+        //this.player.animations.add('walk');
+        //this.player.animations.play('walk', 12, true);
         this.playerInitialY = this.player.y;
         game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
@@ -81,6 +92,7 @@ var playState = {
             this.rotWorldGrp.angle -= rotationSpeed;
             game.physics.arcade.overlap(this.player, this.rotWorldGrp, this.hit);
         }
+        this.plasma.update();
     },
 
     render: function() {},
