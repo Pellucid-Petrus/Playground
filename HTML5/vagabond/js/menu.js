@@ -3,13 +3,13 @@ var menuState = {
     create: function() {
         adaptToScreen(this);
 
-        var filter = game.add.filter('', 800, 600);
-        /*var background = game.add.sprite(0, 0);
-        background.width = 800;
-        background.height = 600;
+        this.filter = game.add.filter('Plasma', game.width, game.height);
+        var background = game.add.sprite(0, 0);
+        background.width = game.width;
+        background.height = game.height;
         background.filters = [this.filter];
-        */
-        var logo = game.add.sprite(w/2, -150, 'logo');
+
+        var logo = game.add.sprite(w/2, -150, 'navicella');
         logo.inputEnabled = true;
         logo.events.onInputDown.add(this.start, this);
         logo.anchor.setTo(0.5, 0.5);
@@ -24,6 +24,9 @@ var menuState = {
 
     start: function () {
         this.game.state.start('play');
-    }
+    },
 
+    update: function() {
+        this.filter.update();
+    }
 };

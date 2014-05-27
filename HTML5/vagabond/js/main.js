@@ -1,4 +1,4 @@
-var w = 800;//window.innerWidth;
+var w = 1080;//window.innerWidth;
 var h = w * 3/5;
 
 var score = 0;

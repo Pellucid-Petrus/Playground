@@ -20,16 +20,6 @@ var playState = {
         //var sky = game.add.image(0, 0, 'sky');
         //sky.fixedToCamera = true;
 
-        /*
-        var background = game.add.sprite(0, 0);
-        background.width = 800;
-        background.height = 600;
-        this.plasma = game.add.filter('plasmaFilter', 800, 600);
-        //var blurFilter = new Phaser.BlurFilter();
-        //var greyFilter = new Phaser.GreyFilter();
-        background.filters = [this.plasma];
-        */
-
         // rotating world
         this.rotWorldGrp = game.add.group();
         var worldSprite = this.rotWorldGrp.create(0,0, 'world1');
@@ -43,7 +33,7 @@ var playState = {
         this.rotWorldGrp.y = game.height;
 
         // player
-        this.player = game.add.sprite(game.width/2, game.height/2, 'mummy');
+        this.player = game.add.sprite(game.width/2, game.height/2, 'navicella');
         var totPlayerScalingFactor = scaling_factor * this.playerScalingFactor;
         this.player.scale.x = totPlayerScalingFactor;
         this.player.scale.y = totPlayerScalingFactor;
@@ -92,7 +82,6 @@ var playState = {
             this.rotWorldGrp.angle -= rotationSpeed;
             game.physics.arcade.overlap(this.player, this.rotWorldGrp, this.hit);
         }
-        this.plasma.update();
     },
 
     render: function() {},

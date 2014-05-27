@@ -11,8 +11,7 @@ Phaser.Filter.Plasma = function (game) {
     this.uniforms.redShift = { type: '1f', value: 0.5 };
     this.uniforms.greenShift = { type: '1f', value: 0.5 };
     this.uniforms.blueShift = { type: '1f', value: 0.9 };
-
-    this.fragmentSrc = [
+    this.fragmentSrc= [
 
         "precision mediump float;",
         "uniform float     time;",
