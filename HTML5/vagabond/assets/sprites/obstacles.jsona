@@ -1,0 +1,19 @@
+{"frames":[
+
+{
+	"filename": "obstacle1.png",
+	"frame":{"x":0,"y":0,"w":78,"h":62},
+	"rotated":false,
+	"trimmed":false,
+	"spriteSourceSize":{"x":0,"y":0,"w":78,"y":62},
+	"sourceSize":{"w":78,"h":62}
+},
+{
+	"filename": "obstacle3.png",
+	"frame":{"x":79,"y":0,"w":60,"h":91},
+	"rotated":false,
+	"trimmed":false,
+	"spriteSourceSize":{"x":0,"y":0,"w":60,"y":91},
+	"sourceSize":{"w":60,"h":91}
+}
+]}

@@ -11,7 +11,7 @@ var playState = {
 
     levels: [
         //{ name: "Level0", map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
-        { name: "Level1", map: [0,0,0,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1]},
+        { name: "Level1", map: [0,0,0,0,0,0,1,2,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1]},
         { name: "Level2", map: [0,0,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,1]}
     ],
     create: function () {
@@ -46,7 +46,7 @@ var playState = {
 
         // obstacles
         this.obs = game.add.group();
-        this.obs.createMultiple(30, "obs3");
+        this.obs.createMultiple(30, "obstacles");
         this.obs.setAll("scale.x", scaling_factor);
         this.obs.setAll("scale.y", scaling_factor);
         this.draw_level();
@@ -93,12 +93,15 @@ var playState = {
         var level = this.levels[0];
         var map = level.map;
         for (var i=0; i < map.length; ++i){
-            if (map[i] === 1)
-                this.placeObstacles(i * rad);
+            var obstacle_type= map[i] -1;
+            if (obstacle_type > -1){
+                var angle = i * rad;
+                this.placeObstacles(angle, obstacle_type);
+            }
         }
     },
 
-    placeObstacles: function(angle) {
+    placeObstacles: function(angle, obstacle_type) {
         var obstacle = this.obs.getFirstDead();
         if (obstacle == null)
             return;
@@ -107,7 +110,7 @@ var playState = {
         var x = ro * Math.sin(angle);
         var y = ro * Math.cos(angle);
         obstacle.anchor.setTo(0.5,0.5);
-
+        obstacle.frame = obstacle_type;
         // y grows going down
         obstacle.reset(x, -y);
         obstacle.anchor.setTo(0.5,1);
@@ -123,12 +126,12 @@ var playState = {
     },
 
     hit: function() {
-        playState.obs.forEach(function(r){
+        /*playState.obs.forEach(function(r){
             var killObsTween = game.add.tween(r.scale);
             killObsTween.to({ y: 0.1 }, 1000);
             //killObsTween.onComplete.add(function(){r.kill()});
             killObsTween.start();
-        }, this);
+        }, this);*/
         playState.setGameOver();
     },
 
