@@ -1,19 +1,24 @@
 var playState = {
+    // Vars
     gameOver: true,
     isJumping: 0, // Jumping states 0=no jump, 1=first_tween, 2=first_desend, 3= second_jump,
-    gameTitleText: "VAGABOND",
-    gameoverText: "GAME OVER",
     allowedJumps: 3,
     zoomOutLevel: 0.5,
     zoomInLevel: 1.3,
     atmosphereWorldRatio: 1.5,
     playerScalingFactor: 0.30,
 
-    levels: [
+    // Costants
+    GAMETITLE_TEXT: "VAGABOND",
+    GAMEOVER_TEXT: "GAME OVER",
+    RAD: 2 *Math.PI /30,
+    LEVELS: [
         //{ name: "Level0", map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
         { name: "Level1", map: [0,0,0,0,0,0,1,2,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1]},
         { name: "Level2", map: [0,0,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,1]}
     ],
+
+    // Functions
     create: function () {
         adaptToScreen(this);
         // sky
@@ -49,11 +54,13 @@ var playState = {
         this.obs.createMultiple(30, "obstacles");
         this.obs.setAll("scale.x", scaling_factor);
         this.obs.setAll("scale.y", scaling_factor);
+        this.obs.setAll("alive", false);
+
         this.draw_level();
 
         // Writings
         var fontSize = 128;
-        this.bigWriting = game.add.bitmapText(game.width, game.height - 100, 'fonts', this.gameTitleText, fontSize);
+        this.bigWriting = game.add.bitmapText(game.width, game.height - 100, 'fonts', this.GAMETITLE_TEXT, fontSize);
 
         // camera scene
         this.cameraScene = game.add.group();
@@ -79,6 +86,8 @@ var playState = {
                 rotationSpeed = 1.2;
             }
 
+            if (this.rotWorldGrp.angle > 360 || this.rotWorldGrp.angle < -360)
+                this.rotWorldGrp.angle = 0;
             this.rotWorldGrp.angle -= rotationSpeed;
             game.physics.arcade.overlap(this.player, this.rotWorldGrp, this.hit);
         }
@@ -88,14 +97,12 @@ var playState = {
 
     // Extras
     draw_level: function() {
-        var rad = 2 *Math.PI /30;
-
-        var level = this.levels[0];
+        var level = this.LEVELS[0];
         var map = level.map;
         for (var i=0; i < map.length; ++i){
             var obstacle_type= map[i] -1;
             if (obstacle_type > -1){
-                var angle = i * rad;
+                var angle = i * playState.RAD;
                 this.placeObstacles(angle, obstacle_type);
             }
         }
@@ -116,6 +123,7 @@ var playState = {
         obstacle.anchor.setTo(0.5,1);
         obstacle.scale.y = 0;
         obstacle.rotation = angle;
+        obstacle.alive = true;
         game.physics.enable(obstacle, Phaser.Physics.ARCADE);
         this.rotWorldGrp.add(obstacle);
 
@@ -132,10 +140,14 @@ var playState = {
             //killObsTween.onComplete.add(function(){r.kill()});
             killObsTween.start();
         }, this);*/
-        playState.setGameOver();
+        if (playState.getNearestObstacle() != null){
+            alert("game over");
+            playState.setGameOver();
+        }
     },
 
     setGameOver: function() {
+        playState.obs.setAll("alive", false);
         playState.gameOver = true;
         var zoomOutTween = game.add.tween(this.cameraScene.scale).to({ x: playState.zoomOutLevel, y: playState.zoomOutLevel});
         zoomOutTween.start();
@@ -171,6 +183,12 @@ var playState = {
         this.gameOver = false;
         var zoomInTween = game.add.tween(this.cameraScene.scale).to({ x: playState.zoomInLevel, y: playState.zoomInLevel});
         zoomInTween.start();
+    },
+
+    getNearestObstacle: function(){
+        var rotation = playState.rotWorldGrp.angle;
+
+        return null;
     },
 
     nextLevel: function() {
