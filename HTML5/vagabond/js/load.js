@@ -31,12 +31,10 @@ var loadState = {
         //game.load.image('sky', 'assets/test/background-orig.jpg');
         //game.load.image('logo', 'assets/sprites/logo.png');
         game.load.image('world1', 'assets/sprites/world1.png');
-        game.load.image('obs1', 'assets/sprites/obstacle1.png');
-        game.load.image('obs3', 'assets/sprites/obstacle3.png');
         game.load.image('navicella', 'assets/sprites/navicella.png');
         game.load.bitmapFont('fonts', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
         //game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
-        game.load.atlas('obstacles', 'assets/sprites/obstacles.png', 'assets/sprites/obstacles.jsona');
+        game.load.atlas('obstacles', 'assets/tilemaps/obstacles.png', 'assets/tilemaps/obstacles.jsona');
         game.load.script('filter', 'assets/filters/plasma.js');
     },
     create: function () {

@@ -15,6 +15,7 @@ var playState = {
     RAD: 2 *Math.PI /30,
     LEVELS: [
         //{ name: "Level0", map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+        { name: "Level0", map: [1,2,3,4,5,0,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]},
         { name: "Level1", map: [0,0,0,0,0,0,1,2,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1]},
         { name: "Level2", map: [0,0,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,1]}
     ],
@@ -147,7 +148,7 @@ var playState = {
         hitPlayerTween.to({ alpha: 1}, 50);
         hitPlayerTween.start();
 
-        console.log(playState.rotWorldGrp.children.indexOf(obs));
+        return;
         if (obs.type >= 1){
             playState.setGameOver();
         }
