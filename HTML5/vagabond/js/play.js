@@ -7,6 +7,7 @@ var playState = {
     zoomInLevel: 1.3,
     atmosphereWorldRatio: 1.5,
     playerScalingFactor: 0.30,
+    currentLevel: 0,
 
     // Costants
     GAMETITLE_TEXT: "VAGABOND",
@@ -86,10 +87,10 @@ var playState = {
                 rotationSpeed = 1.2;
             }
 
-            if (this.rotWorldGrp.angle > 360 || this.rotWorldGrp.angle < -360)
+            if (Math.abs(this.rotWorldGrp.angle) > 360)
                 this.rotWorldGrp.angle = 0;
             this.rotWorldGrp.angle -= rotationSpeed;
-            game.physics.arcade.overlap(this.player, this.rotWorldGrp, this.hit);
+            game.physics.arcade.overlap( this.rotWorldGrp,this.player, this.hit);
         }
     },
 
@@ -97,7 +98,8 @@ var playState = {
 
     // Extras
     draw_level: function() {
-        var level = this.LEVELS[0];
+        console.log("Drawing level...");
+        var level = this.LEVELS[playState.currentLevel];
         var map = level.map;
         for (var i=0; i < map.length; ++i){
             var obstacle_type= map[i] -1;
@@ -118,12 +120,14 @@ var playState = {
         var y = ro * Math.cos(angle);
         obstacle.anchor.setTo(0.5,0.5);
         obstacle.frame = obstacle_type;
+        obstacle.type = obstacle_type;
         // y grows going down
         obstacle.reset(x, -y);
         obstacle.anchor.setTo(0.5,1);
         obstacle.scale.y = 0;
         obstacle.rotation = angle;
         obstacle.alive = true;
+
         game.physics.enable(obstacle, Phaser.Physics.ARCADE);
         this.rotWorldGrp.add(obstacle);
 
@@ -131,17 +135,20 @@ var playState = {
         var placeObsTween = game.add.tween(obstacle.scale);
         placeObsTween.to({ y: obstacle.scale.x }, 1000);
         placeObsTween.start();
+        console.log(obstacle);
     },
 
-    hit: function() {
-        /*playState.obs.forEach(function(r){
-            var killObsTween = game.add.tween(r.scale);
-            killObsTween.to({ y: 0.1 }, 1000);
-            //killObsTween.onComplete.add(function(){r.kill()});
-            killObsTween.start();
-        }, this);*/
-        if (playState.getNearestObstacle() != null){
-            alert("game over");
+    hit: function(player, obs) {
+        // player feedback when hit!
+        var hitPlayerTween = game.add.tween(player);
+        hitPlayerTween.to({ alpha: 4}, 100);
+        hitPlayerTween.to({ alpha: 1}, 100);
+        hitPlayerTween.to({ alpha: 4}, 100);
+        hitPlayerTween.to({ alpha: 1}, 50);
+        hitPlayerTween.start();
+
+        console.log(playState.rotWorldGrp.children.indexOf(obs));
+        if (obs.type >= 1){
             playState.setGameOver();
         }
     },
@@ -178,17 +185,10 @@ var playState = {
     },
 
     startGame: function() {
-        this.draw_level();
         this.rotWorldGrp.rotation = 0;
         this.gameOver = false;
         var zoomInTween = game.add.tween(this.cameraScene.scale).to({ x: playState.zoomInLevel, y: playState.zoomInLevel});
         zoomInTween.start();
-    },
-
-    getNearestObstacle: function(){
-        var rotation = playState.rotWorldGrp.angle;
-
-        return null;
     },
 
     nextLevel: function() {
