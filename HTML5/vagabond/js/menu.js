@@ -9,7 +9,7 @@ var menuState = {
         background.height = game.height;
         background.filters = [this.filter];
 
-        var logo = game.add.sprite(w/2, -150, 'navicella');
+        var logo = game.add.sprite(w/2, -150, 'logo');
         logo.inputEnabled = true;
         logo.events.onInputDown.add(this.start, this);
         logo.anchor.setTo(0.5, 0.5);

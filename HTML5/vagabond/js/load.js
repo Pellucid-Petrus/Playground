@@ -26,16 +26,21 @@ var loadState = {
         preloading.x -= preloading.width/2;
         game.load.setPreloadSprite(preloading);
 
-        // Here the stuff to preload
-        //game.load.image('sky', 'assets/sprites/sky2.png');
-        //game.load.image('sky', 'assets/test/background-orig.jpg');
-        //game.load.image('logo', 'assets/sprites/logo.png');
+        ///// GRAPHICS
         game.load.image('world1', 'assets/sprites/world1.png');
+        game.load.image('logo', 'assets/sprites/logo.png');
+        game.load.image('crash_particle', 'assets/sprites/crash_particle.png');
         game.load.image('navicella', 'assets/sprites/navicella.png');
         game.load.bitmapFont('fonts', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
-        //game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
         game.load.atlas('obstacles', 'assets/tilemaps/obstacles.png', 'assets/tilemaps/obstacles.jsona');
+
+        ///// SHADERS
         game.load.script('filter', 'assets/filters/plasma.js');
+
+        ////// AUDIO
+        game.load.audio('jump_fx', ['assets/audio/jump.mp3']);
+        game.load.audio('crash_fx', ['assets/audio/crash.mp3']);
+
     },
     create: function () {
         game.state.start('menu');

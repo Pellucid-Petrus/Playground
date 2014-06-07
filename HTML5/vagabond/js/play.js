@@ -6,18 +6,19 @@ var playState = {
     zoomOutLevel: 0.5,
     zoomInLevel: 1.3,
     atmosphereWorldRatio: 1.5,
-    playerScalingFactor: 0.30,
+    playerScalingFactor: 0.25,
     currentLevel: 0,
 
     // Costants
+    rationPlayerInitYJumpY:0.7,
     GAMETITLE_TEXT: "VAGABOND",
     GAMEOVER_TEXT: "GAME OVER",
     RAD: 2 *Math.PI /30,
     LEVELS: [
         //{ name: "Level0", map: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
-        { name: "Level0", map: [1,2,3,4,5,0,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]},
-        { name: "Level1", map: [0,0,0,0,0,0,1,2,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1]},
-        { name: "Level2", map: [0,0,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,1]}
+        //{ name: "TEST", map: [1,2,3,4,5,0,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]},
+        { name: "WORLD 1-1", map: [0,0,0,0,0,0,5,7,0,0,9,10,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1]},
+        { name: "WORLD 2", map: [0,0,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,1]}
     ],
 
     // Functions
@@ -41,9 +42,11 @@ var playState = {
 
         // player
         this.player = game.add.sprite(game.width/2, game.height/2, 'navicella');
-        var totPlayerScalingFactor = scaling_factor * this.playerScalingFactor;
-        this.player.scale.x = totPlayerScalingFactor;
-        this.player.scale.y = totPlayerScalingFactor;
+        playState.totPlayerScalingFactor = scaling_factor * this.playerScalingFactor;
+        this.player.alpha = 0;
+
+        //this.player.scale.x = totPlayerScalingFactor;
+        //this.player.scale.y = totPlayerScalingFactor;
 
         this.player.anchor.setTo(0.5, 1.0);
         //this.player.animations.add('walk');
@@ -62,7 +65,7 @@ var playState = {
 
         // Writings
         var fontSize = 128;
-        this.bigWriting = game.add.bitmapText(game.width, game.height - 100, 'fonts', this.GAMETITLE_TEXT, fontSize);
+        this.bigWriting = game.add.bitmapText(game.width, game.height - 100, 'fonts', this.LEVELS[this.currentLevel].name, fontSize);
 
         // camera scene
         this.cameraScene = game.add.group();
@@ -79,6 +82,14 @@ var playState = {
             else
                 playState.startGame();
         }, this);
+
+        //audio
+        playState.JUMP_AUDIO = game.add.audio('jump_fx');
+        playState.CRASH_AUDIO = game.add.audio('crash_fx');
+
+        // animations
+        playState.EMITTER = game.add.emitter(0, 0, 100);
+        playState.EMITTER.makeParticles('crash_particle');
     },
 
     update: function() {
@@ -140,6 +151,19 @@ var playState = {
     },
 
     hit: function(player, obs) {
+
+        // Obstacle logic
+        switch (obs.type){
+            case 1:
+                playState.spaceshipDamaged();
+            default:
+                // normal obstacle.
+                playState.spaceshipCrash();
+                playState.setGameOver();
+        }
+    },
+
+    spaceshipDamaged: function() {
         // player feedback when hit!
         var hitPlayerTween = game.add.tween(player);
         hitPlayerTween.to({ alpha: 4}, 100);
@@ -147,11 +171,28 @@ var playState = {
         hitPlayerTween.to({ alpha: 4}, 100);
         hitPlayerTween.to({ alpha: 1}, 50);
         hitPlayerTween.start();
+    },
 
-        return;
-        if (obs.type >= 1){
-            playState.setGameOver();
-        }
+    spaceshipCrash: function() {
+        var explodeEffect = true;
+        var particleLifeSpan = 2000;
+        var particleNumber = 10;
+
+        playState.CRASH_AUDIO.play();
+        playState.EMITTER.x = playState.player.x;
+        playState.EMITTER.y = playState.player.y;
+        playState.player.alpha = 0;
+
+        playState.EMITTER.start(explodeEffect, particleLifeSpan, null, particleNumber);
+    },
+    spaceshipNew: function() {
+        playState.player.alpha = 1;
+        playState.player.scale.x = 1;
+        playState.player.scale.y = 1;
+
+        var newPlayerTween = game.add.tween(playState.player.scale);
+        newPlayerTween.to({ x: playState.totPlayerScalingFactor, y: playState.totPlayerScalingFactor}, 1000,  Phaser.Easing.Bounce.Out);
+        newPlayerTween.start();
     },
 
     setGameOver: function() {
@@ -175,17 +216,19 @@ var playState = {
         }
 
         var jumpTween = game.add.tween(playState.player);
-        var rationPlayerInitYJumpY = .80;
-        jumpTween.to({ y: playState.playerInitialY * rationPlayerInitYJumpY }, 100);
+        jumpTween.to({ y: playState.playerInitialY * playState.rationPlayerInitYJumpY }, 100);
         jumpTween.onComplete.add(function(){playState.isJumping += 1;}, this);
-        jumpTween.to({ y: playState.playerInitialY}, 400);
+        jumpTween.to({ y: playState.playerInitialY}, 300);
         jumpTween._lastChild.onComplete.add(function(){
 
         }, this);
         jumpTween.start();
+        playState.JUMP_AUDIO.play();
     },
 
     startGame: function() {
+        playState.spaceshipNew();
+
         this.rotWorldGrp.rotation = 0;
         this.gameOver = false;
         var zoomInTween = game.add.tween(this.cameraScene.scale).to({ x: playState.zoomInLevel, y: playState.zoomInLevel});
