@@ -1,5 +1,5 @@
 /**
- * Dynamic Connectivity problem - Union Find
+ * Dynamic Connectivity problem - Quick Find
  */
 import java.util.Arrays;
 
