@@ -1,0 +1,10 @@
+{
+    "title": "Test app",
+    "pages": [
+        {"image": "data/test/images/img00.jpg", "description": "Image 00"},
+        {"image": "data/test/images/img01.jpg", "description": "Image 01"},
+        {"image": "data/test/images/img02.jpg", "description": "Image 02"},
+        {"image": "data/test/images/img03.jpg", "description": "Image 03"},
+        {"image": "data/test/images/img04.jpg", "description": "Image 04"}
+    ]
+}
