@@ -23,14 +23,6 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
         $scope.direction = 'left';
         $scope.currentIndex = 0;
 
-        $scope.fetchData = function ()
-        {
-            $http({method: 'POST', url: 'js/posts.json'}).success(function(data)
-            {
-                $scope.data = data; // response data
-            });
-        }
-
         $scope.setCurrentSlideIndex = function (index) {
             $scope.direction = (index > $scope.currentIndex) ? 'left' : 'right';
             $scope.currentIndex = index;
@@ -49,6 +41,17 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
             $scope.direction = 'right';
             $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
         };
+
+        $scope.toggleMenu = function() {
+            var element = document.getElementById("mainlayout");
+            var isMenuOpen = (element.style.left === "500px");
+            console.log(isMenuOpen);
+
+            if (isMenuOpen)
+                TweenMax.to(element, 0.5, {left: 0 });
+            else
+                TweenMax.to(element, 0.5, {left: 500 });
+        }
     })
     .animation('.slide-animation', function () {
         return {

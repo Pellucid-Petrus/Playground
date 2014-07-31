@@ -1,19 +1,15 @@
-body {
+@font-face {
+  font-family: 'MyWebFont';
+  src: url('../assets/fonts/sansation_light.woff') format('woff'); /* Modern Browsers */
+}
 
+body {
     background-color: #000000;
+    font-family: MyWebFont;
 }
 
 #mainlayout{
     margin-top: 80px;
-}
-.welcome-screen {
-    width: 800px;
-    height: 1600px;
-    overflow: hidden;
-    position: relative;
-    background: red;
-    border: 20px solid #FFF;
-    margin-top: 20px;
 }
 
 .slider {
@@ -34,7 +30,7 @@ body {
 
 .arrow {
     position: absolute;
-    z-index: 1002;
+    z-index: 50;
     display: block;
     top: 50%;
     margin-top: -35px;
@@ -79,7 +75,7 @@ NAV
     text-align: center;
     display: block;
     position: absolute;
-    z-index: 1002;
+    z-index: 50;
     left: 0;
     bottom: -4px;
     right: 0;

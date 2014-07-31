@@ -2,6 +2,12 @@
 <!-- runs cms_app when the page starts -->
 <html ng-app="cms_app">
 <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.10.3/TweenMax.min.js"></script>
+
     <meta charset="utf-8">
     <title>{{ "test" }}</title>
 
@@ -14,11 +20,9 @@
 
 <div title-bar></div>
 
+<!--- Content has to live here --->
+<div id="sidebar">TEST</div>
 <div id="mainlayout">
-    <div class="container welcome-screen" ng-swipe-up="hideWelcomeScreen()">
-        {{ appTitle }}
-    </div>
-
     <div class="container slider" >
         <img ng-repeat="slide in slides" class="slide slide-animation nonDraggableImage"
              ng-swipe-right="nextSlide()" ng-swipe-left="prevSlide()"
@@ -38,14 +42,10 @@
     </div>
 </div>
 
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.10.3/TweenMax.min.js"></script>
+<div welcome-screen></div>
 
 <script src="js/main.js"></script>
-<script src="js/titlebar.js"></script>
+<script src="js/widgets.js"></script>
+
 </body>
 </html>
