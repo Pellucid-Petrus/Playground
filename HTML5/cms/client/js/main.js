@@ -1,11 +1,17 @@
+// http is a service. We add it to our array of dependencies
 angular.module('cms_app', ['ngAnimate', 'ngTouch'])
-    .controller('MainCtrl', function ($scope) {
+    // when we use $http as argument, this is called dependency injection
+    // when angularJS loads, it creates a "injector".
+    // when the built-in services load they register them to the injector as available libraries
+    // then here the controller gets executed, the injector pass as arguments the services
+    .controller('MainCtrl', function ($scope, $http) {
+        $scope.data_url = "https://raw.githubusercontent.com/gnuton/Playground/master/HTML5/cms/client/data/test/app_data.json";
+        $http.get($scope.data_url).success(function (data) {
+            $scope.slides = data["pages"];
+        });
+
         $scope.slides = [
-            {image: 'data/test/images/img00.jpg', description: 'Image 00'},
-            {image: 'data/test/images/img01.jpg', description: 'Image 01'},
-            {image: 'data/test/images/img02.jpg', description: 'Image 02'},
-            {image: 'data/test/images/img03.jpg', description: 'Image 03'},
-            {image: 'data/test/images/img04.jpg', description: 'Image 04'}
+            {image: 'data/test/images/img00.jpg', description: 'Image 00'}
         ];
 
         $scope.direction = 'left';
