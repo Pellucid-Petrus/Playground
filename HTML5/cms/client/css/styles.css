@@ -3,6 +3,9 @@ body {
     background-color: #000000;
 }
 
+#mainlayout{
+    margin-top: 80px;
+}
 .welcome-screen {
     width: 800px;
     height: 1600px;
