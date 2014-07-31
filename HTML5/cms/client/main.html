@@ -3,15 +3,21 @@
 <html ng-app="cms_app">
 <head>
     <meta charset="utf-8">
-    <title>{{ "CMS" + "test" }}</title>
+    <title>{{ "test" }}</title>
 
     <link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/widgets.css">
 </head>
 
 <body ng-controller="MainCtrl">
+<div title-bar>
+</div>
+<div class="container welcome-screen" ng-swipe-up="hideWelcomeScreen()">
+    {{ "Swipe up to start!" }}
+</div>
 
-<div class="container slider">
+<div class="container slider" >
     <img ng-repeat="slide in slides" class="slide slide-animation nonDraggableImage"
          ng-swipe-right="nextSlide()" ng-swipe-left="prevSlide()"
          ng-hide="!isCurrentSlideIndex($index)" ng-src="{{slide.image}}">
@@ -29,13 +35,13 @@
     </nav>
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-animate.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.10.3/TweenMax.min.js"></script>
 
 <script src="js/main.js"></script>
-
+<script src="js/titlebar.js"></script>
 </body>
 </html>

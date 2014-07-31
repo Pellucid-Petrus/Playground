@@ -11,7 +11,8 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
         });
 
         $scope.slides = [
-            {image: 'data/test/images/img00.jpg', description: 'Image 00'}
+            {image: 'data/test/images/img00.jpg', description: 'Image 00'},
+            {image: 'data/test/images/img01.jpg', description: 'Image 01'}
         ];
 
         $scope.direction = 'left';
