@@ -1,11 +1,11 @@
 angular.module('cms_app', ['ngAnimate', 'ngTouch'])
     .controller('MainCtrl', function ($scope) {
         $scope.slides = [
-            {image: 'data/images/img00.jpg', description: 'Image 00'},
-            {image: 'data/images/img01.jpg', description: 'Image 01'},
-            {image: 'data/images/img02.jpg', description: 'Image 02'},
-            {image: 'data/images/img03.jpg', description: 'Image 03'},
-            {image: 'data/images/img04.jpg', description: 'Image 04'}
+            {image: 'data/test/images/img00.jpg', description: 'Image 00'},
+            {image: 'data/test/images/img01.jpg', description: 'Image 01'},
+            {image: 'data/test/images/img02.jpg', description: 'Image 02'},
+            {image: 'data/test/images/img03.jpg', description: 'Image 03'},
+            {image: 'data/test/images/img04.jpg', description: 'Image 04'}
         ];
 
         $scope.direction = 'left';
