@@ -1,12 +1,4 @@
 angular.module('ng')
-    //*************** TITLE BAR ********************
-    .directive('titleBar', function () {
-        return {
-            restrict: 'AE',
-            templateUrl: 'titlebar.html',
-            scope: false // uses parent scope
-        };
-    })
     //*************** WELCOME SCREEN ***************
     .directive('welcomeScreen', function () {
         return {

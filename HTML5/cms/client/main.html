@@ -2,7 +2,14 @@
 <!-- runs cms_app when the page starts -->
 <html ng-app="cms_app">
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/widgets.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script>
@@ -10,10 +17,6 @@
 
     <meta charset="utf-8">
     <title>{{ "test" }}</title>
-
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/widgets.css">
 </head>
 
 <body ng-controller="MainCtrl">
@@ -21,7 +24,14 @@
 <div title-bar></div>
 
 <!--- Content has to live here --->
-<div id="sidebar">TEST</div>
+<div id="sidebar">
+    CIAO
+    <ul class="nav nav-list">
+        <li class="nav-header">List header</li>
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Library</a></li>
+    </ul>
+</div>
 <div id="mainlayout">
     <div class="container slider" >
         <img ng-repeat="slide in slides" class="slide slide-animation nonDraggableImage"

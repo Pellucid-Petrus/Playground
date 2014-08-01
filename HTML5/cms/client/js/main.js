@@ -5,7 +5,6 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
     // when the built-in services load they register them to the injector as available libraries
     // then here the controller gets executed, the injector pass as arguments the services
     .controller('MainCtrl', function ($scope, $http) {
-
         // fetches data from the internet
         $scope.data_url = "https://raw.githubusercontent.com/gnuton/Playground/master/HTML5/cms/client/data/test/app_data.json";
         $http.get($scope.data_url).success(function (data) {
@@ -46,7 +45,6 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
             var element = document.getElementById("mainlayout");
             var isMenuOpen = (element.style.left === "500px");
             console.log(isMenuOpen);
-
             if (isMenuOpen)
                 TweenMax.to(element, 0.5, {left: 0 });
             else

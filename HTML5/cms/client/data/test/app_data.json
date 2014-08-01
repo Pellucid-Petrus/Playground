@@ -1,10 +1,15 @@
 {
     "title": "Test app",
+    "logo": "",
+    "sidemenu" : [
+        { "name": "Gallery"  },
+        { "name": "Contacts" }
+    ],
     "pages": [
-        {"image": "data/test/images/img00.jpg", "description": "Image 00"},
-        {"image": "data/test/images/img01.jpg", "description": "Image 01"},
-        {"image": "data/test/images/img02.jpg", "description": "Image 02"},
-        {"image": "data/test/images/img03.jpg", "description": "Image 03"},
-        {"image": "data/test/images/img04.jpg", "description": "Image 04"}
+        { "image": "data/test/images/img00.jpg", "caption": "Image 00", "text": "" },
+        { "image": "data/test/images/img01.jpg", "caption": "Image 01", "textUrl": "" },
+        { "image": "data/test/images/img02.jpg", "caption": "Image 02", "textUrl": "" },
+        { "image": "data/test/images/img03.jpg", "caption": "Image 03", "textUrl": "" },
+        { "image": "data/test/images/img04.jpg", "caption": "Image 04", "textUrl": "" }
     ]
 }
