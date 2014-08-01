@@ -6,19 +6,26 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
     // then here the controller gets executed, the injector pass as arguments the services
     .controller('MainCtrl', function ($scope, $http) {
         // fetches data from the internet
-        $scope.data_url = "https://raw.githubusercontent.com/gnuton/Playground/master/HTML5/cms/client/data/test/app_data.json";
+        $scope.data_url = "https://raw.githubusercontent.com/gnuton/Playground/master/HTML5/cms/client/data/test/app_data.json&callback=az";
         $http.get($scope.data_url).success(function (data) {
+            console.log(data);
             $scope.slides = data["pages"];
             $scope.appTitle =data["title"];
+            $scope.sidemenuitems = data["sidemenu"];
         });
 
         // Initialize vars
         $scope.appTitle = "Mobile CMS is loading...";
+        $scope.sidemenuitems = [
+            {name: "loading...", pageID: -1 },
+            {name: "About Bonsai", pageID: 99}
+        ];
         $scope.slides = [
             {image: 'data/test/images/img00.jpg', description: 'Image 00'},
             {image: 'data/test/images/img01.jpg', description: 'Image 01'}
         ];
 
+        //*** GALLERY WIDGET **//
         $scope.direction = 'left';
         $scope.currentIndex = 0;
 
@@ -41,6 +48,7 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
             $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
         };
 
+        //*** TITLEBAR/SIDEBAR ***//
         $scope.toggleMenu = function() {
             var element = document.getElementById("mainlayout");
             var isMenuOpen = (element.style.left === "500px");
@@ -50,6 +58,13 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
             else
                 TweenMax.to(element, 0.5, {left: 500 });
         }
+
+        $scope.showPage = function(idx) {
+            var element = document.getElementById("mainlayout");
+            console.log(idx);
+            $scope.toggleMenu();
+        }
+
     })
     .animation('.slide-animation', function () {
         return {

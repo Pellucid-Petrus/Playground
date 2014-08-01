@@ -1,9 +1,9 @@
-{
+angular.callbacks._0({
     "title": "Test app",
     "logo": "",
     "sidemenu" : [
-        { "name": "Gallery"  },
-        { "name": "Contacts" }
+        { "name": "Gallery", "pageID": 1  },
+        { "name": "Contacts", "pageID": 0 }
     ],
     "pages": [
         { "image": "data/test/images/img00.jpg", "caption": "Image 00", "text": "" },
@@ -12,4 +12,4 @@
         { "image": "data/test/images/img03.jpg", "caption": "Image 03", "textUrl": "" },
         { "image": "data/test/images/img04.jpg", "caption": "Image 04", "textUrl": "" }
     ]
-}
+})

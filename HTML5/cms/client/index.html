@@ -48,12 +48,9 @@
     <div data-role="content">
         <div id="sidebar">
             <ul data-role="listview" data-inset="true" data-theme='a'>
-                <li><a href="#">Default is right arrow</a></li>
-                <li data-icon="plus"><a href="#">data-icon="plus"</a></li>
-                <li data-icon="minus"><a href="#">data-icon="minus"</a></li>
-                <li data-icon="delete"><a href="#">data-icon="delete"</a></li>
-                <li data-icon="location"><a href="#">data-icon="location"</a></li>
-                <li data-icon="false"><a href="#">data-icon="false"</a></li>
+                <li ng-repeat="x in sidemenuitems">
+                    <a ng-click="showPage(x.pageID)">{{x.name}}</a>
+                </li>
             </ul>
         </div>
         <div id="mainlayout">
