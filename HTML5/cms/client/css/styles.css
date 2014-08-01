@@ -8,10 +8,6 @@ body {
     font-family: MyWebFont;
 }
 
-#mainlayout{
-    margin-top: 80px;
-}
-
 .slider {
     width: 800px;
     height: 400px;
@@ -20,6 +16,9 @@ body {
     background: #e6e6e6;
     border: 20px solid #FFF;
     margin-top: 20px;
+    transform:rotate(2deg);
+    -ms-transform:rotate(2deg); /* IE 9 */
+    -webkit-transform:rotate(2deg); /* Opera, Chrome, and Safari */
 }
 
 .slide {
