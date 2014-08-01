@@ -29,7 +29,7 @@ angular.module('ng')
             });
 
             function mousemove(event) {
-                if (y <= 0)
+                if (y > 0)
                     return;
                 y = event.pageY - startY;
                 element.css({
