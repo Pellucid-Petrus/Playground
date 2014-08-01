@@ -42,15 +42,18 @@
 
     <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme='b'>
         <a ng-click="toggleMenu()" data-ajax="false"><i class='fa fa-bars'></i></a>
-        <h1>Text</h1>
+        <h1>{{appTitle}}</h1>
     </div>
 
     <div data-role="content">
         <div id="sidebar">
-            <ul class="nav nav-list">
-                <li class="nav-header">List header</li>
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
+            <ul data-role="listview" data-inset="true" data-theme='a'>
+                <li><a href="#">Default is right arrow</a></li>
+                <li data-icon="plus"><a href="#">data-icon="plus"</a></li>
+                <li data-icon="minus"><a href="#">data-icon="minus"</a></li>
+                <li data-icon="delete"><a href="#">data-icon="delete"</a></li>
+                <li data-icon="location"><a href="#">data-icon="location"</a></li>
+                <li data-icon="false"><a href="#">data-icon="false"</a></li>
             </ul>
         </div>
         <div id="mainlayout">
