@@ -10,22 +10,22 @@
 ################################################################################
 from flask import Flask, jsonify, render_template
 import json
-import db
-
+from dao import dao
+import os
 from jsonp import support_jsonp
 
 # vars
 app = Flask(__name__)
 VERSION=0.1
 
-# DB
-def open_db():
-    """Creates the database tables."""
-    d = db()
-
-@app.teardown_appcontext
-def close_db(error):
-    db.disconnect();
+# config
+app.config.update(dict(
+    DEBUG=True,
+    DB='testdb',
+    HOSTNAME='localhost',
+    USER='testuser',
+    PASSWORD='testuser'
+))
 
 # API
 @app.route('/get/<app_id>/',  methods=['GET'])
@@ -43,4 +43,5 @@ def welcome():
 # main
 if __name__ == '__main__':
     app.debug = True
-    app.run()
+    with dao(app.config) as dd:
+      app.run()

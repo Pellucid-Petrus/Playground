@@ -15,7 +15,7 @@ class db:
       print "Already connected to DB"
       return
     try:
-      self.con = mdb.connect(config["host"], config["user"], config["password"], config["db"])
+      self.con = mdb.connect(config["HOSTNAME"], config["USER"], config["PASSWORD"], config["DB"])
       self.cur = self.con.cursor()
     except Exception as e:
       print "Fatal error: " + str(e)
