@@ -6,20 +6,27 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
     // then here the controller gets executed, the injector pass as arguments the services
     .controller('MainCtrl', function ($scope, $http) {
         // fetches data from the internet
-        $scope.data_url = "https://raw.githubusercontent.com/gnuton/Playground/master/HTML5/cms/client/data/test/app_data.json&callback=az";
-        $http.get($scope.data_url).success(function (data) {
-            console.log(data);
-            $scope.slides = data["pages"];
-            $scope.appTitle =data["title"];
-            $scope.sidemenuitems = data["sidemenu"];
-        });
+        //$scope.data_url = "https://raw.githubusercontent.com/gnuton/Playground/master/HTML5/cms/client/data/test/app_data.json";
+        $scope.data_url ="http://localhost:5000/get/1234/?callback=JSON_CALLBACK";
+        $http.jsonp($scope.data_url)
+            .success(function (data) {
+                console.log(data["foo"]);
+                /*
+                $scope.appTitle =data["title"];
+                $scope.sidemenuitems = data["sidemenu"];
+                $scope.pages = data["pages"];*/
+            }).error(function (data, status, headers, config) {
+                //this always gets called
+                console.log(status);
+            });
 
         // Initialize vars
         $scope.appTitle = "Mobile CMS is loading...";
         $scope.sidemenuitems = [
             {name: "loading...", pageID: -1 },
-            {name: "About Bonsai", pageID: 99}
+            {name: "About Bonsai", pageID: 0}
         ];
+        $scope.pages = [{"title" : "About", "content":"some content<p>Error: <code>.error</code></p>"}];
         $scope.slides = [
             {image: 'data/test/images/img00.jpg', description: 'Image 00'},
             {image: 'data/test/images/img01.jpg', description: 'Image 01'}
@@ -63,6 +70,8 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
             var element = document.getElementById("mainlayout");
             console.log(idx);
             $scope.toggleMenu();
+            $scope.pageTitle = $scope.pages[idx].title;
+            $scope.pageContent = $scope.pages[idx].content;
         }
 
     })

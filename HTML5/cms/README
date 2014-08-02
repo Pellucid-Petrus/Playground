@@ -1,0 +1,10 @@
+Bonsai CMS
+
+Kind of cloud based rapid development tool which would allow you to
+create mobile apps in a fast way.
+
+how to use it:
+cd server
+run python main.py
+then point your brower to http://localhost:500
+enjoy!

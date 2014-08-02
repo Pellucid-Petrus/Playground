@@ -46,6 +46,9 @@
 
 /*** MAIN LAYOUT ***/
 #mainlayout {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
     position:absolute;
     z-index: 10;
     background-color: black;
