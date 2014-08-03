@@ -23,26 +23,30 @@ class db:
   
   def disconnect(self):
     print "disconnect"
+    self.con.commit()
     self.con.close()
     self.con = None
     self.cur = None
 
-  def query(self, query):
+  def query(self, q):
     try:
-      self.cur.execute(query)
+      self.cur.execute(q)
       return self.cur.fetchall()
     except mdb.ProgrammingError as e:
-      print "Warning: Failed to run the query %s. The problem: %s" % (query, str(e))
+      print "Warning: Programming error for '%s'. The problem: %s" % (q, str(e))
+    except mdb.IntegrityError as x:
+      print "Warning: Integrity error for '%s'. The problem: %s" % (q, str(x)) 
 
 if __name__ == "__main__":
   print "testing"
   d = db()
-  config = {}
-  config["host"] = "localhost"
-  config["user"] = "testuser"
-  config["password"] = "testuser"
-  config["db"] = "testdb"
+  config = dict(
+    DB='testdb',
+    HOSTNAME='localhost',
+    USER='testuser',
+    PASSWORD='testuser')
  
   d.connect(config)
-  d.query("SELECT * FROM Writers")
+  #d.query("SELECT * FROM Writers")
+  d.query('INSERT INTO bonsai_app_config (user, secret, appname, config) VALUES ("fabio", "0", "", "");');
   d.disconnect() 
