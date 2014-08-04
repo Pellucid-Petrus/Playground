@@ -3,7 +3,14 @@ Bonsai CMS
 Kind of cloud based rapid development tool which would allow you to
 create mobile apps in a fast way.
 
-how to use it:
+INSTALL
+This procedure shows you how to install a testing environment for Bonsai
+cd server
+mysql -uroot -p < install_test.sql
+mysql -utestuser -p < schema.sql
+
+
+HOW TO RUN IT
 cd server
 run python main.py
 then point your brower to http://localhost:500

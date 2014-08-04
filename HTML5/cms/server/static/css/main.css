@@ -25,6 +25,23 @@ body {
 	font-weight: 300;
 }
 
+    
+#left_div 
+{ 
+	float:left; 
+	height:100%; 
+	margin:20px; 
+	text-align:center; 
+} 
+#right_div 
+{ 
+	float:left; 
+	height:100%; 
+	width:50%;
+	margin:20px; 
+	text-align:center; 
+} 
+/******* DEVICE *******/
 .device {
 	text-align: center;
 	-webkit-transition: -webkit-transform 1s;
@@ -32,7 +49,6 @@ body {
 	-o-transition: -o-transform 1s;
 	-ms-transition: -ms-transform 1s;
 	transition: transform 1s;
-	position: fixed;
 	background-position: center center;
 	background-repeat: no-repeat;
 	z-index: 1;
