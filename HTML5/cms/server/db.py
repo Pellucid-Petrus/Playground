@@ -51,7 +51,7 @@ if __name__ == "__main__":
     DB='testdb',
     HOSTNAME='localhost',
     USER='testuser',
-    PASSWORD='testuser')
+    PASSWORD='testpass')
  
   d.connect(config)
   #d.query("SELECT * FROM Writers")

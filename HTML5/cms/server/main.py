@@ -24,7 +24,7 @@ app.config.update(dict(
     DB='testdb',
     HOSTNAME='localhost',
     USER='testuser',
-    PASSWORD='testuser'
+    PASSWORD='testpass'
 ))
 
 # API
