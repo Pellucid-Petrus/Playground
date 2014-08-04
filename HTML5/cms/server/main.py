@@ -28,18 +28,27 @@ app.config.update(dict(
 ))
 
 # API
-@app.route('/get/<app_id>/',  methods=['GET'])
+@app.route('/get/<user>/<app_id>/',  methods=['GET'])
 @support_jsonp
-def get_data(app_id):
+def get_data(user, app_id):
+    #TODO user app_id
     # show the user profile for that user
-    app_config = dao.get_
+    app_config = dao.get_app_config(user)
     res = jsonify(app_config)
     print res.response
     return res
 
+@app.route('/features')
+def features():
+  return render_template('features.html')
+
+@app.route('/dashboard')
+def dashboard():
+  return render_template('dashboard.html', version=VERSION)
+
 @app.route('/')
 def welcome():
-    return render_template('index.html', version=VERSION)
+    return render_template('welcome.html', version=VERSION)
 
 # main
 if __name__ == '__main__':

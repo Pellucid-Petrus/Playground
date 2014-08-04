@@ -7,7 +7,7 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
     .controller('MainCtrl', function ($scope, $http) {
         // fetches data from the internet
         //$scope.data_url = "https://raw.githubusercontent.com/gnuton/Playground/master/HTML5/cms/client/data/test/app_data.json";
-        $scope.data_url ="http://localhost:5000/get/1234/?callback=JSON_CALLBACK";
+        $scope.data_url ="http://localhost:5000/get/antonio/1234/?callback=JSON_CALLBACK";
         $http.jsonp($scope.data_url)
             .success(function (data) {
                 console.log(data["foo"]);
