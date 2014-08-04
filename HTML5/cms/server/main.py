@@ -32,7 +32,8 @@ app.config.update(dict(
 @support_jsonp
 def get_data(app_id):
     # show the user profile for that user
-    res = jsonify({"foo":"bar"})
+    app_config = dao.get_
+    res = jsonify(app_config)
     print res.response
     return res
 
