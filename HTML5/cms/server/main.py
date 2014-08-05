@@ -33,7 +33,7 @@ app.config.update(dict(
 def get_data(user, app_id):
     #TODO user app_id
     # show the user profile for that user
-    app_config = dao.get_app_config(user)
+    app_config = dd.get_app_config(user)
     res = jsonify(app_config)
     print res.response
     return res
@@ -44,7 +44,7 @@ def features():
 
 @app.route('/dashboard')
 def dashboard():
-  return render_template('dashboard.html', version=VERSION)
+  return render_template('dashboard2.html', version=VERSION)
 
 @app.route('/')
 def welcome():

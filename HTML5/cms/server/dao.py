@@ -40,8 +40,11 @@ class dao:
       return None 
     query = 'select config from bonsai_app_config where user="%s";' % user
     res = self.db.query(query)
-    return res[0][0] # (('{"foo":"bar"}',),)
- 
+    if res != (): 
+      return res[0][0] # (('{"foo":"bar"}',),)
+    else:
+      return {}
+
   def update_user_data(self, user, config, secret, appname=None):
     """ user, config, secret are mandatory arguments
     """
