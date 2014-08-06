@@ -58,12 +58,14 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
         //*** TITLEBAR/SIDEBAR ***//
         $scope.toggleMenu = function() {
             var element = document.getElementById("mainlayout");
-            var isMenuOpen = (element.style.left === "500px");
+            var sidebar = document.getElementById("sidebar");
+            var sidebarShift = sidebar.offsetWidth - 20;
+            var isMenuOpen = (element.style.left === sidebarShift + "px");
             console.log(isMenuOpen);
             if (isMenuOpen)
                 TweenMax.to(element, 0.5, {left: 0 });
             else
-                TweenMax.to(element, 0.5, {left: 500 });
+                TweenMax.to(element, 0.5, {left: sidebarShift });
         }
 
         $scope.showPage = function(idx) {

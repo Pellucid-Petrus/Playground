@@ -30,7 +30,6 @@ angular.module('ng')
             }
 
             function mouseup() {
-                console.log(element.height());
                 TweenMax.to(element, 2, {y: -(element.height()*2) });
 
                 $document.off('mousemove', mousemove);
