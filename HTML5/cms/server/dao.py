@@ -1,6 +1,7 @@
 from db import db
 
 import hashlib
+import json
 
 class dao:
   DEBUG = True
@@ -47,22 +48,40 @@ class dao:
 
   def update_user_data(self, user, config, secret, appname=None):
     """ user, config, secret are mandatory arguments
+        NOTE: SECRET IS OPTIONAL FOR THE TIME BEING - NO SECURITY
     """
+    if isinstance(config, dict):
+      config = json.dumps(config)
+
+    elif isinstance(config, str):
+      self.__validate_json(config)
+
+    print type(config)
+    print config
+
+    if not user or not config:
+      print "NO USER or INVALID CONFIG"
+      return False
     config = self.db.escape_str(config)
     secret= self.__hash_secret(secret)
-    if not config or not user:
-      return
+
     q= 'UPDATE bonsai_app_config SET '
     if secret != None:
       q +='secret="%s",' % secret
     if appname != None:
       q +='appname="%s",' % appname
       
-    q += 'config="%s" where user="%s" and secret="%s";' % (config, user, secret);  
+    q += 'config="%s" where user="%s"' % (config, user);
+    print q
     res = self.db.query(q)
+    return True
 
   def __hash_secret(self, secret):
     print hashlib.sha256(secret).hexdigest()
+
+  def __validate_json(self, json_str):
+    """ Throw ValueError exception if the string is not JSON """
+    json.loads(json_str)
 
 if __name__ == "__main__":
   config = dict(

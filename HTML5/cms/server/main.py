@@ -8,7 +8,7 @@
 #  Main file.
 #
 ################################################################################
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 import json
 from dao import dao
 import os
@@ -36,6 +36,19 @@ def get_data(user, app_id):
     app_config = dd.get_app_config(user)
     res = jsonify(app_config)
     print res.response
+    return res
+
+@app.route('/set/<user>/<app_id>/',  methods=['POST'])
+@support_jsonp
+def set_data(user, app_id):
+    if request.headers['Content-Type'] == 'application/json':
+        ok = dd.update_user_data(user, request.json, "TEST")
+        if ok:
+            res = "200 OK"
+        else:
+            res = "200 FAILED"
+    else:
+        return "415 Unsupported Media Type ;)"
     return res
 
 @app.route('/features')

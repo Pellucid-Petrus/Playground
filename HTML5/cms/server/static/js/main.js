@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    console.log("CIAO");
     // Set global vars
     var hostname = "localhost:5000";
     var username = "antonio";
@@ -14,12 +13,29 @@ $(document).ready(function(){
             $("#config_textarea").text(JSON.stringify(data));
 
         }).fail(function(jqXHR, textStatus){
-          alert("FAILED")
+            alert("FAILED")
         });
 
     // Sync button
-    $("button").click(function(){
-        $("#div1").load("demo_test.txt");
+    $("#sync_button").click(function(){
+        postConfigData();
     });
 
+    var postConfigData = function(){
+        config = $("#config_textarea").text();
+        alert(config)
+        $.ajax({
+            type: "POST",
+            url: "http://" + hostname + "/set/" + username + "/" + appid + "/",
+            data: config,
+            contentType: "application/json",
+            context: document.body
+        }).done(function(data) {
+                //$( this ).addClass( "done" );
+                $("#config_textarea").text(data);
+
+            }).fail(function(jqXHR, textStatus){
+                alert("FAILED")
+            });
+    }
 });
