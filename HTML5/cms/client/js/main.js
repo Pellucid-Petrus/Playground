@@ -5,16 +5,16 @@ angular.module('cms_app', ['ngAnimate', 'ngTouch'])
     // when the built-in services load they register them to the injector as available libraries
     // then here the controller gets executed, the injector pass as arguments the services
     .controller('MainCtrl', function ($scope, $http) {
+        var user = "fabio";
+        var appid = "1234";
         // fetches data from the internet
         //$scope.data_url = "https://raw.githubusercontent.com/gnuton/Playground/master/HTML5/cms/client/data/test/app_data.json";
-        $scope.data_url ="http://localhost:5000/get/antonio/1234/?callback=JSON_CALLBACK";
+        $scope.data_url ="http://localhost:5000/get/" + user + "/" + appid + "/?callback=JSON_CALLBACK";
         $http.jsonp($scope.data_url)
             .success(function (data) {
-                console.log(data["foo"]);
-                /*
-                $scope.appTitle =data["title"];
+                $scope.appTitle = data["title"];
                 $scope.sidemenuitems = data["sidemenu"];
-                $scope.pages = data["pages"];*/
+                $scope.pages = data["pages"];
             }).error(function (data, status, headers, config) {
                 //this always gets called
                 console.log(status);

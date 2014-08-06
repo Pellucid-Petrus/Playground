@@ -34,7 +34,7 @@ def get_data(user, app_id):
     #TODO user app_id
     # show the user profile for that user
     app_config = dd.get_app_config(user)
-    res = jsonify(app_config)
+    res = jsonify(json.loads(app_config))
     print res.response
     return res
 

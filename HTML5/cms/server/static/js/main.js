@@ -1,16 +1,17 @@
 $(document).ready(function(){
     // Set global vars
     var hostname = "localhost:5000";
-    var username = "antonio";
+    var username = "fabio";
     var appid = "1234";
 
     // load config when the page loads
     $.ajax({
         url: "http://" + hostname + "/get/" + username + "/" + appid + "/",
         context: document.body
-    }).done(function(data) {
+    }).done(function(jsonObj) {
             //$( this ).addClass( "done" );
-            $("#config_textarea").text(JSON.stringify(data));
+            jsonString = JSON.stringify(jsonObj, null, '\t');
+            $("#config_textarea").text(jsonString);
 
         }).fail(function(jqXHR, textStatus){
             alert("FAILED")
@@ -18,24 +19,18 @@ $(document).ready(function(){
 
     // Sync button
     $("#sync_button").click(function(){
-        postConfigData();
-    });
-
-    var postConfigData = function(){
-        config = $("#config_textarea").text();
-        alert(config)
         $.ajax({
             type: "POST",
             url: "http://" + hostname + "/set/" + username + "/" + appid + "/",
-            data: config,
+            data: $("#config_textarea").val(),
             contentType: "application/json",
             context: document.body
         }).done(function(data) {
                 //$( this ).addClass( "done" );
-                $("#config_textarea").text(data);
-
+                alert(data);
+                $('#device_iframe')[0].contentWindow.location.reload(); // refresh app in the device
             }).fail(function(jqXHR, textStatus){
                 alert("FAILED")
             });
-    }
+    });
 });
