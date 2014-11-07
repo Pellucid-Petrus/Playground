@@ -1,30 +1,31 @@
 #!/usr/bin/python
-"""DNS dinamico con TopHost.
-Lancia thdns -h per informazioni sull'uso.
-Daniele Paganelli @ 2007
-CreativeCommons Attribution-ShareAlike"""
+"""
+    *******************************************************
+    *             DynDNS client for Tophost.it            *
+    *                                                     *
+    *  Copyrights:                                        *
+    *      Daniele Paganelli                              *
+    *      Antonio Aloisio <gnuton@gnuton.org>            *
+    *                                                     *
+    *  License: CreativeCommons Attribution-ShareAlike    *
+    *                                                     *
+    *******************************************************
+"""
+import os
 
-########################
-# CONFIGURAZIONE
-########################
-# Nome utente e password per il pannello di controllo TopHost:
-userid = "XXXX"
-passwd = "YYYY"
+##### CONFIGURATION #####
+# Set tophost credentials as your environment variables or replace the ones you can find below
+userid = os.environ.get("TH_USER", "yourdomain.it")
+passwd = os.environ.get("TH_PASS", "yourpassword")
 
-# Nomi (domini di secondo livello) dei quali si desidera aggiornare l'ip: (devono gia' essere presenti come record di tipo A.)
-dyn=['home']
 
-# File dove memorizzare l'ip dell'ultimo aggiornamento:
+# Domain names to which you wanna update the IP address. 
+# it can be a list like ["home", "gameserver"]. Those records must be already set in cpanel and they have to be A records.
+DYNAMIC_HOSTS=['home']
+
+
+##### DO NOT EDIT THIS###
 logip='/tmp/thdns.ip'
-
-# FINE CONFIGURAZIONE
-#-------------------------
-
-#######################
-#######################
-# COSTANTI
-#######################
-
 
 storedip=None
 test=True
@@ -36,7 +37,6 @@ ARGOMENTI:
 OPZIONI:
 	-f [<ip>], --forza[=<ip] : Forza l'aggiornamento (nota: non abusare di questa opzione per non sovraccaricare i server)
 
-	-g [<ip>],--gentile[=<ip]: Controlla se l'aggiornamento e' necessario, paragonando l'ip attuale (in argomento o ottenuto dalla rete) all'ip dell'ultima chiamata al programma, memorizzato in %s. Questo e' il comportamento predefinito.
 
 	-h, --help : stampa questo messaggio di aiuto
 
@@ -51,8 +51,6 @@ Esempi:
 ua='User-Agent','thdns/0.1 (+http://daniele.modena1.it/code/thdns/view)'
 
 #######################
-# FUNZIONI
-#######################
 
 from httplib import HTTPSConnection,HTTPS
 from urllib2 import urlopen
@@ -65,6 +63,7 @@ from getopt import getopt
 
 def getip():
 	"""Ottieni l'ip da checkip.dyndns.org"""
+        print " - Detecting public IP"
 	si='Address: '
 	r=urlopen('http://checkip.dyndns.org').read()
 	i=r.find(si)+len(si)
@@ -77,6 +76,7 @@ def getsid():
 	# that base64.encodestring adds some extra newlines/carriage-returns
 	# to the end of the result. string.strip is a simple way to remove
 	# these characters.
+        print " - Fetching session id from CPanel for user %s" % userid
 	global sid,psi
 	auth = 'Basic ' + strip(encodestring(userid + ':' + passwd))
 	conn = HTTPSConnection('cp.tophost.it')
@@ -127,10 +127,9 @@ def update(name):
 	"""Aggiorna il valore per il nome richiesto, se necessario"""
 	global ip
 	old=dnsinfo(name)	# L'ip del DNS
-        print "Old ip for %s is %s" % (name, old)
 	if ip==old:
 		# Esci dalla funzione se l'ip del DNS era corretto
-		print '[%10s]\t mantengo %s' % (name,old)
+		print ' - Hostname %s.%s, IP: %s, update not needed' % (name, userid, old)
 		return False
 	
 	# Modifica il nome
@@ -140,7 +139,7 @@ def update(name):
 		'type':'A',
 		'action':'Modifica'})
 	dnscp('/dnscp/index.php?page=edit_record',params)
-	print '[%10s]\t era %s, aggiorno a %s' % (name,old,ip)
+        print ' - Hostname %s.%s, IP: %s, updated to %s' % (name, userid, old, ip)
 	return True
 
 #######################
@@ -148,43 +147,40 @@ def update(name):
 #######################
 
 # Lettura parametri
-if len(argv)>1:
-	opts, args=getopt(argv[1:],'fgh',['forza','help','gentile'])
-	for o,a in opts:
-		if o in ['-h','--help']:
-			print help
+if __name__ == "__main__":
+	if len(argv)>1:
+		opts, args=getopt(argv[1:],'fh',['force','help'])
+		for o,a in opts:
+			if o in ['-h','--help']:
+				print help
+				exit(0)
+			if o in ['-f','--force']:
+				test=False
+				ip=a
+		if len(args)==1:
+			ip=args[0]
+
+	if ip=='':
+		ip=getip()
+		print " - Public IP:" + ip 
+
+	if test==True:
+		# Compara con l'ip memorizzato
+		if exists(logip):
+			storedip=open(logip,'r').read()
+		if storedip==ip:
+			print "Update not needed, same ip";
 			exit(0)
-		if o in ['-f','--forza']:
-			test=False
-			ip=a
-		if o in ['-g','--gentile']:
-			test=True
-			ip=a
-	if len(args)==1:
-		ip=args[0]
+	
 
-if ip=='':
-	ip=getip()
-	print "IP is:" + ip 
+	# Log in to CPanel 
+	getsid()
+	params = urlencode({'sid': sid, 'b1': 'Vai al pannello del DNS'})
+	data=dnscp('/dnscp/',params)[-1]
 
-if test==True:
-	# Compara con l'ip memorizzato
-	if exists(logip):
-		storedip=open(logip,'r').read()
-	if storedip==ip:
-		print "Update not needed, same ip";
-		exit(0)
-	else:
-		open(logip,'w').write(ip)
-else:
+	# Updates DNS for hostanames
+	for n in DYNAMIC_HOSTS:
+		update(n)
+
 	open(logip,'w').write(ip)
-
-
-# Inizio la sessione con il cpanel:
-getsid()
-params = urlencode({'sid': sid, 'b1': 'Vai al pannello del DNS'})
-data=dnscp('/dnscp/',params)[-1]
-
-# Aggiorna tutti i nomi richiesti sul pannello dns:
-for n in dyn:
-	update(n)
+	
